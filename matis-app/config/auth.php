@@ -18,6 +18,7 @@ return [
         'passwords' => 'users',
     ],
 
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -46,6 +47,11 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'deezer' => [
+            'driver' => 'session',
+            'provider' => 'deezers',
+        ],
     ],
 
     /*
@@ -71,10 +77,10 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'deezers' => [
+            'driver' => 'deezer',
+            'model' => App\Deezer::class,
+        ],
     ],
 
     /*

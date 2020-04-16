@@ -12,9 +12,13 @@
     @include('layouts.navbar')
 
     <div id="app">
+        @section("app")
+
         <div class="container-fluid mt-2">
             @yield('content')
         </div>
+
+        @show
     </div>
 
     @yield('vue')
