@@ -29,13 +29,15 @@ class AuthServiceProvider extends ServiceProvider
     { 
         $this->registerPolicies();
 
-        Auth::provider('deezer', function($app, array $config) {
+        // add custom user provider
+        Auth::provider('deezer', function($app, array $config) {            
             return new DeezerUserProvider($app->make($config['model']));
-        });     
-
-        // add custom guard
-        Auth::extend('deezer', function ($app, $name, array $config) {
-          return new DeezerGuard(Auth::createUserProvider($config['provider']), $app->make('request'));
         });  
+
+       // add custom guard
+        Auth::extend('deezer', function ($app, $name, array $config) {
+        
+          return new DeezerGuard(Auth::createUserProvider($config['provider']), $app->make('request'));
+        });
     }
 }

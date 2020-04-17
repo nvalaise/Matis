@@ -49,7 +49,7 @@ return [
         ],
 
         'deezer' => [
-            'driver' => 'session',
+            'driver' => 'deezer',
             'provider' => 'deezers',
         ],
     ],

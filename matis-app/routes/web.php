@@ -23,7 +23,7 @@ Route::prefix('auth')->group(function () {
 
 	Route::get('/', function () {
 
-		dd(Auth::guard('deezer'));
+		//dd(Auth::guard('deezer'));
 		//dd(Auth::user(), Auth::guard('deezer'), Auth::guard('deezer')->check(), Session::get('accesstokenDeezer'));
 
 		return view('app.auth');

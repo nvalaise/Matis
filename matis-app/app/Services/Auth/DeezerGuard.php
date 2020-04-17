@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
+use Illuminate\Auth\GuardHelpers;
 
 class DeezerGuard implements Guard
 {
@@ -50,7 +51,6 @@ class DeezerGuard implements Guard
         $inputKey = 'accessToken',
         $storageKey = 'accessToken')
     {
-        dd($provider, $request);
         $this->provider = $provider;
         $this->request = $request;
     }
@@ -80,7 +80,6 @@ class DeezerGuard implements Guard
      */
     public function user() {
 
-        dd('hello');
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
@@ -93,14 +92,13 @@ class DeezerGuard implements Guard
 
         $token = $this->getTokenForRequest();
 
+        //dd($this->provider, $token);
+
         if (! empty($token)) {
             $user = $this->provider->retrieveByCredentials([
                 $this->storageKey => $token,
             ]);
         }
-
-        dd($user);
-
 
         return $this->user = $user;
     }
