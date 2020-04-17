@@ -74,12 +74,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Models\User\User::class,
         ],
 
         'deezers' => [
             'driver' => 'deezer',
-            'model' => App\Deezer::class,
+            'model' => App\Models\User\Deezer::class,
         ],
     ],
 
