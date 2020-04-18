@@ -4,8 +4,8 @@
 
 @section('content')
 	<div class="jumbotron">
-		<h1 class="display-4">Hello, <i>world</i> !</h1>
-		<p class="lead">Welcome on Matis the Merveillous, this beautiful app that aims to give you visilibility over the .</p>
+		<h1 class="display-4">Hello, @if(Auth::check()) <i class="text-info"> {{ Auth::user()->name }} </i> @else<i>world</i>@endif !</h1>
+		<p class="lead">Welcome on board with Matis, this beautiful app that aims to give you visibility over the apps you use.</p>
 		<hr class="my-4">
 		<p>We collect only the data provided by the imposed applications. Indeed, they open REST API for developpers so that we are able to collect it. By default, none of your info is stored unless you explicitally click on the <a href="#" class="btn btn-primary">Save</a> button.</p>
 		<p class="lead">
