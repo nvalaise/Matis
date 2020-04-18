@@ -3,9 +3,12 @@
 namespace App\Services\Auth;
 
 use Illuminate\Auth\SessionGuard;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+
 
 class DeezerGuard extends SessionGuard
 {
@@ -45,11 +48,40 @@ class DeezerGuard extends SessionGuard
 
 
     /**
+     * Log a user into the application.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  bool  $remember
+     * @return void
+     */
+    public function login(AuthenticatableContract $user, $remember = false)
+    {
+        parent::login($user, $remember);
+
+        Auth::loginUsingId($user->id);
+    }
+
+    /**
      * Get the currently authenticated user.
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function user() {
+
+        $user = $this->deezer();
+        if (! is_null($user)) {
+            return $user->user();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the currently authenticated user.
+     *
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    public function deezer() {
         // If we've already retrieved the user for the current request we can just
         // return it back immediately. We do not want to fetch the user data on
         // every call to this method because that would be tremendously slow.
@@ -125,8 +157,9 @@ class DeezerGuard extends SessionGuard
      */
     public function logout()
     {
-        $this->session->forget($this->inputKey);
-
         parent::logout();
+        
+        $this->session->forget($this->inputKey);
+        Auth::logout();
     }
 }

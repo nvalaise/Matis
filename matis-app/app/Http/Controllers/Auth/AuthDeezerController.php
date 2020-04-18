@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use DB;
 
 use App\Services\RandomPseudo\RandomPseudo;
 
@@ -53,7 +54,7 @@ class AuthDeezerController extends Controller
 
 					if ($this->userExist($data2)) {
 
-						$user = Auth::guard('deezer')->user();
+						$user = Auth::guard('deezer')->deezer();
 
 						$user->deezerId = $data2['id'];
 						$user->email = $data2['email'];
@@ -74,7 +75,7 @@ class AuthDeezerController extends Controller
 						$request->session()->flash('flash_message', '<p><b>Welcome ' . $data2["name"] .'!</b> You successfully logged in to this website with Deezer and your account data has been updated.</p>');
 
 					} else {
-						
+
 						$request->session()->flash('flash_type', 'alert-info');
 						$request->session()->flash('flash_message', '<p><b>Welcome ' . $data2["name"] .'!</b> You successfully logged in to this website with Deezer.</p><p>It seems that is it the first time you are connected with Deezer. Click on the following link it you want to save your account data localy: <a href="' . route('auth.deezer.create') . '"">Save localy</a><p>');
 					}
@@ -99,12 +100,15 @@ class AuthDeezerController extends Controller
 
 
 		if (isset($data["error"])) {
+			dd($data);
 			$request->session()->forget('accesstokenDeezer');
 			abort(400, 'Request failed to get the token from Deezer: ' . $data["error"]);
 		} else {
 
 
 			try {
+				
+				DB::beginTransaction();
 
 				$pseudo = RandomPseudo::generate();
 
@@ -133,10 +137,13 @@ class AuthDeezerController extends Controller
 				$deezer->accessToken = $request->session()->get('accesstokenDeezer');
 
 				$deezer->save();
+
+				DB::commit();
 			}
 			catch (\Illuminate\Database\QueryException $e){
-				$user->rollback();
-				dd($e);
+				
+				DB::rollBack();
+				
 				$errorCode = $e->errorInfo[1];
 
 				if($errorCode == 1062){
@@ -144,23 +151,23 @@ class AuthDeezerController extends Controller
 					$request->session()->flash('flash_message', '<p><b>' . $data["name"] .'!</b> We have a duplicate entry problem...<p> <p>You have already saved your data.</p>');
 				} else {
 					$request->session()->flash('flash_type', 'alert-danger');
-					$request->session()->flash('flash_message', '<p><b>Jackson!</b> Database error code:'. $e .'</p>');
+					$request->session()->flash('flash_message', '<p><b>Error!</b> Database error code:'. $e .'</p>');
 				}
 
-				return redirect()->route('auth.index');
 
 			}
 
 			if($this->userExist($data)) {
 				$request->session()->flash('flash_type', 'alert-success');
-				$request->session()->flash('flash_message', '<p><b>Welcome ' . $data2["name"] .'!</b> You successfully logged in to this website with Deezer and your account data has been updated.</p>');
+				$request->session()->flash('flash_message', '<p><b>Welcome ' . $data["name"] .'!</b> You successfully logged in to this website with Deezer and your account data has been updated.</p>');
 			} else {
 				$request->session()->flash('flash_type', 'alert-danger');
-				$request->session()->flash('flash_message', '<p><b>Done!</b> Cannot connect the user to the Deezer account.</p>');
+				$request->session()->flash('flash_message', '<p><b>Error!</b> Cannot connect the user to the Deezer account.</p>');
 			}
-
-			return redirect()->route('auth.index');
 		}
+
+		return redirect()->route('auth.index');
+
 	}
 
 	public function logout() {
@@ -188,6 +195,8 @@ class AuthDeezerController extends Controller
 
 			return Http::get($tokenURL);
 		} else {
+			$request->session()->flash('flash_type', 'alert-danger');
+			$request->session()->flash('flash_message', '<p><b>Error!</b> Missing code parameter to get token from Deezer.</p>');
 			abort(400, 'Missing code parameter to get token from Deezer.');
 		}
 	}

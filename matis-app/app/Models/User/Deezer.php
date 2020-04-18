@@ -5,6 +5,7 @@ namespace App\Models\User;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use App\Model\Auth\User;
 
 
 class Deezer extends Authenticatable
@@ -56,7 +57,7 @@ class Deezer extends Authenticatable
      */
     public function user()
     {
-        return $this->hasOne('App\Model\Auth\User');
+        return $this->hasOne('App\Models\User\User', 'id', 'id')->first();
     }
 
     /**

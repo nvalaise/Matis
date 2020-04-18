@@ -42,6 +42,30 @@ class User extends Authenticatable
      */
     public function deezer()
     {
-        return $this->hasOne('App\Model\Auth\Deezer', 'id', 'user_id');
+        return $this->hasOne('App\Models\User\Deezer', 'id', 'id');
+    }
+
+
+    /**
+     * Get the user pseudonyme.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getNamedAttribute($value)
+    {
+        return $value;
+    }
+
+
+    /**
+     * Get the user email address.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getEmailAttribute($value)
+    {
+        return $value;
     }
 }
