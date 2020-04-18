@@ -14,7 +14,9 @@ class CreateUsersDeezerTable extends Migration
     public function up()
     {
         Schema::create('users_deezer', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id');
+            $table->foreign('id')->references('id')->on('users');
+            
             $table->integer('deezerId')->unique();
             $table->string('email')->unique();
             $table->string('name');

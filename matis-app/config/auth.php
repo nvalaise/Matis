@@ -42,15 +42,15 @@ return [
             'provider' => 'users',
         ],
 
+        'deezer' => [
+            'driver' => 'deezer',
+            'provider' => 'deezers',
+        ],
+        
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
-        ],
-
-        'deezer' => [
-            'driver' => 'deezer',
-            'provider' => 'deezers',
         ],
     ],
 

@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
-use App\Deezer;
+use App\Services\RandomPseudo\RandomPseudo;
+
+use App\Models\User\User;
+use App\Models\User\Deezer;
 
 class AuthDeezerController extends Controller
 {
@@ -31,7 +37,6 @@ class AuthDeezerController extends Controller
 	{
 		$response = $this->getDeezerToken($request);
 		$data1 = $response->json();
-
 		if ($response->successful() && isset($data1)) {
 
 			if (isset($data1["access_token"])) {
@@ -39,6 +44,7 @@ class AuthDeezerController extends Controller
 
 				$response = $this->getDeezerMe($request);
 				$data2 = $response->json();
+
 
 				if (isset($data2["error"])) {
 					$request->session()->forget('accesstokenDeezer');
@@ -97,26 +103,40 @@ class AuthDeezerController extends Controller
 			abort(400, 'Request failed to get the token from Deezer: ' . $data["error"]);
 		} else {
 
+
 			try {
 
-				Deezer::create([
-					'deezerId' => $data['id'],
-					'email' => $data['email'],
-					'name' => $data['name'],
-					'firstname' => $data['firstname'],
-					'lastname' => $data['lastname'],
-					'status' => $data['status'],
-					'inscriptionDate' => $data['inscription_date'],
-					'profileLink' => $data['link'],
-					'picture' => $data['picture'],
-					'country' => $data['country'],
-					'lang' => $data['lang'],
-					'isKid' => $data['is_kid'],
-					'tracklist' => $data['tracklist'],
-					'deezer_accessToken' => $request->session()->get('accesstokenDeezer')
-				]);
+				$pseudo = RandomPseudo::generate();
+
+				$user = new User;
+				$user->name = $pseudo;
+				$user->password = Hash::make("mdp" . $pseudo);
+				$user->email = $data['email'];
+
+				$user->save();
+
+				$deezer = new Deezer;
+				$deezer->id = $user->id;
+				$deezer->deezerId = $data['id'];
+				$deezer->email = $data['email'];
+				$deezer->name = $data['name'];
+				$deezer->firstname = $data['firstname'];
+				$deezer->lastname = $data['lastname'];
+				$deezer->status = $data['status'];
+				$deezer->inscriptionDate = $data['inscription_date'];
+				$deezer->profileLink = $data['link'];
+				$deezer->picture = $data['picture'];
+				$deezer->country = $data['country'];
+				$deezer->lang = $data['lang'];
+				$deezer->isKid = $data['is_kid'];
+				$deezer->tracklist = $data['tracklist'];
+				$deezer->accessToken = $request->session()->get('accesstokenDeezer');
+
+				$deezer->save();
 			}
 			catch (\Illuminate\Database\QueryException $e){
+				$user->rollback();
+				dd($e);
 				$errorCode = $e->errorInfo[1];
 
 				if($errorCode == 1062){
@@ -126,6 +146,9 @@ class AuthDeezerController extends Controller
 					$request->session()->flash('flash_type', 'alert-danger');
 					$request->session()->flash('flash_message', '<p><b>Jackson!</b> Database error code:'. $e .'</p>');
 				}
+
+				return redirect()->route('auth.index');
+
 			}
 
 			if($this->userExist($data)) {

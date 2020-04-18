@@ -36,4 +36,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the central user account.
+     */
+    public function deezer()
+    {
+        return $this->hasOne('App\Model\Auth\Deezer', 'id', 'user_id');
+    }
 }

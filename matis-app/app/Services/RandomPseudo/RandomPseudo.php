@@ -4,6 +4,10 @@ namespace App\Services\RandomPseudo;
 
 use Illuminate\Support\Facades\Http;
 
+/**
+ * RandPseudo service
+ * Thanks http://names.drycodes.com !
+ */
 class RandomPseudo {
 
 	static private $baseUrl = "http://names.drycodes.com/1";

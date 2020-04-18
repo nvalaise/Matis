@@ -2,9 +2,10 @@
 
 namespace App\Models\User;
 
-//use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+
 
 class Deezer extends Authenticatable
 {
@@ -38,11 +39,23 @@ class Deezer extends Authenticatable
      */
     public function fetchUserByCredentials(array $credentials)
     {
-        if ($this->deezerId === $credentials['deezerId'] && $this->email === $credentials['email']) {
-            $arr_user = $this->email;
-            return $this;
+
+        if (array_key_exists("deezerId", $credentials) && array_key_exists("email", $credentials)) {
+            return 
+                DB::table('users_deezer')
+                    ->where('deezerId', '=', $credentials['deezerId'])
+                    ->where('email', '=', $credentials['email'])
+                    ->first();
         }
 
         return null;
+    }
+
+    /**
+     * Get the central user account.
+     */
+    public function user()
+    {
+        return $this->hasOne('App\Model\Auth\User');
     }
 }
