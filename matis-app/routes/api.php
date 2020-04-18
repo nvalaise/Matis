@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('deezer')->group(function () {
+	
+	Route::get('/playlists', 'Board\BoardDeezerController@playlists')->name('deezer.playlists');
 });
+

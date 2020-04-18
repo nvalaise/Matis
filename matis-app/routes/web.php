@@ -35,7 +35,9 @@ Route::prefix('auth')->group(function () {
 
 });
 
-
+Route::get('/deezer/{any?}', function () {
+    return view('app.deezer');
+})->where('any', '.*');
 
 
 //Auth::routes();
