@@ -58,4 +58,37 @@ class Deezer extends Authenticatable
     {
         return $this->hasOne('App\Model\Auth\User');
     }
+
+    /**
+     * Get the Deezer identifier.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getDeezerIdAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the Deezer email.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getEmailAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the Deezer email.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getAccessTokenAttribute($value)
+    {
+        return $value;
+    }
 }

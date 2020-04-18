@@ -2,18 +2,13 @@
 
 namespace App\Extensions;
 
-use Illuminate\Contracts\Auth\UserProvider;
+use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Str;
 
-class DeezerUserProvider implements UserProvider
+class DeezerUserProvider extends EloquentUserProvider
 {
-
-    /**
-     * The Eloquent user model.
-     *
-     * @var string
-     */
-    protected $model;
 
     /**
      * Create a new database user provider.
@@ -27,38 +22,6 @@ class DeezerUserProvider implements UserProvider
     }
 
     /**
-     * Retrieve a user by their unique identifier.
-     *
-     * @param  mixed  $identifier
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    public function retrieveById($identifier)
-    {
-        $user = $this->model->find($identifier);
-
-        return $this->getGenericUser($user);
-    }
-
-    /**
-     * Retrieve a user by their unique identifier and "remember me" token.
-     *
-     * @param  mixed  $identifier
-     * @param  string  $token
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
-     */
-    public function retrieveByToken($identifier, $token) { }
-    
-
-    /**
-     * Update the "remember me" token for the given user in storage.
-     *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @param  string  $token
-     * @return void
-     */
-    public function updateRememberToken(Authenticatable $user, $token) { }
-
-    /**
      * Retrieve a user by the given credentials.
      *
      * @param  array  $credentials
@@ -66,18 +29,28 @@ class DeezerUserProvider implements UserProvider
      */
     public function retrieveByCredentials(array $credentials)
     {
-
         if (empty($credentials)) {
             return;
         }
 
-        if (!array_key_exists("deezerId", $credentials) || !array_key_exists("email", $credentials)) {
-            return;
+        // First we will add each credential element to the query as a where clause.
+        // Then we can execute the query and, if we found a user, return it in a
+        // Eloquent User "model" that will be utilized by the Guard instances.
+        $query = $this->newModelQuery();
+
+        foreach ($credentials as $key => $value) {
+            if (Str::contains($key, 'password')) {
+                continue;
+            }
+
+            if (is_array($value) || $value instanceof Arrayable) {
+                $query->whereIn($key, $value);
+            } else {
+                $query->where($key, $value);
+            }
         }
 
-        $user = $this->model->fetchUserByCredentials(['deezerId' => $credentials['deezerId'],'email' => $credentials['email']]);
-
-        return $user;
+        return $query->first();
     }
 
     /**
@@ -89,22 +62,30 @@ class DeezerUserProvider implements UserProvider
      */
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        dd($credentials);
 
-        return ($credentials['deezerId'] == $user->getDeezerId()) &&
-            ($credentials['email'] == $user->getEmail());
+        if (array_key_exists("deezerId", $credentials) && array_key_exists("email", $credentials)) {
+            return 
+                ($credentials['deezerId'] == $user->deezerId) &&
+                ($credentials['email'] == $user->email);
+        }
+
+        if (count($credentials) === 1 && array_key_exists("accessToken", $credentials)) {
+            return $credentials['accessToken'] == $user->accessToken;            
+        }
+        
+        return false;
+
     }
 
     /**
-     * Get the generic user.
+     * Create a new instance of the model.
      *
-     * @param  mixed  $user
-     * @return \Illuminate\Auth\GenericUser|null
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    protected function getGenericUser($user)
+    public function createModel()
     {
-        if (! is_null($user)) {
-            return new GenericUser((array) $user);
-        }
+        $class = '\\'.ltrim(get_class($this->model), '\\');
+
+        return new $class;
     }
 }

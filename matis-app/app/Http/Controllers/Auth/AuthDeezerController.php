@@ -74,7 +74,7 @@ class AuthDeezerController extends Controller
 						$request->session()->flash('flash_message', '<p><b>Welcome ' . $data2["name"] .'!</b> You successfully logged in to this website with Deezer and your account data has been updated.</p>');
 
 					} else {
-
+						
 						$request->session()->flash('flash_type', 'alert-info');
 						$request->session()->flash('flash_message', '<p><b>Welcome ' . $data2["name"] .'!</b> You successfully logged in to this website with Deezer.</p><p>It seems that is it the first time you are connected with Deezer. Click on the following link it you want to save your account data localy: <a href="' . route('auth.deezer.create') . '"">Save localy</a><p>');
 					}
@@ -171,7 +171,7 @@ class AuthDeezerController extends Controller
 		Session::flash('flash_type', 'alert-danger');
 		Session::flash('flash_message', '<p><b>Done!</b> You have been logout from Deezer.</p>');
 
-		Auth::logout();
+		Auth::guard('deezer')->logout();
 
 		return redirect()->route('auth.index');
 	}
@@ -208,7 +208,7 @@ class AuthDeezerController extends Controller
 	}
 
 	private function hasAccessToken($request) {
-		return $request->session()->has('accesstokenDeezer');
+		return ! is_null(Auth::guard('deezer')->token());
 	}
 
 	private function userExist($data) {

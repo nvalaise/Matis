@@ -97,8 +97,15 @@ class DeezerGuard extends SessionGuard
      */
     public function check()
     {
-        return (!is_null($this->token())) 
-            || (!is_null($this->user()));
+        if (!is_null($this->token())) {
+            return true;
+        }
+
+        if (!is_null($this->user())) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -111,14 +118,15 @@ class DeezerGuard extends SessionGuard
         return !$this->check();
     }
 
-    /**
-     * Attempt to authenticate a user using the given credentials.
+        /**
+     * Log the user out of the application.
      *
-     * @param  array  $credentials
-     * @param  bool  $remember
-     * @return bool
+     * @return void
      */
-    public function attempt(array $credentials = [], $remember = false) {
+    public function logout()
+    {
+        $this->session->forget($this->inputKey);
 
+        parent::logout();
     }
 }
