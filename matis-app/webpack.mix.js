@@ -12,5 +12,9 @@ const mix = require('laravel-mix');
  */
 
 mix
+	.js('node_modules/bootstrap/dist/js/bootstrap.min.js', 'public/js');
+
+
+mix
 	.js('resources/js/deezer.js', 'public/js')
 	.sass('resources/sass/app.scss', 'public/css');

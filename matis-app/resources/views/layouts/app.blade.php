@@ -4,8 +4,8 @@
 
     <title>Matis - @yield('title')</title>
 
-    <link rel="stylesheet" type="text/css" href="/css/app.css">
-    <script href="/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
+    <script type="text/javascript" src="{{ mix('js/bootstrap.min.js') }}"></script>
 
 </head>
 <body>

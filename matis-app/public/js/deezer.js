@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -52975,26 +52975,14 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
-/***/ "./resources/sass/app.scss":
-/*!*********************************!*\
-  !*** ./resources/sass/app.scss ***!
-  \*********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 0:
-/*!****************************************************************!*\
-  !*** multi ./resources/js/deezer.js ./resources/sass/app.scss ***!
-  \****************************************************************/
+/***/ 1:
+/*!**************************************!*\
+  !*** multi ./resources/js/deezer.js ***!
+  \**************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/nicolasvalaise/Web/Matis/matis-app/resources/js/deezer.js */"./resources/js/deezer.js");
-module.exports = __webpack_require__(/*! /Users/nicolasvalaise/Web/Matis/matis-app/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /Users/nicolasvalaise/Web/Matis/matis-app/resources/js/deezer.js */"./resources/js/deezer.js");
 
 
 /***/ })
