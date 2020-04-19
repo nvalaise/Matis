@@ -14,7 +14,7 @@
     <div id="app">
         @section("app")
 
-        <div class="container-fluid mt-2">
+        <div class="container-fluid">
             @yield('content')
         </div>
 

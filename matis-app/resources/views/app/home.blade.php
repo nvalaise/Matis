@@ -3,6 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
+<div class="mt-2">	
 	<div class="jumbotron">
 		<h1 class="display-4">Hello, @if(Auth::check()) <i class="text-info"> {{ Auth::user()->name }} </i> @else<i>world</i>@endif !</h1>
 		<p class="lead">Welcome on board with Matis, this beautiful app that aims to give you visibility over the apps you use.</p>
@@ -60,6 +61,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 @endsection
 
 @section('vue')
