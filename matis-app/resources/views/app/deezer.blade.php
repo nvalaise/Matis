@@ -1,4 +1,4 @@
- @extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Deezer')
 
@@ -13,7 +13,7 @@
 		</div>
 		<div class="row">
 			<div class="col-12">
-				<div class="card text-center">
+				<div class="card">
 					<div class="card-header">
 						<ul class="nav nav-tabs card-header-tabs">
 							<li class="nav-item">

@@ -16,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('deezer')->group(function () {
 	
-	Route::get('/playlists', 'Board\BoardDeezerController@playlists')->name('deezer.playlists');
+	//Route::get('/playlists', 'Board\BoardDeezerController@playlists')->name('deezer.playlists');
 });
 

@@ -1940,6 +1940,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1947,11 +1974,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    axios.get(window.location.origin + '/api/deezer/playlists').then(function (response) {
-      return console.log(response.data);
-    }) //.then( response => this.playlists = response.data )
+    var _this = this;
+
+    axios.get(window.location.origin + '/ws/deezer/playlists').then(function (response) {
+      return _this.playlists = response.data;
+    }) //.then( response =>  console.log(response.data) );
     ["catch"](function (error) {
-      console.log(error);
+      console.log(error.message);
     });
   },
   mounted: function mounted() {
@@ -37629,29 +37658,112 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "ul",
-    { staticClass: "list-group" },
-    _vm._l(_vm.playlists.data, function(playlist) {
-      return _c(
-        "li",
-        {
-          key: playlist.id,
-          staticClass:
-            "list-group-item d-flex justify-content-between align-items-center"
-        },
+  return _vm.playlists.error
+    ? _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
         [
-          _vm._v("\n        " + _vm._s(playlist.title) + "\n    "),
-          _c("span", { staticClass: "badge badge-primary badge-pill" }, [
-            _vm._v(_vm._s(playlist.nb_tracks))
-          ])
+          _c("p", [
+            _c("b", [_vm._v("Oups!")]),
+            _vm._v(" " + _vm._s(_vm.playlists.error.message))
+          ]),
+          _vm._v(" "),
+          _vm.playlists.error.code === 300
+            ? _c("p", [
+                _vm._v(" Your session has expired. Refresh your token "),
+                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                  _vm._v("Here")
+                ]),
+                _vm._v(".")
+              ])
+            : _vm._e()
         ]
       )
-    }),
-    0
-  )
+    : _c("div", [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-12" }, [
+            _c(
+              "ul",
+              { staticClass: "list-group" },
+              _vm._l(_vm.playlists.data, function(playlist) {
+                return _c(
+                  "li",
+                  {
+                    key: playlist.id,
+                    staticClass:
+                      "list-group-item d-flex justify-content-between align-items-center"
+                  },
+                  [
+                    _c("img", { attrs: { src: playlist.picture } }),
+                    _vm._v(" "),
+                    _c("span", [
+                      playlist.is_loved_track === true
+                        ? _c(
+                            "svg",
+                            {
+                              staticClass: "text-danger",
+                              attrs: {
+                                id: "i-heart",
+                                xmlns: "http://www.w3.org/2000/svg",
+                                viewBox: "0 0 32 32",
+                                width: "32",
+                                height: "32",
+                                fill: "none",
+                                stroke: "currentcolor",
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16 Z"
+                                }
+                              })
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(
+                        "\n                        \n                        " +
+                          _vm._s(playlist.title) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { staticClass: "badge badge-primary badge-pill" },
+                      [_vm._v(_vm._s(playlist.nb_tracks))]
+                    )
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ])
+      ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-12" }, [
+        _c("p", [
+          _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
+            _vm._v("Save")
+          ])
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

@@ -14,16 +14,20 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
+
     return view('app.home');
 });
 
+// => /auth/...
 Route::prefix('auth')->group(function () {
 
+	// => /auth
 	Route::get('/', function () {
 
 		return view('app.auth');
 	})->name('auth.index');
 
+	// => /auth/deezer/...
 	Route::prefix('deezer')->group(function () {
 
 		Route::get('/login', 'Auth\AuthDeezerController@login')->name('auth.deezer.login');
@@ -41,6 +45,7 @@ Route::get('/deezer/{any?}', function () {
     return view('app.deezer');
 })->where('any', '^(?!api\/)[\/\w\.-]*');
 
+Route::get('/ws/deezer/playlists', 'Board\BoardDeezerController@playlists')->middleware('isDeezer')->name('deezer.playlists');
 
 
 //Auth::routes();
