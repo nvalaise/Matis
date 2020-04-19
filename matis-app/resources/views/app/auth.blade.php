@@ -30,7 +30,7 @@
 									<p class="card-text">Listen your music.</p>
 									<a href="{{ route('auth.deezer.login') }}" class="btn btn-success">Auth</a>
 									@if(Auth::guard('deezer')->check())
-										<a href="{{ route('auth.deezer.create') }}" class="btn btn-primary disable">Save</a>
+										<a href="{{ route('auth.deezer.register') }}" class="btn btn-primary disable">Save</a>
 									@else
 										<a href="#" class="btn btn-secondary">Save</a>
 									@endif

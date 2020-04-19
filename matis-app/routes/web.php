@@ -29,7 +29,7 @@ Route::prefix('auth')->group(function () {
 		Route::get('/login', 'Auth\AuthDeezerController@login')->name('auth.deezer.login');
 		Route::get('/callback', 'Auth\AuthDeezerController@callback')->name('auth.deezer.callback');
 		
-		Route::get('/create', 'Auth\AuthDeezerController@create')->name('auth.deezer.create');
+		Route::get('/register', 'Auth\AuthDeezerController@register')->name('auth.deezer.register');
 
 		Route::get('/logout', 'Auth\AuthDeezerController@logout')->name('auth.deezer.logout');
 	});
