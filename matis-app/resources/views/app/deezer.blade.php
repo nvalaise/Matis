@@ -12,8 +12,15 @@
 							<li class="nav-item">
 								<router-link class="nav-link" :to="{ name: 'home' }">Home</router-link>
 							</li>
+
 							<li class="nav-item">
 								<router-link class="nav-link" :to="{ name: 'playlists' }">Playlists</router-link>
+							</li>
+							<li class="nav-item">
+								<router-link class="nav-link" :to="{ name: 'social' }">Social</router-link>
+							</li>
+							<li class="nav-item">
+								<router-link class="nav-link" :to="{ name: 'history' }">History</router-link>
 							</li>
             				<li class="nav-item ml-auto mr-0">
                					<a class="nav-link" href="/auth">Deezer</a>

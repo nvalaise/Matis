@@ -1899,6 +1899,83 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    formattt: function formattt(seconds) {
+      return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("HH:mm");
+    }
+  },
+  data: function data() {
+    return {
+      history: {}
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get(window.location.origin + '/ws/deezer/history').then(function (response) {
+      return _this.history = response.data;
+    }) //.then( response => { console.log(response.data) })
+    ["catch"](function (error) {
+      console.log(error.message);
+    });
+  },
+  mounted: function mounted() {
+    console.log('Component mounted.');
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerHomeComponent.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Deezer/DeezerHomeComponent.vue?vue&type=script&lang=js& ***!
@@ -2017,6 +2094,80 @@ __webpack_require__.r(__webpack_exports__);
     axios.get(window.location.origin + '/ws/deezer/playlists').then(function (response) {
       return _this.playlists = response.data;
     }) //.then( response =>  console.log(response.data) );
+    ["catch"](function (error) {
+      console.log(error.message);
+    });
+  },
+  mounted: function mounted() {
+    console.log('Component mounted.');
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    formattt: function formattt(seconds) {
+      return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("HH:mm");
+    }
+  },
+  data: function data() {
+    return {
+      followings: {}
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get(window.location.origin + '/ws/deezer/social').then(function (response) {
+      return _this.followings = response.data;
+    }) //.then( response => { console.log(response.data) })
     ["catch"](function (error) {
       console.log(error.message);
     });
@@ -55262,6 +55413,120 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=template&id=04330a3d&":
+/*!********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=template&id=04330a3d& ***!
+  \********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.history.error
+    ? _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [
+          _c("p", [
+            _c("b", [_vm._v("Oups!")]),
+            _vm._v(" " + _vm._s(_vm.history.error.message))
+          ]),
+          _vm._v(" "),
+          _vm.history.error.code === 300
+            ? _c("p", [
+                _vm._v(" Your session has expired. Refresh your token "),
+                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                  _vm._v("Here")
+                ]),
+                _vm._v(".")
+              ])
+            : _vm._e()
+        ]
+      )
+    : _c("div", [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-12" }, [
+            _c(
+              "ul",
+              { staticClass: "list-group" },
+              _vm._l(_vm.history.data, function(track) {
+                return _c(
+                  "li",
+                  {
+                    key: track.id + track.timestamp,
+                    staticClass:
+                      "list-group-item d-flex justify-content-between align-items-center list-group-item-action"
+                  },
+                  [
+                    _c("div", { staticClass: "col-2" }, [
+                      _c("p", [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(track.timestamp) +
+                            "\n                        "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-2" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(track.artist.name) +
+                          " / \n                        " +
+                          _vm._s(track.title) +
+                          "\n                    "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-2" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(track.duration) +
+                          "\n                    "
+                      )
+                    ])
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ])
+      ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-12" }, [
+        _c("p", [
+          _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
+            _vm._v("Save")
+          ]),
+          _vm._v(" This action will save or update your data in "),
+          _c("i", [_vm._v("Matis")]),
+          _vm._v(" database.               \n            ")
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerHomeComponent.vue?vue&type=template&id=6cf7c2cc&":
 /*!*****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Deezer/DeezerHomeComponent.vue?vue&type=template&id=6cf7c2cc& ***!
@@ -55474,6 +55739,109 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h5", { staticClass: "card-title" }, [_vm._v("Data")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=template&id=44cc99cc&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=template&id=44cc99cc& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.followings.error
+    ? _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [
+          _c("p", [
+            _c("b", [_vm._v("Oups!")]),
+            _vm._v(" " + _vm._s(_vm.followings.error.message))
+          ]),
+          _vm._v(" "),
+          _vm.followings.error.code === 300
+            ? _c("p", [
+                _vm._v(" Your session has expired. Refresh your token "),
+                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                  _vm._v("Here")
+                ]),
+                _vm._v(".")
+              ])
+            : _vm._e()
+        ]
+      )
+    : _c("div", [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-12" }, [
+            _c(
+              "ul",
+              { staticClass: "list-group" },
+              _vm._l(_vm.followings.data, function(following) {
+                return _c(
+                  "li",
+                  {
+                    key: following.id,
+                    staticClass:
+                      "list-group-item d-flex justify-content-between align-items-center"
+                  },
+                  [
+                    _c("div", { staticClass: "col-2" }, [
+                      _c("p", [
+                        _c("img", {
+                          staticClass: "rounded",
+                          attrs: { src: following.picture }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-2" }, [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(following.name) +
+                          "\n                    "
+                      )
+                    ])
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ])
+      ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-12" }, [
+        _c("p", [
+          _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
+            _vm._v("Save")
+          ]),
+          _vm._v(" This action will save or update your data in "),
+          _c("i", [_vm._v("Matis")]),
+          _vm._v(" database.               \n            ")
+        ])
+      ])
     ])
   }
 ]
@@ -70617,6 +70985,75 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
+/***/ "./resources/js/components/Deezer/DeezerHistoryComponent.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/Deezer/DeezerHistoryComponent.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DeezerHistoryComponent_vue_vue_type_template_id_04330a3d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DeezerHistoryComponent.vue?vue&type=template&id=04330a3d& */ "./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=template&id=04330a3d&");
+/* harmony import */ var _DeezerHistoryComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DeezerHistoryComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DeezerHistoryComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DeezerHistoryComponent_vue_vue_type_template_id_04330a3d___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DeezerHistoryComponent_vue_vue_type_template_id_04330a3d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Deezer/DeezerHistoryComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerHistoryComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./DeezerHistoryComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerHistoryComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=template&id=04330a3d&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=template&id=04330a3d& ***!
+  \**************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerHistoryComponent_vue_vue_type_template_id_04330a3d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./DeezerHistoryComponent.vue?vue&type=template&id=04330a3d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerHistoryComponent.vue?vue&type=template&id=04330a3d&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerHistoryComponent_vue_vue_type_template_id_04330a3d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerHistoryComponent_vue_vue_type_template_id_04330a3d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Deezer/DeezerHomeComponent.vue":
 /*!****************************************************************!*\
   !*** ./resources/js/components/Deezer/DeezerHomeComponent.vue ***!
@@ -70755,6 +71192,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Deezer/DeezerSocialComponent.vue":
+/*!******************************************************************!*\
+  !*** ./resources/js/components/Deezer/DeezerSocialComponent.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DeezerSocialComponent_vue_vue_type_template_id_44cc99cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DeezerSocialComponent.vue?vue&type=template&id=44cc99cc& */ "./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=template&id=44cc99cc&");
+/* harmony import */ var _DeezerSocialComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DeezerSocialComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DeezerSocialComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DeezerSocialComponent_vue_vue_type_template_id_44cc99cc___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DeezerSocialComponent_vue_vue_type_template_id_44cc99cc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Deezer/DeezerSocialComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerSocialComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./DeezerSocialComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerSocialComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=template&id=44cc99cc&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=template&id=44cc99cc& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerSocialComponent_vue_vue_type_template_id_44cc99cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./DeezerSocialComponent.vue?vue&type=template&id=44cc99cc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Deezer/DeezerSocialComponent.vue?vue&type=template&id=44cc99cc&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerSocialComponent_vue_vue_type_template_id_44cc99cc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DeezerSocialComponent_vue_vue_type_template_id_44cc99cc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/deezer.js":
 /*!********************************!*\
   !*** ./resources/js/deezer.js ***!
@@ -70769,6 +71275,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _components_Deezer_DeezerHomeComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Deezer/DeezerHomeComponent.vue */ "./resources/js/components/Deezer/DeezerHomeComponent.vue");
 /* harmony import */ var _components_Deezer_DeezerPlaylistsComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Deezer/DeezerPlaylistsComponent.vue */ "./resources/js/components/Deezer/DeezerPlaylistsComponent.vue");
+/* harmony import */ var _components_Deezer_DeezerHistoryComponent_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Deezer/DeezerHistoryComponent.vue */ "./resources/js/components/Deezer/DeezerHistoryComponent.vue");
+/* harmony import */ var _components_Deezer_DeezerSocialComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Deezer/DeezerSocialComponent.vue */ "./resources/js/components/Deezer/DeezerSocialComponent.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -70781,6 +71289,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
 
+
+
 var routes = [{
   path: '/deezer',
   name: 'home',
@@ -70789,6 +71299,14 @@ var routes = [{
   path: '/deezer/playlists',
   name: 'playlists',
   component: _components_Deezer_DeezerPlaylistsComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+}, {
+  path: '/deezer/social',
+  name: 'social',
+  component: _components_Deezer_DeezerSocialComponent_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+}, {
+  path: '/deezer/history',
+  name: 'history',
+  component: _components_Deezer_DeezerHistoryComponent_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: routes,

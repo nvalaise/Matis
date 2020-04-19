@@ -40,12 +40,17 @@ Route::prefix('auth')->group(function () {
 
 });
 
+Route::group(['prefix' => 'ws/deezer',  'middleware' => 'isDeezer'], function() {
+	Route::get('/playlists', 'Board\BoardDeezerController@playlists')->name('deezer.playlists');
+	Route::get('/history', 'Board\BoardDeezerController@history')->name('deezer.history');
+	Route::get('/social', 'Board\BoardDeezerController@social')->name('deezer.social');
+});
+
 // Route to handle page reload in Vue except for api routes
 Route::get('/deezer/{any?}', function () {
     return view('app.deezer');
 })->where('any', '^(?!api\/)[\/\w\.-]*');
 
-Route::get('/ws/deezer/playlists', 'Board\BoardDeezerController@playlists')->middleware('isDeezer')->name('deezer.playlists');
 
 
 //Auth::routes();

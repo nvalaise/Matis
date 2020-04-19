@@ -14,6 +14,8 @@ Vue.use(VueRouter);
 
 import DeezerHome from './components/Deezer/DeezerHomeComponent.vue';
 import DeezerPlaylist from './components/Deezer/DeezerPlaylistsComponent.vue';
+import DeezerHistory from './components/Deezer/DeezerHistoryComponent.vue';
+import DeezerSocial from './components/Deezer/DeezerSocialComponent.vue';
 
 
 const routes = [
@@ -22,6 +24,12 @@ const routes = [
 	},
 	{
 		path: '/deezer/playlists', name: 'playlists', component: DeezerPlaylist
+	},
+	{
+		path: '/deezer/social', name: 'social', component: DeezerSocial
+	},
+	{
+		path: '/deezer/history', name: 'history', component: DeezerHistory
 	}
 ];
 

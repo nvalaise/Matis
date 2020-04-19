@@ -30,6 +30,36 @@ class BoardDeezerController extends Controller
 		}
 	}
 
+	public function history() {
+
+		if ($this->guard()->check()) {
+
+			$baseURL = "https://api.deezer.com/user/me/history";
+			$playlistsURL = $baseURL . $this->getTokenAsParameter();
+
+			return Http::get($playlistsURL)->json();
+		} else {
+			return response()->json(
+				['message' => 'Access token not found'], 
+				400);
+		}
+	}
+
+	public function social() {
+
+		if ($this->guard()->check()) {
+
+			$baseURL = "https://api.deezer.com/user/me/followings";
+			$playlistsURL = $baseURL . $this->getTokenAsParameter();
+
+			return Http::get($playlistsURL)->json();
+		} else {
+			return response()->json(
+				['message' => 'Access token not found'], 
+				400);
+		}
+	}
+
 	private function getToken() {
 		return $this->guard()->token();
 	}
