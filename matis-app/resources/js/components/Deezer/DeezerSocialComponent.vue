@@ -1,9 +1,25 @@
 <template>
-    <div v-if="followings.error" class="alert alert-danger" role="alert">
-        <p><b>Oups!</b> {{ followings.error.message }}</p>
-        <p v-if="followings.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">Here</a>.</p>
+    <div v-if="error != null" class="alert alert-danger" role="alert">
+        <p>         
+            <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+            </svg>
+            <b>Oups!</b> {{ error.message }}
+        </p>
+        <p v-if="error.code == 403">
+            You can get connected <a href="/auth/deezer/login">ere</a>.
+        </p>
     </div>
-    <div v-else>
+    <div v-else-if="followings.error != null" class="alert alert-danger" role="alert">
+        <p>
+            <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+            </svg>
+            <b>Oups!</b> {{ followings.error.message }}
+        </p>
+        <p v-if="followings.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
+    </div>
+    <div v-else-if="following != null">
         <div class="row">
             <div class="col-12">
                 <p>                
@@ -14,7 +30,7 @@
         <div class="row">            
             <div class="col-12">            
                 <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                    <li class="list-group-item d-flex justify-content-between"
                         v-for="following in followings.data"
                         v-bind:key="following.id">
 
@@ -33,6 +49,9 @@
             </div>
         </div>
     </div>
+    <div v-else class="alert alert-danger" role="alert">
+        <p><b>Oups!</b> Something bad happened...</p>
+    </div>
 </template>
 
 <script>
@@ -45,15 +64,16 @@
 
         data() {
             return {
-                followings: {}
+                followings: null,
+                error: null
             }
         },
 
         created() {
             axios.get(window.location.origin + '/ws/deezer/social')
                 .then( response => this.followings = response.data )
-                //.then( response => { console.log(response.data) })
-                .catch( error => { console.log(error.message) });
+                .catch( error => this.error = error.response.data );
+
         },
 
         mounted() {

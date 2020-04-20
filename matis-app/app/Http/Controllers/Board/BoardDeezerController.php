@@ -15,6 +15,18 @@ class BoardDeezerController extends Controller
 	    return Auth::guard('deezer');
 	}
 
+	public function account() {
+
+		if ($this->guard()->check()) {
+
+			return $this->guard()->deezer();
+		} else {
+			return response()->json(
+				['message' => 'Access token not found'], 
+				400);
+		}
+	}
+
 	public function playlists() {
 
 		if ($this->guard()->check()) {

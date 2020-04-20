@@ -21,7 +21,7 @@ class CheckIsDeezer
         }
 
         else {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['code' => 403, 'message' => 'Your are not logged with your Deezer account.'], 403);
         }
     }
 }

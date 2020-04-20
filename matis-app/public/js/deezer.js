@@ -1948,6 +1948,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     formattt: function formattt(seconds) {
@@ -1956,7 +1979,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      history: {}
+      history: null,
+      error: null
     };
   },
   created: function created() {
@@ -1964,9 +1988,8 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get(window.location.origin + '/ws/deezer/history').then(function (response) {
       return _this.history = response.data;
-    }) //.then( response => { console.log(response.data) })
-    ["catch"](function (error) {
-      console.log(error.message);
+    })["catch"](function (error) {
+      return _this.error = error.response.data;
     });
   },
   mounted: function mounted() {
@@ -1989,9 +2012,58 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Component mounted.');
+  },
+  data: function data() {
+    return {
+      account: null,
+      error: null
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get(window.location.origin + '/ws/deezer/account').then(function (response) {
+      return _this.account = response.data;
+    })["catch"](function (error) {
+      return _this.error = error.response.data;
+    });
   }
 });
 
@@ -2077,6 +2149,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     formattt: function formattt(seconds) {
@@ -2085,7 +2176,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      playlists: {}
+      playlists: null,
+      error: null
     };
   },
   created: function created() {
@@ -2093,9 +2185,8 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get(window.location.origin + '/ws/deezer/playlists').then(function (response) {
       return _this.playlists = response.data;
-    }) //.then( response =>  console.log(response.data) );
-    ["catch"](function (error) {
-      console.log(error.message);
+    })["catch"](function (error) {
+      return _this.error = error.response.data;
     });
   },
   mounted: function mounted() {
@@ -2151,6 +2242,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     formattt: function formattt(seconds) {
@@ -2159,7 +2269,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      followings: {}
+      followings: null,
+      error: null
     };
   },
   created: function created() {
@@ -2167,9 +2278,8 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get(window.location.origin + '/ws/deezer/social').then(function (response) {
       return _this.followings = response.data;
-    }) //.then( response => { console.log(response.data) })
-    ["catch"](function (error) {
-      console.log(error.message);
+    })["catch"](function (error) {
+      return _this.error = error.response.data;
     });
   },
   mounted: function mounted() {
@@ -55428,7 +55538,95 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.history.error
+  return _vm.error != null
+    ? _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [
+          _c("p", [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  id: "i-msg",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 32 32",
+                  width: "32",
+                  height: "32",
+                  fill: "none",
+                  stroke: "currentcolor",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                  "stroke-width": "2"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("b", [_vm._v("Oups!")]),
+            _vm._v(" " + _vm._s(_vm.error.message) + "\n    ")
+          ]),
+          _vm._v(" "),
+          _vm.error.code == 403
+            ? _c("p", [
+                _vm._v("\n        You can get connected "),
+                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                  _vm._v("here")
+                ]),
+                _vm._v(".\n    ")
+              ])
+            : _vm._e()
+        ]
+      )
+    : _vm.history.error != null
+    ? _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [
+          _c("p", [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  id: "i-msg",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 32 32",
+                  width: "32",
+                  height: "32",
+                  fill: "none",
+                  stroke: "currentcolor",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                  "stroke-width": "2"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("b", [_vm._v("Oups!")]),
+            _vm._v(" " + _vm._s(_vm.history.error.message) + "\n    ")
+          ]),
+          _vm._v(" "),
+          _vm.history.error.code === 300
+            ? _c("p", [
+                _vm._v(" Your session has expired. Refresh your token "),
+                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                  _vm._v("here")
+                ]),
+                _vm._v(".")
+              ])
+            : _vm._e()
+        ]
+      )
+    : _vm.history.error
     ? _c(
         "div",
         { staticClass: "alert alert-danger", attrs: { role: "alert" } },
@@ -55449,7 +55647,8 @@ var render = function() {
             : _vm._e()
         ]
       )
-    : _c("div", [
+    : _vm.history != null
+    ? _c("div", [
         _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
@@ -55463,10 +55662,10 @@ var render = function() {
                   {
                     key: track.id + track.timestamp,
                     staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center list-group-item-action"
+                      "list-group-item d-flex justify-content-between list-group-item-action"
                   },
                   [
-                    _c("div", { staticClass: "col-2" }, [
+                    _c("div", { staticClass: "col-8" }, [
                       _c("p", [
                         _vm._v(
                           "\n                            " +
@@ -55501,6 +55700,11 @@ var render = function() {
           ])
         ])
       ])
+    : _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [_vm._m(1)]
+      )
 }
 var staticRenderFns = [
   function() {
@@ -55518,6 +55722,15 @@ var staticRenderFns = [
           _vm._v(" database.               \n            ")
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("b", [_vm._v("Oups!")]),
+      _vm._v(" Something bad happened...")
     ])
   }
 ]
@@ -55542,9 +55755,137 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h2", [_vm._v("Hello Deezer!")])
+  return _vm.error != null
+    ? _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [
+          _c("p", [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  id: "i-msg",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 32 32",
+                  width: "32",
+                  height: "32",
+                  fill: "none",
+                  stroke: "currentcolor",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                  "stroke-width": "2"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("b", [_vm._v("Oups!")]),
+            _vm._v(" " + _vm._s(_vm.error.message) + "\n\t\t")
+          ]),
+          _vm._v(" "),
+          _vm.error.code == 403
+            ? _c("p", [
+                _vm._v("\n        \tYou can get connected "),
+                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                  _vm._v("here")
+                ]),
+                _vm._v(".\n        ")
+              ])
+            : _vm._e()
+        ]
+      )
+    : _vm.account.error != null
+    ? _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [
+          _c("p", [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  id: "i-msg",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 32 32",
+                  width: "32",
+                  height: "32",
+                  fill: "none",
+                  stroke: "currentcolor",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                  "stroke-width": "2"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("b", [_vm._v("Oups!")]),
+            _vm._v(" " + _vm._s(_vm.account.error.message) + "\n\t\t")
+          ]),
+          _vm._v(" "),
+          _vm.account.error.code === 300
+            ? _c("p", [
+                _vm._v(" Your session has expired. Refresh your token "),
+                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                  _vm._v("here")
+                ]),
+                _vm._v(".")
+              ])
+            : _vm._e()
+        ]
+      )
+    : _vm.account != null
+    ? _c("div", [
+        _c("p", [_c("img", { attrs: { src: _vm.account.picture } })]),
+        _vm._v(" "),
+        _c("p", [_vm._v("#" + _vm._s(_vm.account.deezerId))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.account.email))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.account.firstname))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.account.lastname))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.account.status))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.account.inscriptionDate))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.account.profileLink))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(_vm.account.accessToken))]),
+        _vm._v(" "),
+        _c("p", [
+          _vm._v(
+            _vm._s(_vm.account.country) + " (" + _vm._s(_vm.account.lang) + ")"
+          )
+        ])
+      ])
+    : _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [_vm._m(0)]
+      )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("b", [_vm._v("Oups!")]),
+      _vm._v(" Something bad happened...")
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -55566,28 +55907,96 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.playlists.error
+  return _vm.error != null
     ? _c(
         "div",
         { staticClass: "alert alert-danger", attrs: { role: "alert" } },
         [
           _c("p", [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  id: "i-msg",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 32 32",
+                  width: "32",
+                  height: "32",
+                  fill: "none",
+                  stroke: "currentcolor",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                  "stroke-width": "2"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                })
+              ]
+            ),
+            _vm._v(" "),
             _c("b", [_vm._v("Oups!")]),
-            _vm._v(" " + _vm._s(_vm.playlists.error.message))
+            _vm._v(" " + _vm._s(_vm.error.message) + "\n    ")
+          ]),
+          _vm._v(" "),
+          _vm.error.code == 403
+            ? _c("p", [
+                _vm._v("\n        You can get connected "),
+                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                  _vm._v("here")
+                ]),
+                _vm._v(".\n    ")
+              ])
+            : _vm._e()
+        ]
+      )
+    : _vm.playlists.error != null
+    ? _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [
+          _c("p", [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  id: "i-msg",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 32 32",
+                  width: "32",
+                  height: "32",
+                  fill: "none",
+                  stroke: "currentcolor",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                  "stroke-width": "2"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("b", [_vm._v("Oups!")]),
+            _vm._v(" " + _vm._s(_vm.playlists.error.message) + "\n    ")
           ]),
           _vm._v(" "),
           _vm.playlists.error.code === 300
             ? _c("p", [
                 _vm._v(" Your session has expired. Refresh your token "),
                 _c("a", { attrs: { href: "/auth/deezer/login" } }, [
-                  _vm._v("Here")
+                  _vm._v("here")
                 ]),
                 _vm._v(".")
               ])
             : _vm._e()
         ]
       )
-    : _c("div", [
+    : _vm.playlists.data != null
+    ? _c("div", [
         _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
@@ -55601,7 +56010,7 @@ var render = function() {
                   {
                     key: playlist.id,
                     staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center"
+                      "list-group-item d-flex justify-content-between"
                   },
                   [
                     _c("div", { staticClass: "col-2" }, [
@@ -55714,6 +56123,11 @@ var render = function() {
           ])
         ])
       ])
+    : _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [_vm._m(2)]
+      )
 }
 var staticRenderFns = [
   function() {
@@ -55740,6 +56154,15 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("h5", { staticClass: "card-title" }, [_vm._v("Data")])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("b", [_vm._v("Oups!")]),
+      _vm._v(" Something bad happened...")
+    ])
   }
 ]
 render._withStripped = true
@@ -55763,28 +56186,96 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.followings.error
+  return _vm.error != null
     ? _c(
         "div",
         { staticClass: "alert alert-danger", attrs: { role: "alert" } },
         [
           _c("p", [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  id: "i-msg",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 32 32",
+                  width: "32",
+                  height: "32",
+                  fill: "none",
+                  stroke: "currentcolor",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                  "stroke-width": "2"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                })
+              ]
+            ),
+            _vm._v(" "),
             _c("b", [_vm._v("Oups!")]),
-            _vm._v(" " + _vm._s(_vm.followings.error.message))
+            _vm._v(" " + _vm._s(_vm.error.message) + "\n    ")
+          ]),
+          _vm._v(" "),
+          _vm.error.code == 403
+            ? _c("p", [
+                _vm._v("\n        You can get connected "),
+                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                  _vm._v("ere")
+                ]),
+                _vm._v(".\n    ")
+              ])
+            : _vm._e()
+        ]
+      )
+    : _vm.followings.error != null
+    ? _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [
+          _c("p", [
+            _c(
+              "svg",
+              {
+                attrs: {
+                  id: "i-msg",
+                  xmlns: "http://www.w3.org/2000/svg",
+                  viewBox: "0 0 32 32",
+                  width: "32",
+                  height: "32",
+                  fill: "none",
+                  stroke: "currentcolor",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                  "stroke-width": "2"
+                }
+              },
+              [
+                _c("path", {
+                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("b", [_vm._v("Oups!")]),
+            _vm._v(" " + _vm._s(_vm.followings.error.message) + "\n    ")
           ]),
           _vm._v(" "),
           _vm.followings.error.code === 300
             ? _c("p", [
                 _vm._v(" Your session has expired. Refresh your token "),
                 _c("a", { attrs: { href: "/auth/deezer/login" } }, [
-                  _vm._v("Here")
+                  _vm._v("here")
                 ]),
                 _vm._v(".")
               ])
             : _vm._e()
         ]
       )
-    : _c("div", [
+    : _vm.following != null
+    ? _c("div", [
         _vm._m(0),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
@@ -55798,7 +56289,7 @@ var render = function() {
                   {
                     key: following.id,
                     staticClass:
-                      "list-group-item d-flex justify-content-between align-items-center"
+                      "list-group-item d-flex justify-content-between"
                   },
                   [
                     _c("div", { staticClass: "col-2" }, [
@@ -55825,6 +56316,11 @@ var render = function() {
           ])
         ])
       ])
+    : _c(
+        "div",
+        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+        [_vm._m(1)]
+      )
 }
 var staticRenderFns = [
   function() {
@@ -55842,6 +56338,15 @@ var staticRenderFns = [
           _vm._v(" database.               \n            ")
         ])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("b", [_vm._v("Oups!")]),
+      _vm._v(" Something bad happened...")
     ])
   }
 ]
