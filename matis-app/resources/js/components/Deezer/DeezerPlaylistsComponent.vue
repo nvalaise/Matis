@@ -57,6 +57,7 @@
                         <h4>Loading...</h4>
                     </div>
                     <div v-else-if="playlistsContent != null">
+                        <p><i>{{ playlistsContent.total }} tracks</i></p>
                         <ul v-if="playlistsContent.data.length > 0" id="playlist-content" class="collection">
                             <li class="collection-item" 
                                 v-for="track in playlistsContent.data"
@@ -85,8 +86,7 @@
                 var min = calcul.format("mm");
                 var sec = calcul.format("ss");
 
-                return 
-                    hours + " h " + min + " min " + sec;
+                return (hours > 0 ? hours + " h " : "") + min + " min " + sec;
             },
             timeTrack: function (seconds) {
                 return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");

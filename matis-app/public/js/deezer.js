@@ -2156,6 +2156,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     timePlaylist: function timePlaylist(seconds) {
@@ -2163,8 +2164,7 @@ __webpack_require__.r(__webpack_exports__);
       var hours = calcul.format("H");
       var min = calcul.format("mm");
       var sec = calcul.format("ss");
-      return;
-      hours + " h " + min + " min " + sec;
+      return (hours > 0 ? hours + " h " : "") + min + " min " + sec;
     },
     timeTrack: function timeTrack(seconds) {
       return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
@@ -63957,6 +63957,14 @@ var render = function() {
                       )
                     : _vm.playlistsContent != null
                     ? _c("div", [
+                        _c("p", [
+                          _c("i", [
+                            _vm._v(
+                              _vm._s(_vm.playlistsContent.total) + " tracks"
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
                         _vm.playlistsContent.data.length > 0
                           ? _c(
                               "ul",
