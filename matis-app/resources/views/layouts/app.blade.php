@@ -5,20 +5,20 @@
     <title>Matis - @yield('title')</title>
 
     <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
-    <script type="text/javascript" src="{{ mix('js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ mix('css/materialize.css') }}">
+    <script type="text/javascript" src="{{ mix('js/materialize.min.js') }}"></script>
 
 </head>
 <body>
-    @include('layouts.navbar')
 
     <div id="app">
-        @section("app")
 
-        <div class="container-fluid">
+        @include('layouts.navbar')
+
+        <div id="content" class="container-fluid">
             @yield('content')
         </div>
 
-        @show
     </div>
 
     @yield('vue')

@@ -11,7 +11,6 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
 
-
 import DeezerHome from './components/Deezer/DeezerHomeComponent.vue';
 import DeezerPlaylist from './components/Deezer/DeezerPlaylistsComponent.vue';
 import DeezerHistory from './components/Deezer/DeezerHistoryComponent.vue';
@@ -36,6 +35,5 @@ const routes = [
 const router = new VueRouter({routes, mode: 'history'});
 
 const app = new Vue({
-    el: '#app',
-    router: router
-});
+  router
+}).$mount('#app')

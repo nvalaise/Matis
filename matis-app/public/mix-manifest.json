@@ -1,5 +1,6 @@
 {
-    "/js/bootstrap.min.js": "/js/bootstrap.min.js",
+    "/js/deezer.js": "/js/deezer.js",
     "/css/app.css": "/css/app.css",
-    "/js/deezer.js": "/js/deezer.js"
+    "/css/materialize.css": "/css/materialize.css",
+    "/js/materialize.min.js": "/js/materialize.min.js"
 }

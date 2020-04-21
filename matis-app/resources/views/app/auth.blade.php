@@ -2,7 +2,7 @@
 
 @section('title', 'Home')
 
-@section('app')
+@section('content')
 <div class="container mt-2">
 	
 	@if ( Session::has('flash_message') )
@@ -63,4 +63,4 @@
 		</div>
 	</div>
 </div>
-@stop
+@endsection
