@@ -2156,37 +2156,59 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
-    formattt: function formattt(seconds) {
-      return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("HH:mm");
+    timePlaylist: function timePlaylist(seconds) {
+      var calcul = moment("1900-01-01 00:00:00").add(seconds, 'seconds');
+      var hours = calcul.format("H");
+      var min = calcul.format("mm");
+      var sec = calcul.format("ss");
+      return;
+      hours + " h " + min + " min " + sec;
+    },
+    timeTrack: function timeTrack(seconds) {
+      return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
+    },
+    getPlaylistContent: function getPlaylistContent(id) {
+      var _this = this;
+
+      this.loadingPlaylist = true;
+      axios.get("/ws/deezer/playlists/" + id).then(function (response) {
+        if (response.status === 200) {
+          _this.loadingPlaylist = false;
+          console.log(response.data);
+          _this.playlistsContent = response.data;
+        }
+      }, function (error) {
+        _this.loadingPlaylist = false;
+        console.log(error);
+      });
     }
   },
   data: function data() {
     return {
       playlists: null,
-      error: null
+      playlistsSelected: null,
+      playlistsContent: null,
+      error: null,
+      loadingPage: false,
+      loadingPlaylist: false
     };
   },
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
+    this.loadingPage = true;
     axios.get(window.location.origin + '/ws/deezer/playlists').then(function (response) {
-      return _this.playlists = response.data;
-    })["catch"](function (error) {
-      return _this.error = error.response.data;
+      if (response.status === 200) {
+        _this2.loadingPage = false;
+        _this2.playlists = response.data;
+        console.log(response.data);
+      }
+    }, function (error) {
+      _this2.loadingPage = false;
+      _this2.error = error.response.data;
+      console.log(error);
     });
   },
   mounted: function mounted() {
@@ -63755,7 +63777,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.error != null
+  return _vm.loadingPage
+    ? _c(
+        "div",
+        { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+        [_c("h4", [_vm._v("Loading...")])]
+      )
+    : _vm.error != null
     ? _c(
         "div",
         { staticClass: "alert alert-danger", attrs: { role: "alert" } },
@@ -63799,182 +63827,185 @@ var render = function() {
             : _vm._e()
         ]
       )
-    : _vm.playlists != null && _vm.playlists.error != null
-    ? _c(
-        "div",
-        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-        [
-          _c("p", [
-            _c(
-              "svg",
-              {
-                attrs: {
-                  id: "i-msg",
-                  xmlns: "http://www.w3.org/2000/svg",
-                  viewBox: "0 0 32 32",
-                  width: "32",
-                  height: "32",
-                  fill: "none",
-                  stroke: "currentcolor",
-                  "stroke-linecap": "round",
-                  "stroke-linejoin": "round",
-                  "stroke-width": "2"
-                }
-              },
-              [
-                _c("path", {
-                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
-                })
-              ]
-            ),
-            _vm._v(" "),
-            _c("b", [_vm._v("Oups!")]),
-            _vm._v(" " + _vm._s(_vm.playlists.error.message) + "\n    ")
-          ]),
-          _vm._v(" "),
-          _vm.playlists.error.code === 300
-            ? _c("p", [
-                _vm._v(" Your session has expired. Refresh your token "),
-                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
-                  _vm._v("here")
-                ]),
-                _vm._v(".")
-              ])
-            : _vm._e()
-        ]
-      )
-    : _vm.playlists.data != null
+    : _vm.playlists != null
     ? _c("div", [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-12" }, [
-            _c(
-              "ul",
-              { staticClass: "list-group" },
-              _vm._l(_vm.playlists.data, function(playlist) {
-                return _c(
-                  "li",
-                  {
-                    key: playlist.id,
-                    staticClass:
-                      "list-group-item d-flex justify-content-between"
-                  },
-                  [
-                    _c("div", { staticClass: "col-2" }, [
-                      _c("p", [
-                        _c("img", {
-                          staticClass: "rounded",
-                          attrs: { src: playlist.picture }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-2" }, [
-                      _c("span", [
-                        playlist.is_loved_track === true
-                          ? _c(
-                              "svg",
-                              {
-                                staticClass: "text-danger",
-                                attrs: {
-                                  id: "i-heart",
-                                  xmlns: "http://www.w3.org/2000/svg",
-                                  viewBox: "0 0 32 32",
-                                  width: "32",
-                                  height: "32",
-                                  fill: "none",
-                                  stroke: "currentcolor",
-                                  "stroke-linecap": "round",
-                                  "stroke-linejoin": "round",
-                                  "stroke-width": "2"
-                                }
-                              },
-                              [
-                                _c("path", {
-                                  attrs: {
-                                    d:
-                                      "M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16 Z"
-                                  }
-                                })
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(
-                          "\n                        \n                        " +
-                            _vm._s(playlist.title) +
-                            "\n                    "
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-8" }, [
-                      _c("div", { staticClass: "card" }, [
-                        _vm._m(1, true),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "card-body" }, [
-                          _c("div", { staticClass: "col-6" }, [
-                            _c("p", [
-                              _c(
-                                "span",
-                                {
-                                  staticClass: "badge badge-primary badge-pill"
-                                },
-                                [_vm._v(_vm._s(playlist.nb_tracks) + " tracks")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("p", [
-                              _c(
-                                "span",
-                                {
-                                  staticClass: "badge badge-primary badge-pill"
-                                },
-                                [_vm._v(_vm._s(playlist.fans) + " fans")]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("p", [
-                              _vm._v(
-                                "\n                                        " +
-                                  _vm._s(_vm.formattt(playlist.duration)) +
-                                  "\n                                    "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("p", [
-                              _vm._v(
-                                "\n                                        " +
-                                  _vm._s(playlist.creator.name) +
-                                  "\n                                    "
-                              )
-                            ])
+        _vm.playlists.error != null
+          ? _c(
+              "div",
+              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+              [
+                _c("p", [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        id: "i-msg",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        viewBox: "0 0 32 32",
+                        width: "32",
+                        height: "32",
+                        fill: "none",
+                        stroke: "currentcolor",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-width": "2"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("b", [_vm._v("Oups!")]),
+                  _vm._v(
+                    " " + _vm._s(_vm.playlists.error.message) + "\n        "
+                  )
+                ]),
+                _vm._v(" "),
+                _vm.playlists.error.code === 300
+                  ? _c("p", [
+                      _vm._v(" Your session has expired. Refresh your token "),
+                      _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                        _vm._v("here")
+                      ]),
+                      _vm._v(".")
+                    ])
+                  : _vm._e()
+              ]
+            )
+          : _vm.playlists.data != null
+          ? _c("div", [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-5" }, [
+                  _c(
+                    "ul",
+                    { staticClass: "collection" },
+                    _vm._l(_vm.playlists.data, function(playlist) {
+                      return _c(
+                        "li",
+                        {
+                          key: playlist.id,
+                          staticClass: "collection-item avatar"
+                        },
+                        [
+                          _c("img", {
+                            staticClass: "circle",
+                            attrs: {
+                              src: playlist.picture,
+                              alt: "picture playlist"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "title" }, [
+                            _vm._v(_vm._s(playlist.title))
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "col-6" }, [
-                            _c("p", [
-                              _vm._v(
-                                "\n                                        " +
-                                  _vm._s(playlist.description) +
-                                  "\n                                    "
-                              )
-                            ])
-                          ])
-                        ])
+                          _c("p", [
+                            _vm._v(_vm._s(playlist.nb_tracks) + " tracks"),
+                            _c("br"),
+                            _vm._v(
+                              "\n                        Duration: " +
+                                _vm._s(_vm.timePlaylist(playlist.duration)) +
+                                "\n                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "secondary-content btn waves-light",
+                              attrs: { name: "action" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.getPlaylistContent(playlist.id)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v("See\n                            "),
+                              _c("i", { staticClass: "material-icons right" }, [
+                                _vm._v("send")
+                              ])
+                            ]
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-7" }, [
+                  _c("h3", { staticClass: "text-right" }, [
+                    _vm._v("Playlist content")
+                  ]),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  _vm.loadingPlaylist
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "alert alert-warning",
+                          attrs: { role: "alert" }
+                        },
+                        [_c("h4", [_vm._v("Loading...")])]
+                      )
+                    : _vm.playlistsContent != null
+                    ? _c("div", [
+                        _vm.playlistsContent.data.length > 0
+                          ? _c(
+                              "ul",
+                              {
+                                staticClass: "collection",
+                                attrs: { id: "playlist-content" }
+                              },
+                              _vm._l(_vm.playlistsContent.data, function(
+                                track
+                              ) {
+                                return _c(
+                                  "li",
+                                  {
+                                    key: track.id,
+                                    staticClass: "collection-item"
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                            " +
+                                        _vm._s(track.title) +
+                                        " | "
+                                    ),
+                                    _c(
+                                      "a",
+                                      { attrs: { href: track.artist.link } },
+                                      [_vm._v(_vm._s(track.artist.name))]
+                                    ),
+                                    _vm._v(
+                                      " | " +
+                                        _vm._s(_vm.timeTrack(track.duration)) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              }),
+                              0
+                            )
+                          : _vm._e()
                       ])
-                    ])
-                  ]
-                )
-              }),
-              0
-            )
-          ])
-        ])
+                    : _vm._e()
+                ])
+              ])
+            ])
+          : _vm._e()
       ])
     : _c(
         "div",
         { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-        [_vm._m(2)]
+        [_vm._m(1)]
       )
 }
 var staticRenderFns = [
@@ -63990,17 +64021,9 @@ var staticRenderFns = [
           ]),
           _vm._v(" This action will save or update your data in "),
           _c("i", [_vm._v("Matis")]),
-          _vm._v(" database.               \n            ")
+          _vm._v(" database.               \n                ")
         ])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h5", { staticClass: "card-title" }, [_vm._v("Data")])
     ])
   },
   function() {

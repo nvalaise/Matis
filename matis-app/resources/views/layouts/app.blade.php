@@ -7,7 +7,11 @@
     <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ mix('css/materialize.css') }}">
     <script type="text/javascript" src="{{ mix('js/materialize.min.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('js/bootstrap.min.js') }}"></script>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    
 </head>
 <body>
 

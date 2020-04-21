@@ -16,5 +16,6 @@ mix
 	.sass('resources/sass/app.scss', 'public/css');
 
 mix
+ 	.js('node_modules/bootstrap/dist/js/bootstrap.min.js', 'public/js')
 	.js('node_modules/materialize-css/dist/js/materialize.min.js', 'public/js')
 	.sass('node_modules/materialize-css/sass/materialize.scss', 'public/css');

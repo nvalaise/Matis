@@ -42,6 +42,23 @@ class BoardDeezerController extends Controller
 		}
 	}
 
+	public function playlist($id) {
+
+		if ($this->guard()->check()) {
+
+			$baseURL = "https://api.deezer.com/playlist/" . $id . "/tracks";
+			$playlistsURL = $baseURL . $this->getTokenAsParameter();
+
+			return Http::get($playlistsURL)->json();
+		} else {
+			return response()->json(
+				['message' => 'Access token not found'], 
+				400);
+		}
+	}
+
+
+
 	public function history() {
 
 		if ($this->guard()->check()) {

@@ -1,3 +1,9 @@
+<ul id="dropdown1" class="dropdown-content">
+    <li><a href="#!">one</a></li>
+    <li><a href="#!">two</a></li>
+    <li class="divider"></li>
+    <li><a href="#!">three</a></li>
+</ul>
 <nav class="nav-extended" id="navbar">
     <div class="nav-wrapper">
         <a href="/" class="brand-logo">Matis</a>
@@ -11,8 +17,8 @@
             <li><a href="/auth">Login</a></li>
             @endguest
 
-            <li><a href="badges.html">Components</a></li>
-            <li><a href="collapsible.html">JavaScript</a></li>
+            <li><a href="#">Applications</a></li>
+            <li><a href="#">Terms</a></li>
         </ul>
     </div>
     

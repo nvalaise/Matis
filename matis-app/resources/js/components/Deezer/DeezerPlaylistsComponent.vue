@@ -1,5 +1,8 @@
 <template>
-    <div v-if="error != null" class="alert alert-danger" role="alert">
+    <div v-if="loadingPage"class="alert alert-warning" role="alert">
+        <h4>Loading...</h4>
+    </div>
+    <div v-else-if="error != null" class="alert alert-danger" role="alert">
         <p>         
             <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                 <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
@@ -10,76 +13,61 @@
             You can get connected <a href="/auth/deezer/login">here</a>.
         </p>
     </div>
-    <div v-else-if="playlists != null && playlists.error != null" class="alert alert-danger" role="alert">
-        <p>
-            <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
-            </svg>
-            <b>Oups!</b> {{ playlists.error.message }}
-        </p>
-        <p v-if="playlists.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
-    </div>
-    <div v-else-if="playlists.data != null">
-        <div class="row">
-            <div class="col-12">
-                <p>                
-                    <a href="#" class="btn btn-primary">Save</a> This action will save or update your data in <i>Matis</i> database.               
-                </p>
-            </div>    
+    <div v-else-if="playlists != null">
+        <div v-if="playlists.error != null" class="alert alert-danger" role="alert">
+            <p>
+                <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+                </svg>
+                <b>Oups!</b> {{ playlists.error.message }}
+            </p>
+            <p v-if="playlists.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
         </div>
-        <div class="row">            
-            <div class="col-12">            
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between"
-                        v-for="playlist in playlists.data"
-                        v-bind:key="playlist.id">
+        <div v-else-if="playlists.data != null">
+            <div class="row">
+                <div class="col-12">
+                    <p>                
+                        <a href="#" class="btn btn-primary">Save</a> This action will save or update your data in <i>Matis</i> database.               
+                    </p>
+                </div>    
+            </div>
+            <div class="row">            
+                <div class="col-5">
+                    <ul class="collection">
+                        <li class="collection-item avatar"
+                            v-for="playlist in playlists.data"
+                            v-bind:key="playlist.id">
 
-                        <div class="col-2">
-                            <p>
-                                <img class="rounded" v-bind:src="playlist.picture">
+                            <img v-bind:src="playlist.picture" alt="picture playlist" class="circle">
+                            <span class="title">{{ playlist.title }}</span>
+                            <p>{{ playlist.nb_tracks }} tracks<br>
+                            Duration: {{ timePlaylist(playlist.duration) }}
                             </p>
-                        </div>
-
-                        <div class="col-2">
-                            <span>
-                            <svg v-if="playlist.is_loved_track === true" class="text-danger" id="i-heart" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                <path d="M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16 Z" />
-                            </svg>
                             
-                            {{ playlist.title }}
-                        </span>
-                        </div>
-
-                        <div class="col-8">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="card-title">Data</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="col-6">
-                                        <p>
-                                            <span class="badge badge-primary badge-pill">{{ playlist.nb_tracks }} tracks</span>
-                                        </p>
-                                        <p>
-                                            <span class="badge badge-primary badge-pill">{{ playlist.fans }} fans</span>
-                                        </p>
-                                        <p>
-                                            {{  formattt(playlist.duration) }}
-                                        </p>
-                                        <p>
-                                            {{ playlist.creator.name }}
-                                        </p>
-                                    </div>
-                                    <div class="col-6">
-                                        <p>
-                                            {{ playlist.description }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                            <button v-on:click="getPlaylistContent(playlist.id)" class="secondary-content btn waves-light" name="action">See
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-7">
+                    <h3 class="text-right">Playlist content</h3>
+                    <hr>
+                    <div v-if="loadingPlaylist" class="alert alert-warning" role="alert">
+                        <h4>Loading...</h4>
+                    </div>
+                    <div v-else-if="playlistsContent != null">
+                        <ul v-if="playlistsContent.data.length > 0" id="playlist-content" class="collection">
+                            <li class="collection-item" 
+                                v-for="track in playlistsContent.data"
+                                v-bind:key="track.id">
+                                {{ track.title }} | <a :href="track.artist.link">{{ track.artist.name }}</a> | {{ timeTrack(track.duration) }}
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -91,22 +79,59 @@
 <script>
     export default {
         methods: {
-            formattt: function (seconds) {
-                return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("HH:mm");
+            timePlaylist: function (seconds) {
+                var calcul = moment("1900-01-01 00:00:00").add(seconds, 'seconds');
+                var hours = calcul.format("H");
+                var min = calcul.format("mm");
+                var sec = calcul.format("ss");
+
+                return 
+                    hours + " h " + min + " min " + sec;
+            },
+            timeTrack: function (seconds) {
+                return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
+            },
+            getPlaylistContent: function (id) {
+                this.loadingPlaylist = true;
+                axios.get("/ws/deezer/playlists/" + id)
+                    .then((response)  =>  {
+                        if (response.status === 200) {
+                            this.loadingPlaylist = false;
+                            console.log(response.data);
+                            this.playlistsContent = response.data;
+                        }
+                    }, (error)  =>  {
+                        this.loadingPlaylist = false;
+
+                        console.log(error);
+                    });
             }
         },
-
         data() {
             return {
                 playlists: null,
-                error: null
+                playlistsSelected: null,
+                playlistsContent: null,
+                error: null,
+                loadingPage: false,
+                loadingPlaylist: false
             }
         },
 
         created() {
+            this.loadingPage = true;
             axios.get(window.location.origin + '/ws/deezer/playlists')
-                .then( response => this.playlists = response.data )
-                .catch( error => this.error = error.response.data );
+                .then((response)  =>  {
+                    if (response.status === 200) {
+                        this.loadingPage = false;
+                        this.playlists = response.data;
+                        console.log(response.data);
+                    }
+                }, (error)  =>  {
+                    this.loadingPage = false;
+                    this.error = error.response.data;
+                    console.log(error);
+                });
         },
 
         mounted() {
