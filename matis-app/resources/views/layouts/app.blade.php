@@ -4,19 +4,16 @@
 
     <title>Matis - @yield('title')</title>
 
-    <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ mix('css/materialize.css') }}">
-    <script type="text/javascript" src="{{ mix('js/materialize.min.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('js/bootstrap.min.js') }}"></script>
-
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="{{ mix('js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('js/materialize.min.js') }}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ mix('css/materialize.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ mix('css/app.css') }}">
 
     @yield('asset')
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-    <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
-
-
     
 </head>
 <body>

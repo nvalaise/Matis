@@ -2196,8 +2196,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     timePlaylist: function timePlaylist(seconds) {
@@ -64687,7 +64685,7 @@ var render = function() {
                           _c(
                             "button",
                             {
-                              staticClass: "secondary-content btn waves-light",
+                              staticClass: "secondary-content btn btn-success",
                               attrs: { name: "action" },
                               on: {
                                 click: function($event) {
@@ -64695,12 +64693,7 @@ var render = function() {
                                 }
                               }
                             },
-                            [
-                              _vm._v("See\n                            "),
-                              _c("i", { staticClass: "material-icons right" }, [
-                                _vm._v("send")
-                              ])
-                            ]
+                            [_vm._v("See")]
                           )
                         ]
                       )
@@ -64794,9 +64787,11 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-12" }, [
         _c("p", [
-          _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
-            _vm._v("Save")
-          ]),
+          _c(
+            "a",
+            { staticClass: "btn btn-primary mx-2", attrs: { href: "#" } },
+            [_vm._v("Save")]
+          ),
           _vm._v(" This action will save or update your data in "),
           _c("i", [_vm._v("Matis")]),
           _vm._v(" database.               \n                ")

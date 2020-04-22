@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-12">
                     <p>                
-                        <a href="#" class="btn btn-primary">Save</a> This action will save or update your data in <i>Matis</i> database.               
+                        <a href="#" class="btn btn-primary mx-2">Save</a> This action will save or update your data in <i>Matis</i> database.               
                     </p>
                 </div>    
             </div>
@@ -44,9 +44,7 @@
                             Duration: {{ timePlaylist(playlist.duration) }}
                             </p>
                             
-                            <button v-on:click="getPlaylistContent(playlist.id)" class="secondary-content btn waves-light" name="action">See
-                                <i class="material-icons right">send</i>
-                            </button>
+                            <button v-on:click="getPlaylistContent(playlist.id)" class="secondary-content btn btn-success" name="action">See</button>
                         </li>
                     </ul>
                 </div>
