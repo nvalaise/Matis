@@ -24,8 +24,10 @@
     },
     "dependencies": {
         "bootstrap": "^4.4.1",
+        "chart.js": "^2.9.3",
         "materialize-css": "^1.0.0-rc.2",
         "vue-calendar-heatmap": "^0.8.4",
+        "vue-chartjs": "^3.5.0",
         "vue-moment": "^4.1.0",
         "vue-router": "^3.1.6"
     }

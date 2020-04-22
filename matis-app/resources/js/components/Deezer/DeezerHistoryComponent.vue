@@ -10,49 +10,63 @@
             You can get connected <a href="/auth/deezer/login">here</a>.
         </p>
     </div>
-    <div v-else-if="history != null && history.error != null" class="alert alert-danger" role="alert">
-        <p>
-            <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
-            </svg>
-            <b>Oups!</b> {{ history.error.message }}
-        </p>
-        <p v-if="history.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
-    </div>
-    <div v-else-if="history.error" class="alert alert-danger" role="alert">
-        <p><b>Oups!</b> {{ history.error.message }}</p>
-        <p v-if="history.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">Here</a>.</p>
-    </div>
     <div v-else-if="history != null">
-        <div class="row">
-            <div class="col-12">
-                <p>                
-                    <a href="#" class="btn btn-primary">Save</a> This action will save or update your data in <i>Matis</i> database.               
-                </p>
-            </div>    
+        <div v-if="history.error != null" class="alert alert-danger" role="alert">
+            <p>
+                <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+                </svg>
+                <b>Oups!</b> {{ history.error.message }}
+            </p>
+            <p v-if="history.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
         </div>
-        <div class="row">            
-            <div class="col-12">            
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between list-group-item-action"
-                        v-for="track in history.data"
-                        v-bind:key="track.id + track.timestamp">
+        <div v-else-if="history.data != null">
+            <div class="row">
+                <calendar-heatmap :values="historyValues" :endDate="endDateValue" :tooltipUnit="tooltipUnitValue"/>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p>                
+                        <a href="#" class="btn btn-primary">Save</a> This action will save or update your data in <i>Matis</i> database.               
+                    </p>
+                </div>    
+            </div>
+            <div class="row">            
+                <div class="col-6">
+                    <h4>Latest history</h4>            
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between list-group-item-action"
+                            v-for="(track, index) in history.data"
+                            v-bind:key="track.id + track.timestamp">
 
-                        <div class="col-8">
-                            <p>
-                                {{ track.timestamp }}
-                            </p>
-                        </div>
+                            <div class="col-3">
+                                <p>
+                                    {{ playedAt(track.timestamp) }}
+                                </p>
+                            </div>
 
-                        <div class="col-2">
-                            {{ track.artist.name }} / 
-                            {{ track.title }}
-                        </div>
-                        <div class="col-2">
-                            {{ track.duration }}
-                        </div>
-                    </li>
-                </ul>
+                            <div class="col-7">
+                                #{{ index+1 }}
+                                <a :href="track.link">{{ track.title }}</a> |
+                                {{ track.artist.name }}
+                            </div>
+                            <div class="col-2">
+                                {{ timeTrack(track.duration) }}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-6">
+                    <h4>Saved history</h4>
+                    <div class="alert alert-danger" role="alert">
+                        <p>         
+                            <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+                            </svg>
+                            <b>Wait!</b> Not available today
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -62,25 +76,47 @@
 </template>
 
 <script>
+    import { CalendarHeatmap } from 'vue-calendar-heatmap'
+
     export default {
+        components: {
+            CalendarHeatmap
+        },
         methods: {
-            formattt: function (seconds) {
-                return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("HH:mm");
-            }
+            playedAt: function (seconds) {
+                return moment.unix(seconds).format("ddd D MMM HH:mm");
+            },
+            timeTrack: function (seconds) {
+                return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
+            },
         },
 
         data() {
             return {
+                // data
                 history: null,
-                error: null
+                error: null,
+
+                // graph
+                historyValues: null,
+                endDateValue: moment().format("YYYY-M-d"),
+                tooltipUnitValue: 'listenings'
             }
         },
 
         created() {
             axios.get(window.location.origin + '/ws/deezer/history')
                 .then( response => this.history = response.data )
+                //.then( response => console.log(response.data) )
                 .catch( error => this.error = error.response.data );
 
+
+            this.historyValues = [{ 
+                date: '2020-3-20', count: 5 },{
+                date: '2020-3-21', count: 11 },{
+                date: '2020-3-23', count: 2 },{
+                date: '2020-3-24', count: 6 
+            }];
         },
 
         mounted() {

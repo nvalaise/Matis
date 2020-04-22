@@ -7,9 +7,12 @@
 require('./bootstrap');
 
 import Vue from 'vue'
-import VueRouter from 'vue-router'
 
+import VueRouter from 'vue-router'
 Vue.use(VueRouter);
+
+//import VueCalendarHeatmap from 'vue-calendar-heatmap'
+//Vue.use(VueCalendarHeatmap)
 
 import DeezerHome from './components/Deezer/DeezerHomeComponent.vue';
 import DeezerPlaylist from './components/Deezer/DeezerPlaylistsComponent.vue';
