@@ -33,6 +33,8 @@
             </div>
             <div class="row">            
                 <div class="col-5">
+                    <p><i>{{ playlists.data.length }} playlists</i></p>
+
                     <ul class="collection">
                         <li class="collection-item avatar"
                             v-for="playlist in playlists.data"
@@ -68,7 +70,7 @@
                         <h4>No playlist loaded.</h4>                        
                     </div>
 
-                    <paginate v-if="loadingPlaylist || playlistsContent != null"
+                    <paginate v-if="(loadingPlaylist || playlistsContent != null) && pageCount > 0"
                         class="text-center"
                         :force-page="playlistPage"
                         :page-count="pageCount"

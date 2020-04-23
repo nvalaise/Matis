@@ -68,7 +68,51 @@ class BoardDeezerController extends Controller
 			$baseURL = "https://api.deezer.com/user/me/history";
 			$playlistsURL = $baseURL . $this->getTokenAsParameter();
 
-			return Http::get($playlistsURL)->json();
+			$response = Http::get($playlistsURL)->json();
+
+			//dd($response);
+
+/*
+            this.historyValues = [{ 
+                date: '2020-3-20', count: 5 },{
+                date: '2020-3-21', count: 11 },{
+                date: '2020-3-23', count: 2 },{
+                date: '2020-3-24', count: 6 
+            }];
+*/
+            $historyChart = array();
+            $max = 0;
+
+			if (isset($response['data'])) {
+
+				$mapHistory = array();
+
+				foreach ($response['data'] as $history) {
+
+					$date = date("Y-m-d", $history['timestamp']);
+					if(isset($mapHistory[$date])) {
+						$mapHistory[$date] = $mapHistory[$date]+1;
+					} else {
+						$mapHistory[$date] = 1;
+					}
+				}
+
+				foreach ($mapHistory as $key => $value) {
+					$historyChart[] = array(
+						'date' => $key,
+						'count' => $value
+					);
+					if($value > $max) { $max = $value; }
+				}
+				//dd($mapHistory, $historyChart);
+
+			}
+
+			return response()->json([
+					'max' => $max,
+					'history' => json_encode($historyChart),
+					'response' => $response
+				],200);
 		} else {
 			return response()->json(
 				['message' => 'Access token not found'], 

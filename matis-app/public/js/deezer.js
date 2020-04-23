@@ -1989,6 +1989,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2010,7 +2011,8 @@ __webpack_require__.r(__webpack_exports__);
       error: null,
       // graph
       historyValues: null,
-      endDateValue: moment().format("YYYY-M-d"),
+      maxActivity: 0,
+      endDateValue: moment().format("YYYY-MM-DD"),
       tooltipUnitValue: 'listenings'
     };
   },
@@ -2022,7 +2024,9 @@ __webpack_require__.r(__webpack_exports__);
       _this.loadingPage = false;
 
       if (response.status === 200) {
-        _this.history = response.data;
+        _this.history = response.data.response;
+        _this.historyValues = JSON.parse(response.data.history);
+        _this.maxActivity = response.data.max;
       } else {
         console.log(response);
       }
@@ -2030,19 +2034,6 @@ __webpack_require__.r(__webpack_exports__);
       _this.loadingPage = false;
       _this.error = error.response.data;
     });
-    this.historyValues = [{
-      date: '2020-3-20',
-      count: 5
-    }, {
-      date: '2020-3-21',
-      count: 11
-    }, {
-      date: '2020-3-23',
-      count: 2
-    }, {
-      date: '2020-3-24',
-      count: 6
-    }];
   },
   mounted: function mounted() {
     console.log('Component mounted.');
@@ -2175,6 +2166,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -64336,6 +64329,7 @@ var render = function() {
                     attrs: {
                       values: _vm.historyValues,
                       endDate: _vm.endDateValue,
+                      max: _vm.maxActivity,
                       tooltipUnit: _vm.tooltipUnitValue
                     }
                   })
@@ -64471,12 +64465,22 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-12" }, [
         _c("p", [
-          _c("a", { staticClass: "btn btn-primary", attrs: { href: "#" } }, [
-            _vm._v("Save")
-          ]),
+          _c(
+            "a",
+            { staticClass: "btn btn-primary mx-2", attrs: { href: "#" } },
+            [_vm._v("Save")]
+          ),
           _vm._v(" This action will save or update your data in "),
           _c("i", [_vm._v("Matis")]),
           _vm._v(" database.               \n                ")
+        ]),
+        _vm._v(" "),
+        _c("p", [
+          _c("small", [
+            _vm._v(
+              "Deezer allows to retrieve only the last 50 tracks listened. By clicking on save, your history will be kept."
+            )
+          ])
         ])
       ])
     ])
@@ -64922,6 +64926,12 @@ var render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-5" }, [
+                  _c("p", [
+                    _c("i", [
+                      _vm._v(_vm._s(_vm.playlists.data.length) + " playlists")
+                    ])
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "ul",
                     { staticClass: "collection" },
@@ -65061,7 +65071,8 @@ var render = function() {
                           [_c("h4", [_vm._v("No playlist loaded.")])]
                         ),
                     _vm._v(" "),
-                    _vm.loadingPlaylist || _vm.playlistsContent != null
+                    (_vm.loadingPlaylist || _vm.playlistsContent != null) &&
+                    _vm.pageCount > 0
                       ? _c("paginate", {
                           staticClass: "text-center",
                           attrs: {

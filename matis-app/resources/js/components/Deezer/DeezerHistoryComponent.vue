@@ -25,13 +25,14 @@
         </div>
         <div v-else-if="history.data != null">
             <div class="row">
-                <calendar-heatmap :values="historyValues" :endDate="endDateValue" :tooltipUnit="tooltipUnitValue"/>
+                <calendar-heatmap :values="historyValues" :endDate="endDateValue" :max="maxActivity" :tooltipUnit="tooltipUnitValue"/>
             </div>
             <div class="row">
                 <div class="col-12">
                     <p>                
-                        <a href="#" class="btn btn-primary">Save</a> This action will save or update your data in <i>Matis</i> database.               
+                        <a href="#" class="btn btn-primary mx-2">Save</a> This action will save or update your data in <i>Matis</i> database.               
                     </p>
+                    <p><small>Deezer allows to retrieve only the last 50 tracks listened. By clicking on save, your history will be kept.</small></p>
                 </div>    
             </div>
             <div class="row">            
@@ -104,7 +105,8 @@
 
                 // graph
                 historyValues: null,
-                endDateValue: moment().format("YYYY-M-d"),
+                maxActivity: 0,
+                endDateValue: moment().format("YYYY-MM-DD"),
                 tooltipUnitValue: 'listenings'
             }
         },
@@ -116,7 +118,11 @@
                     this.loadingPage = false;
 
                     if (response.status === 200) {
-                        this.history = response.data;
+                        this.history = response.data.response;
+
+                        this.historyValues = JSON.parse(response.data.history);
+                        this.maxActivity = response.data.max;
+
                     } else {
                         console.log(response);
                     }
@@ -124,13 +130,6 @@
                     this.loadingPage = false;
                     this.error = error.response.data;
                 });
-
-            this.historyValues = [{ 
-                date: '2020-3-20', count: 5 },{
-                date: '2020-3-21', count: 11 },{
-                date: '2020-3-23', count: 2 },{
-                date: '2020-3-24', count: 6 
-            }];
         },
 
         mounted() {
