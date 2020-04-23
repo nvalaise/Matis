@@ -58,14 +58,28 @@
                         <p><i>{{ playlistsContent.total }} tracks</i></p>
                         <ul v-if="playlistsContent.data.length > 0" id="playlist-content" class="collection">
                             <li class="collection-item" 
-                                v-for="track in playlistsContent.data"
+                                v-for="(track, index) in playlistsContent.data"
                                 v-bind:key="track.id">
-                                {{ track.title }} | <a :href="track.artist.link">{{ track.artist.name }}</a> | {{ timeTrack(track.duration) }}
+                                #{{ index+1 + (playlistPage-1)*20 }} {{ track.title }} | <a :href="track.artist.link">{{ track.artist.name }}</a> | {{ timeTrack(track.duration) }}
                             </li>
                         </ul>
                     </div>
-                    
-                    </ul>
+                    <div v-else class="alert alert-warning" role="alert">
+                        <h4>No playlist loaded.</h4>                        
+                    </div>
+
+                    <paginate v-if="loadingPlaylist || playlistsContent != null"
+                        class="text-center"
+                        :force-page="playlistPage"
+                        :page-count="pageCount"
+                        :page-range="3"
+                        :margin-pages="2"
+                        :click-handler="clickCallback"
+                        :prev-text="'Prev'"
+                        :next-text="'Next'"
+                        :container-class="'pagination'"
+                        :page-class="'page-item'">
+                    </paginate>    
                 </div>
             </div>
         </div>
@@ -89,27 +103,45 @@
             timeTrack: function (seconds) {
                 return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
             },
-            getPlaylistContent: function (id) {
+            getPlaylistContent: function (id, page = 1) {
+                
                 this.loadingPlaylist = true;
-                axios.get("/ws/deezer/playlists/" + id)
+                this.playlistID = id;
+
+                var prev = this.playlistPage;
+                this.playlistPage = page;
+
+
+                axios.get("/ws/deezer/playlist/" + id + "/" + (page-1)*20)
                     .then((response)  =>  {
                         if (response.status === 200) {
                             this.loadingPlaylist = false;
-                            console.log(response.data);
+
                             this.playlistsContent = response.data;
+                            this.pageCount = Math.ceil(this.playlistsContent.total/20);   
+
                         }
                     }, (error)  =>  {
                         this.loadingPlaylist = false;
+                        this.playlistPage = prev;
 
                         console.log(error);
                     });
+            },
+            clickCallback: function (pageNum) {
+                this.getPlaylistContent(this.playlistID, pageNum);
             }
         },
         data() {
             return {
                 playlists: null,
                 playlistsSelected: null,
-                playlistsContent: null,
+
+                playlistsContent: null, // return the playlist content
+                pageCount: 1, // return the number of page
+                playlistPage: 1, // return the selected page
+                playlistID: null, // return the selected playlist ID
+
                 error: null,
                 loadingPage: false,
                 loadingPlaylist: false
@@ -117,6 +149,7 @@
         },
 
         created() {
+            this.playlistPage = 1;
             this.loadingPage = true;
             axios.get(window.location.origin + '/ws/deezer/playlists')
                 .then((response)  =>  {
@@ -124,7 +157,7 @@
 
                     if (response.status === 200) {
                         this.playlists = response.data;
-                        console.log(response.data);
+
                     } else {
                         console.log(response);
                     }

@@ -42,11 +42,13 @@ class BoardDeezerController extends Controller
 		}
 	}
 
-	public function playlist($id) {
+	public function playlist($id, $start = null) {
 
 		if ($this->guard()->check()) {
 
-			$baseURL = "https://api.deezer.com/playlist/" . $id . "/tracks";
+			$index = empty($start) ? 0 : $start;
+
+			$baseURL = "https://api.deezer.com/playlist/" . $id . "/tracks&limit=20&index=" . $index;
 			$playlistsURL = $baseURL . $this->getTokenAsParameter();
 
 			return Http::get($playlistsURL)->json();

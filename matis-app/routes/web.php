@@ -46,9 +46,10 @@ Route::group(['prefix' => 'ws/deezer',  'middleware' => 'isDeezer'], function() 
 	Route::get('/history', 'Board\BoardDeezerController@history')->name('deezer.history');
 	Route::get('/social', 'Board\BoardDeezerController@social')->name('deezer.social');
 
-	Route::get('/playlists/{id}', 'Board\BoardDeezerController@playlist')
+	Route::get('/playlist/{id}/{start?}', 'Board\BoardDeezerController@playlist')
 		->name('deezer.playlist')
-		->where('id', '[0-9]+');
+		->where('id', '[0-9]+')
+		->where('start', '[0-9]+');
 
 	
 });
