@@ -1986,6 +1986,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2001,6 +2004,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      loadingPage: null,
       // data
       history: null,
       error: null,
@@ -2013,11 +2017,18 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
+    this.loadingPage = true;
     axios.get(window.location.origin + '/ws/deezer/history').then(function (response) {
-      return _this.history = response.data;
-    }) //.then( response => console.log(response.data) )
-    ["catch"](function (error) {
-      return _this.error = error.response.data;
+      _this.loadingPage = false;
+
+      if (response.status === 200) {
+        _this.history = response.data;
+      } else {
+        console.log(response);
+      }
+    }, function (error) {
+      _this.loadingPage = false;
+      _this.error = error.response.data;
     });
     this.historyValues = [{
       date: '2020-3-20',
@@ -2087,6 +2098,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Component mounted.');
@@ -2094,16 +2141,25 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       account: null,
-      error: null
+      error: null,
+      loadingPage: false
     };
   },
   created: function created() {
     var _this = this;
 
+    this.loadingPage = true;
     axios.get(window.location.origin + '/ws/deezer/account').then(function (response) {
-      return _this.account = response.data;
-    })["catch"](function (error) {
-      return _this.error = error.response.data;
+      _this.loadingPage = false;
+
+      if (response.status === 200) {
+        _this.account = response.data;
+      } else {
+        console.log(response);
+      }
+    }, function (error) {
+      _this.loadingPage = false;
+      _this.error = error.response.data;
     });
   }
 });
@@ -2239,10 +2295,13 @@ __webpack_require__.r(__webpack_exports__);
 
     this.loadingPage = true;
     axios.get(window.location.origin + '/ws/deezer/playlists').then(function (response) {
+      _this2.loadingPage = false;
+
       if (response.status === 200) {
-        _this2.loadingPage = false;
         _this2.playlists = response.data;
         console.log(response.data);
+      } else {
+        console.log(response);
       }
     }, function (error) {
       _this2.loadingPage = false;
@@ -2322,6 +2381,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     formattt: function formattt(seconds) {
@@ -2331,16 +2396,25 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       followings: null,
-      error: null
+      error: null,
+      loadingPage: false
     };
   },
   created: function created() {
     var _this = this;
 
+    this.loadingPage = true;
     axios.get(window.location.origin + '/ws/deezer/social').then(function (response) {
-      return _this.followings = response.data;
-    })["catch"](function (error) {
-      return _this.error = error.response.data;
+      _this.loadingPage = false;
+
+      if (response.status === 200) {
+        _this.followings = response.data;
+      } else {
+        console.log(response);
+      }
+    }, function (error) {
+      _this.loadingPage = false;
+      _this.error = error.response.data;
     });
   },
   mounted: function mounted() {
@@ -64127,7 +64201,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.error != null
+  return _vm.loadingPage
+    ? _c(
+        "div",
+        { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+        [_c("h4", [_vm._v("Loading...")])]
+      )
+    : _vm.error != null
     ? _c(
         "div",
         { staticClass: "alert alert-danger", attrs: { role: "alert" } },
@@ -64253,37 +64333,47 @@ var render = function() {
                         },
                         [
                           _c("div", { staticClass: "col-3" }, [
+                            track.album.cover
+                              ? _c("img", {
+                                  staticClass: "circle img-responsive",
+                                  attrs: {
+                                    src: track.album.cover,
+                                    alt: "picture track history"
+                                  }
+                                })
+                              : _vm._e()
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-7" }, [
                             _c("p", [
                               _vm._v(
-                                "\n                                " +
-                                  _vm._s(_vm.playedAt(track.timestamp)) +
+                                "#" +
+                                  _vm._s(index + 1) +
+                                  " | " +
+                                  _vm._s(_vm.playedAt(track.timestamp))
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("p", [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: track.link, target: "_blank" }
+                                },
+                                [_vm._v(_vm._s(track.title))]
+                              ),
+                              _vm._v(
+                                " |\n                                " +
+                                  _vm._s(track.artist.name) +
                                   "\n                            "
                               )
                             ])
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "col-7" }, [
-                            _vm._v(
-                              "\n                            #" +
-                                _vm._s(index + 1) +
-                                "\n                            "
-                            ),
-                            _c("a", { attrs: { href: track.link } }, [
-                              _vm._v(_vm._s(track.title))
-                            ]),
-                            _vm._v(
-                              " |\n                            " +
-                                _vm._s(track.artist.name) +
-                                "\n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
                           _c("div", { staticClass: "col-2" }, [
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(_vm.timeTrack(track.duration)) +
-                                "\n                        "
-                            )
+                            _c("p", [
+                              _vm._v(_vm._s(_vm.timeTrack(track.duration)))
+                            ])
                           ])
                         ]
                       )
@@ -64393,7 +64483,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.error != null
+  return _vm.loadingPage
+    ? _c(
+        "div",
+        { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+        [_c("h4", [_vm._v("Loading...")])]
+      )
+    : _vm.error != null
     ? _c(
         "div",
         { staticClass: "alert alert-danger", attrs: { role: "alert" } },
@@ -64437,83 +64533,231 @@ var render = function() {
             : _vm._e()
         ]
       )
-    : _vm.account != null && _vm.account.error != null
-    ? _c(
-        "div",
-        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-        [
-          _c("p", [
-            _c(
-              "svg",
-              {
-                attrs: {
-                  id: "i-msg",
-                  xmlns: "http://www.w3.org/2000/svg",
-                  viewBox: "0 0 32 32",
-                  width: "32",
-                  height: "32",
-                  fill: "none",
-                  stroke: "currentcolor",
-                  "stroke-linecap": "round",
-                  "stroke-linejoin": "round",
-                  "stroke-width": "2"
-                }
-              },
-              [
-                _c("path", {
-                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
-                })
-              ]
-            ),
-            _vm._v(" "),
-            _c("b", [_vm._v("Oups!")]),
-            _vm._v(" " + _vm._s(_vm.account.error.message) + "\n\t\t")
-          ]),
-          _vm._v(" "),
-          _vm.account.error.code === 300
-            ? _c("p", [
-                _vm._v(" Your session has expired. Refresh your token "),
-                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
-                  _vm._v("here")
-                ]),
-                _vm._v(".")
-              ])
-            : _vm._e()
-        ]
-      )
     : _vm.account != null
     ? _c("div", [
-        _c("p", [_c("img", { attrs: { src: _vm.account.picture } })]),
-        _vm._v(" "),
-        _c("p", [_vm._v("#" + _vm._s(_vm.account.deezerId))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(_vm.account.email))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(_vm.account.firstname))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(_vm.account.lastname))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(_vm.account.status))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(_vm.account.inscriptionDate))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(_vm.account.profileLink))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(_vm.account.accessToken))]),
-        _vm._v(" "),
-        _c("p", [
-          _vm._v(
-            _vm._s(_vm.account.country) + " (" + _vm._s(_vm.account.lang) + ")"
-          )
-        ])
+        _vm.account.error != null
+          ? _c(
+              "div",
+              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+              [
+                _c("p", [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        id: "i-msg",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        viewBox: "0 0 32 32",
+                        width: "32",
+                        height: "32",
+                        fill: "none",
+                        stroke: "currentcolor",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-width": "2"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("b", [_vm._v("Oups!")]),
+                  _vm._v(" " + _vm._s(_vm.account.error.message) + "\n\t\t\t")
+                ]),
+                _vm._v(" "),
+                _vm.account.error.code === 300
+                  ? _c("p", [
+                      _vm._v(" Your session has expired. Refresh your token "),
+                      _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                        _vm._v("here")
+                      ]),
+                      _vm._v(".")
+                    ])
+                  : _vm._e()
+              ]
+            )
+          : _vm.account != null
+          ? _c("div", [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-2" }, [
+                  _c("p", [
+                    _c("img", {
+                      staticClass: "rounded",
+                      attrs: { src: _vm.account.picture }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-10" }, [
+                  _c("h4", [
+                    _vm._v(_vm._s(_vm.account.name) + " "),
+                    _c("small", [
+                      _vm._v("(#" + _vm._s(_vm.account.deezerId) + ")")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          href: _vm.account.profileLink,
+                          target: "_blank"
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.account.profileLink))]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v("Flow (API): "),
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: _vm.account.tracklist, target: "_blank" }
+                      },
+                      [_vm._v("tracklist")]
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("form", [
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-2 col-form-label",
+                      attrs: { for: "InputAccessToken" }
+                    },
+                    [_vm._v("Access Token")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-10" }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "email",
+                        id: "InputAccessToken",
+                        "aria-describedby": "tokenHelp"
+                      },
+                      domProps: { value: _vm.account.accessToken }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-2 col-form-label",
+                      attrs: { for: "InputMail" }
+                    },
+                    [_vm._v("Email")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-10" }, [
+                    _c("input", {
+                      staticClass: "form-control-plaintext",
+                      attrs: {
+                        type: "text",
+                        readonly: "",
+                        id: "InputMail",
+                        disabled: ""
+                      },
+                      domProps: { value: _vm.account.email }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-2 col-form-label",
+                      attrs: { for: "InputName" }
+                    },
+                    [_vm._v("Name")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-5" }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "text", id: "InputName", disabled: "" },
+                      domProps: { value: _vm.account.firstname }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-5" }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "text", id: "InputName", disabled: "" },
+                      domProps: { value: _vm.account.lastname }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group row" }, [
+                  _c(
+                    "label",
+                    {
+                      staticClass: "col-2 col-form-label",
+                      attrs: { for: "InputDate" }
+                    },
+                    [_vm._v("Registration")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-10" }, [
+                    _c("input", {
+                      staticClass: "form-control-plaintext",
+                      attrs: {
+                        type: "text",
+                        readonly: "",
+                        id: "InputDate",
+                        disabled: ""
+                      },
+                      domProps: { value: _vm.account.inscriptionDate }
+                    })
+                  ])
+                ])
+              ])
+            ])
+          : _vm._e()
       ])
     : _c(
         "div",
         { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-        [_vm._m(0)]
+        [_vm._m(1)]
       )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "small",
+      { staticClass: "form-text text-muted", attrs: { id: "tokenHelp" } },
+      [
+        _vm._v("Try it out right here: "),
+        _c(
+          "a",
+          {
+            attrs: {
+              href: "https://developers.deezer.com/api/explorer",
+              target: "_blank"
+            }
+          },
+          [_vm._v("Deezer Explorer")]
+        )
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -64830,7 +65074,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.error != null
+  return _vm.loadingPage
+    ? _c(
+        "div",
+        { staticClass: "alert alert-warning", attrs: { role: "alert" } },
+        [_c("h4", [_vm._v("Loading...")])]
+      )
+    : _vm.error != null
     ? _c(
         "div",
         { staticClass: "alert alert-danger", attrs: { role: "alert" } },
@@ -64874,91 +65124,100 @@ var render = function() {
             : _vm._e()
         ]
       )
-    : _vm.followings != null && _vm.followings.error != null
-    ? _c(
-        "div",
-        { staticClass: "alert alert-danger", attrs: { role: "alert" } },
-        [
-          _c("p", [
-            _c(
-              "svg",
-              {
-                attrs: {
-                  id: "i-msg",
-                  xmlns: "http://www.w3.org/2000/svg",
-                  viewBox: "0 0 32 32",
-                  width: "32",
-                  height: "32",
-                  fill: "none",
-                  stroke: "currentcolor",
-                  "stroke-linecap": "round",
-                  "stroke-linejoin": "round",
-                  "stroke-width": "2"
-                }
-              },
-              [
-                _c("path", {
-                  attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
-                })
-              ]
-            ),
-            _vm._v(" "),
-            _c("b", [_vm._v("Oups!")]),
-            _vm._v(" " + _vm._s(_vm.followings.error.message) + "\n    ")
-          ]),
-          _vm._v(" "),
-          _vm.followings.error.code === 300
-            ? _c("p", [
-                _vm._v(" Your session has expired. Refresh your token "),
-                _c("a", { attrs: { href: "/auth/deezer/login" } }, [
-                  _vm._v("here")
-                ]),
-                _vm._v(".")
-              ])
-            : _vm._e()
-        ]
-      )
-    : _vm.following != null
+    : _vm.followings != null
     ? _c("div", [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-12" }, [
-            _c(
-              "ul",
-              { staticClass: "list-group" },
-              _vm._l(_vm.followings.data, function(following) {
-                return _c(
-                  "li",
-                  {
-                    key: following.id,
-                    staticClass:
-                      "list-group-item d-flex justify-content-between"
-                  },
-                  [
-                    _c("div", { staticClass: "col-2" }, [
-                      _c("p", [
-                        _c("img", {
-                          staticClass: "rounded",
-                          attrs: { src: following.picture }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-2" }, [
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(following.name) +
-                          "\n                    "
-                      )
+        _vm.followings.error != null
+          ? _c(
+              "div",
+              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+              [
+                _c("p", [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        id: "i-msg",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        viewBox: "0 0 32 32",
+                        width: "32",
+                        height: "32",
+                        fill: "none",
+                        stroke: "currentcolor",
+                        "stroke-linecap": "round",
+                        "stroke-linejoin": "round",
+                        "stroke-width": "2"
+                      }
+                    },
+                    [
+                      _c("path", {
+                        attrs: { d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("b", [_vm._v("Oups!")]),
+                  _vm._v(" " + _vm._s(_vm.followings.error.message) + "\n    ")
+                ]),
+                _vm._v(" "),
+                _vm.followings.error.code === 300
+                  ? _c("p", [
+                      _vm._v(" Your session has expired. Refresh your token "),
+                      _c("a", { attrs: { href: "/auth/deezer/login" } }, [
+                        _vm._v("here")
+                      ]),
+                      _vm._v(".")
                     ])
-                  ]
-                )
-              }),
-              0
+                  : _vm._e()
+              ]
             )
-          ])
-        ])
+          : _vm.followings.data != null
+          ? _c("div", [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-6" }, [
+                  _c(
+                    "ul",
+                    { staticClass: "list-group" },
+                    _vm._l(_vm.followings.data, function(following) {
+                      return _c(
+                        "li",
+                        {
+                          key: following.id,
+                          staticClass:
+                            "list-group-item d-flex justify-content-between"
+                        },
+                        [
+                          _c("div", { staticClass: "col-4" }, [
+                            _c("p", [
+                              _c("img", {
+                                staticClass: "rounded",
+                                attrs: { src: following.picture }
+                              })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col-8" }, [
+                            _c("p", [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(following.name) +
+                                  " "
+                              ),
+                              _c("small", [
+                                _vm._v("(#" + _vm._s(following.id) + ")")
+                              ])
+                            ])
+                          ])
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ])
+              ])
+            ])
+          : _vm._e()
       ])
     : _c(
         "div",
@@ -64979,7 +65238,7 @@ var staticRenderFns = [
           ]),
           _vm._v(" This action will save or update your data in "),
           _c("i", [_vm._v("Matis")]),
-          _vm._v(" database.               \n            ")
+          _vm._v(" database.               \n                ")
         ])
       ])
     ])

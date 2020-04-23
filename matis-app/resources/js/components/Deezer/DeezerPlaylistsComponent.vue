@@ -120,10 +120,13 @@
             this.loadingPage = true;
             axios.get(window.location.origin + '/ws/deezer/playlists')
                 .then((response)  =>  {
+                    this.loadingPage = false;
+
                     if (response.status === 200) {
-                        this.loadingPage = false;
                         this.playlists = response.data;
                         console.log(response.data);
+                    } else {
+                        console.log(response);
                     }
                 }, (error)  =>  {
                     this.loadingPage = false;

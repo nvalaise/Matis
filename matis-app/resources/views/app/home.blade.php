@@ -15,16 +15,6 @@
 			<a class="btn btn-success btn-lg" href="/auth" role="button">Choose your apps</a>
 		</p>
 	</div>
-
-	<div class="container">
-		<h2>Backlog</h2>
-		<ul>
-			<li>Connect with Discogs</li>
-			<li>Connect with Spotify</li>
-			<li>Save the data locally</li>
-			<li>Server integration</li>
-		</ul>
-	</div>
 </div>
 </div>
 @endsection

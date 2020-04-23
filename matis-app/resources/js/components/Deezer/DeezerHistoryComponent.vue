@@ -1,5 +1,8 @@
 <template>
-    <div v-if="error != null" class="alert alert-danger" role="alert">
+    <div v-if="loadingPage"class="alert alert-warning" role="alert">
+        <h4>Loading...</h4>
+    </div>
+    <div v-else-if="error != null" class="alert alert-danger" role="alert">
         <p>         
             <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                 <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
@@ -40,18 +43,18 @@
                             v-bind:key="track.id + track.timestamp">
 
                             <div class="col-3">
-                                <p>
-                                    {{ playedAt(track.timestamp) }}
-                                </p>
+                                <img v-if="track.album.cover" v-bind:src="track.album.cover" alt="picture track history" class="circle img-responsive">
                             </div>
 
                             <div class="col-7">
-                                #{{ index+1 }}
-                                <a :href="track.link">{{ track.title }}</a> |
-                                {{ track.artist.name }}
+                                <p>#{{ index+1 }} | {{ playedAt(track.timestamp) }}</p>
+                                <p>                             
+                                    <a :href="track.link" target="_blank">{{ track.title }}</a> |
+                                    {{ track.artist.name }}
+                                </p>
                             </div>
                             <div class="col-2">
-                                {{ timeTrack(track.duration) }}
+                                <p>{{ timeTrack(track.duration) }}</p>
                             </div>
                         </li>
                     </ul>
@@ -93,6 +96,8 @@
 
         data() {
             return {
+                loadingPage: null,
+
                 // data
                 history: null,
                 error: null,
@@ -105,11 +110,20 @@
         },
 
         created() {
+            this.loadingPage = true;
             axios.get(window.location.origin + '/ws/deezer/history')
-                .then( response => this.history = response.data )
-                //.then( response => console.log(response.data) )
-                .catch( error => this.error = error.response.data );
+                .then((response)  =>  {
+                    this.loadingPage = false;
 
+                    if (response.status === 200) {
+                        this.history = response.data;
+                    } else {
+                        console.log(response);
+                    }
+                }, (error)  =>  {
+                    this.loadingPage = false;
+                    this.error = error.response.data;
+                });
 
             this.historyValues = [{ 
                 date: '2020-3-20', count: 5 },{
