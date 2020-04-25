@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'deezer' => [
+        'client_id' => env('DEEZER_KEY'),
+        'client_secret' => env('DEEZER_SECRET'),
+        'redirect' => env('APP_URL') . '/auth/deezer/callback'
+    ]
+
 ];

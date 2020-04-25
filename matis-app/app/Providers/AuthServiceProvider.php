@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Auth;
 use App\Extensions\DeezerUserProvider;
 use App\Services\Auth\DeezerGuard;
 
@@ -17,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -29,22 +29,5 @@ class AuthServiceProvider extends ServiceProvider
     { 
         $this->registerPolicies();
 
-        // add custom user provider
-        Auth::provider('deezer', function($app, array $config) {    
-            return new DeezerUserProvider(
-                $app->make($config['model']
-            ));
-        });  
-
-       // add custom guard
-        Auth::extend('deezer', function ($app, $name, array $config) {
-
-            $provider = Auth::createUserProvider($config['provider']);
-            return new DeezerGuard(
-                $provider, 
-                $app->make('request'),
-                $app->make('session.store'),
-            );
-        });
     }
 }

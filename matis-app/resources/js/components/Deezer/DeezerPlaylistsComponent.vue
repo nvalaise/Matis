@@ -114,7 +114,7 @@
                 this.playlistPage = page;
 
 
-                axios.get("/ws/deezer/playlist/" + id + "/" + (page-1)*20)
+                axios.get("/api/deezer/playlist/" + id + "/" + (page-1)*20)
                     .then((response)  =>  {
                         if (response.status === 200) {
                             this.loadingPlaylist = false;
@@ -153,7 +153,7 @@
         created() {
             this.playlistPage = 1;
             this.loadingPage = true;
-            axios.get(window.location.origin + '/ws/deezer/playlists')
+            axios.get(window.location.origin + '/api/deezer/playlists')
                 .then((response)  =>  {
                     this.loadingPage = false;
 

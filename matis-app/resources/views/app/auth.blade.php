@@ -23,7 +23,7 @@
 	<div class="row">
 		<div class="col-4">
 			<div class="collection list-group" id="list-tab" role="tablist">
-				<a class="collection-item @if(Auth::guard('deezer')->check()) active @endif" id="list-deezer-list" data-toggle="list" href="#list-deezer" role="tab" aria-controls="deezer">Deezer</a>
+				<a class="collection-item @if(Auth::check() && Auth::user()->hasDeezer()) active @endif" id="list-deezer-list" data-toggle="list" href="#list-deezer" role="tab" aria-controls="deezer">Deezer</a>
 				<a class="collection-item" id="list-spotify-list" data-toggle="list" href="#list-spotify" role="tab" aria-controls="spotify">Spotify</a>
 				<a class="collection-item" id="list-discogs-list" data-toggle="list" href="#list-discogs" role="tab" aria-controls="discogs">Discogs</a>
 			</div>
@@ -32,12 +32,11 @@
 			<div class="tab-content" id="nav-tabContent">
 				<div class="tab-pane fade show active" id="list-deezer" role="tabpanel" aria-labelledby="list-deezer-list">
 					<p>
-						@if(Auth::guard('deezer')->check())
-							<a href="{{ route('auth.deezer.register') }}" class="btn btn-primary">Save</a>
-							<a href="{{ route('auth.deezer.logout') }}" class="btn btn-danger">Logout</a>
-
+						@if(Auth::check() && Auth::user()->hasDeezer())
+							<a href="{{ route('auth.login', 'deezer') }}" class="btn btn-primary">Save</a>
+							<!--a href="{{ route('auth.deezer.logout') }}" class="btn btn-danger">Logout</a-->
 						@else
-							<a href="{{ route('auth.deezer.login') }}" class="btn btn-success">Connect</a>
+							<a href="{{ route('auth.login', 'deezer') }}" class="btn btn-success">Connect</a>
 						@endif
 					</p>
 					<p>

@@ -88,7 +88,7 @@
 
         created() {
         	this.loadingPage = true;
-            axios.get(window.location.origin + '/ws/deezer/account')
+            axios.get(window.location.origin + '/api/deezer/account')
             	.then((response)  =>  {
             		this.loadingPage = false;
 

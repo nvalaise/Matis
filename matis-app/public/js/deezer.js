@@ -2020,7 +2020,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.loadingPage = true;
-    axios.get(window.location.origin + '/ws/deezer/history').then(function (response) {
+    axios.get(window.location.origin + '/api/deezer/history').then(function (response) {
       _this.loadingPage = false;
 
       if (response.status === 200) {
@@ -2140,7 +2140,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.loadingPage = true;
-    axios.get(window.location.origin + '/ws/deezer/account').then(function (response) {
+    axios.get(window.location.origin + '/api/deezer/account').then(function (response) {
       _this.loadingPage = false;
 
       if (response.status === 200) {
@@ -2279,7 +2279,7 @@ __webpack_require__.r(__webpack_exports__);
       this.playlistID = id;
       var prev = this.playlistPage;
       this.playlistPage = page;
-      axios.get("/ws/deezer/playlist/" + id + "/" + (page - 1) * 20).then(function (response) {
+      axios.get("/api/deezer/playlist/" + id + "/" + (page - 1) * 20).then(function (response) {
         if (response.status === 200) {
           _this.loadingPlaylist = false;
           _this.playlistsContent = response.data;
@@ -2317,7 +2317,7 @@ __webpack_require__.r(__webpack_exports__);
 
     this.playlistPage = 1;
     this.loadingPage = true;
-    axios.get(window.location.origin + '/ws/deezer/playlists').then(function (response) {
+    axios.get(window.location.origin + '/api/deezer/playlists').then(function (response) {
       _this2.loadingPage = false;
 
       if (response.status === 200) {
@@ -2426,7 +2426,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.loadingPage = true;
-    axios.get(window.location.origin + '/ws/deezer/social').then(function (response) {
+    axios.get(window.location.origin + '/api/deezer/social').then(function (response) {
       _this.loadingPage = false;
 
       if (response.status === 200) {

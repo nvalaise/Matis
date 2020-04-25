@@ -17,6 +17,8 @@ use App\Services\RandomPseudo\RandomPseudo;
 use App\Models\User\User;
 use App\Models\User\Deezer;
 
+use Socialite;
+
 class AuthDeezerController extends Controller
 {
     /**
@@ -27,14 +29,7 @@ class AuthDeezerController extends Controller
      */
 	public function login(Request $request)
 	{
-		$baseURL = "https://connect.deezer.com/oauth/auth.php?";
-		$app_id = "app_id=" . env('DEEZER_APP_ID');
-		$redirect_uri = "&redirect_uri=" . env("APP_URL") . "/auth/deezer/callback";
-		$perms = "&perms=basic_access,email,manage_library,listening_history";
-
-		$connectURL = $baseURL . $app_id . $redirect_uri . $perms ;
-
-		return redirect()->to($connectURL);
+		return Socialite::with('deezer')->stateless(false)->redirect();
 	}
 
     /**
@@ -45,6 +40,14 @@ class AuthDeezerController extends Controller
      */
 	public function callback(Request $request)
 	{
+		
+		$user = Socialite::driver('deezer')->stateless(true)->user();
+		dd($user);
+
+		$accessTokenResponseBody = $user->accessTokenResponseBody;
+
+
+
 		if($request->has("code")) {
 			// the 'code' parameter must be provided in the call  
 			$responseAccessToken = $this->requestAccessToken($request, $request->get("code"));

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,7 +17,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'provider_id', 'provider', 
+        'email', 'password', 
+        'access_token',
     ];
 
     /**
@@ -26,26 +28,20 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function has($driver) {
+        return $this->hasOne('App\Models\UserAccount', $driver.'_id', 'id')->first();
+    }
 
     /**
-     * Get the central user account.
+     * Get the phone record associated with the user.
      */
     public function deezer()
     {
-        return $this->hasOne('App\Models\User\Deezer', 'id', 'id');
+        return $this->hasOne('App\Models\UserAccount', 'deezer_id', 'id');
     }
-
 
     /**
      * Get the user pseudonyme.
@@ -53,7 +49,18 @@ class User extends Authenticatable
      * @param  string  $value
      * @return string
      */
-    public function getNamedAttribute($value)
+    public function getProviderIdAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the user pseudonyme.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getProviderAttribute($value)
     {
         return $value;
     }
@@ -66,6 +73,17 @@ class User extends Authenticatable
      * @return string
      */
     public function getEmailAttribute($value)
+    {
+        return $value;
+    }
+
+    /**
+     * Get the user email address.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getAccessTokenAttribute($value)
     {
         return $value;
     }

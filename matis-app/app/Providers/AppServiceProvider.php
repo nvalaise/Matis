@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Extensions\DeezerProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->bootDeezerSocialite();
+    }
+
+    private function bootDeezerSocialite()
+    {
+        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
+        $socialite->extend(
+            'deezer',
+            function ($app) use ($socialite) {
+                $config = $app['config']['services.deezer'];
+                return $socialite->buildProvider(DeezerProvider::class, $config);
+            }
+        );
     }
 }

@@ -113,7 +113,7 @@
 
         created() {
             this.loadingPage = true;
-            axios.get(window.location.origin + '/ws/deezer/history')
+            axios.get(window.location.origin + '/api/deezer/history')
                 .then((response)  =>  {
                     this.loadingPage = false;
 

@@ -16,12 +16,13 @@ class CheckIsDeezer
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::guard('deezer')->check()) {
-            return $next($request);
+        if(! Auth::check()) {
+            return response()->json(['code' => 403, 'message' => 'Your are not logged. Please get connected with one of the applications.'], 403);
+        }
+        if( is_null(Auth::user()->has('deezer')) ) {
+            return response()->json(['code' => 403, 'message' => 'Your have not been connected with Deezer yet.'], 403);
         }
 
-        else {
-            return response()->json(['code' => 403, 'message' => 'Your are not logged with your Deezer account.'], 403);
-        }
+        return $next($request);
     }
 }

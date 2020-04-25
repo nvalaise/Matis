@@ -37,18 +37,14 @@ return [
     */
 
     'guards' => [
+        
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
-        'deezer' => [
-            'driver' => 'deezer',
-            'provider' => 'deezers',
-        ],
         
         'api' => [
-            'driver' => 'session',
+            'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
         ],
@@ -74,12 +70,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User\User::class,
-        ],
-
-        'deezers' => [
-            'driver' => 'deezer',
-            'model' => App\Models\User\Deezer::class,
+            'model' => App\Models\User::class,
         ],
     ],
 
