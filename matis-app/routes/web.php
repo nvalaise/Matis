@@ -32,7 +32,7 @@ Route::prefix('auth')->group(function () {
 		Route::get('/login', 'LoginController@redirectToProvider')->name('auth.login');
 		Route::get('/callback', 'LoginController@handleProviderCallback')->name('auth.callback');
 		
-		//Route::get('/logout', 'LoginController@logout')->name('auth.logout');
+		Route::get('/logout', 'LoginController@logout')->name('auth.logout');
 	});
 });
 

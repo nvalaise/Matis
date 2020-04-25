@@ -64637,7 +64637,7 @@ var render = function() {
                     _c(
                       "a",
                       { attrs: { href: _vm.account.link, target: "_blank" } },
-                      [_vm._v(_vm._s(_vm.account.link))]
+                      [_vm._v(_vm._s(_vm.account.linkgit))]
                     )
                   ]),
                   _vm._v(" "),

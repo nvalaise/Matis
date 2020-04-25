@@ -115,15 +115,7 @@ class LoginController extends Controller
 			}			
 		}
 
-		// login the user
 		Auth::loginUsingId($user->id);
-
-		//dd(Auth::check(), Auth::user());
-
-/*		Auth::attempt([
-			'provider' => $driver,
-			'provider_id' => $providerUser->id,
-		]);*/
 
 		if(Auth::check()) {
 			Session::flash('flash_type', 'alert-success');
@@ -133,7 +125,19 @@ class LoginController extends Controller
 			Session::flash('flash_message', '<p><b>Oups !</b> Something went wrong....</p>');
 		}
 
-		//Session::save();
+		return redirect()->route('auth.index');
+	}
+
+	public function logout() {
+
+		if(Auth::check()) {
+			Auth::logout();
+			Session::flash('flash_type', 'alert-warning');
+			Session::flash('flash_message', '<p><b>Done !</b> You have been logout.</p>');
+		} else {
+			Session::flash('flash_type', 'alert-danger');
+			Session::flash('flash_message', '<p><b>Oups !</b> Something went wrong....</p>');
+		}
 
 		return redirect()->route('auth.index');
 	}

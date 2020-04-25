@@ -34,7 +34,7 @@
 					<p>
 						@if(Auth::check() && Auth::user()->has('deezer'))
 							<a href="{{ route('auth.login', 'deezer') }}" class="btn btn-primary">Refresh</a>
-							<a href="#" class="btn btn-danger">Logout</a>
+							<a href="{{ route('auth.logout', 'deezer') }}" class="btn btn-danger">Logout</a>
 						@else
 							<a href="{{ route('auth.login', 'deezer') }}" class="btn btn-success">Connect</a>
 						@endif

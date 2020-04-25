@@ -30,7 +30,7 @@
 				</div>
 				<div class="col-10">
 					<h4>{{ account.name }} <small>(#{{ account.id }})</small></h4>
-					<p><a :href="account.link" target="_blank">{{ account.link }}</a></p>
+					<p><a :href="account.link" target="_blank">{{ account.linkgit }}</a></p>
 					<p>Flow (API): <a :href="account.tracklist" target="_blank">tracklist</a></p>
 				</div>
 			</div>
