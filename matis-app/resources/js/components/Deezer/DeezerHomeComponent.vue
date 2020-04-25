@@ -29,8 +29,8 @@
 					<p><img :src="account.picture" class="rounded"></p>		
 				</div>
 				<div class="col-10">
-					<h4>{{ account.name }} <small>(#{{ account.deezerId }})</small></h4>
-					<p><a :href="account.profileLink" target="_blank">{{ account.profileLink }}</a></p>
+					<h4>{{ account.name }} <small>(#{{ account.id }})</small></h4>
+					<p><a :href="account.link" target="_blank">{{ account.link }}</a></p>
 					<p>Flow (API): <a :href="account.tracklist" target="_blank">tracklist</a></p>
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 				<div class="form-group row">
 					<label for="InputAccessToken" class="col-2 col-form-label">Access Token</label>
 					<div class="col-10">
-						<input type="email" class="form-control" id="InputAccessToken" aria-describedby="tokenHelp" :value="account.accessToken">
+						<input type="email" class="form-control" id="InputAccessToken" aria-describedby="tokenHelp" :value="access_token">
 						<small id="tokenHelp" class="form-text text-muted">Try it out right here: <a href="https://developers.deezer.com/api/explorer" target="_blank">Deezer Explorer</a></small>
 					</div>
 				</div>
@@ -61,7 +61,7 @@
 				<div class="form-group row">
 					<label for="InputDate" class="col-2 col-form-label">Registration</label>
 					<div class="col-10">
-						<input type="text" readonly class="form-control-plaintext" id="InputDate" :value="account.inscriptionDate" disabled>
+						<input type="text" readonly class="form-control-plaintext" id="InputDate" :value="account.inscription_date" disabled>
 					</div>
 				</div>
 			</form>
@@ -81,6 +81,7 @@
         data() {
             return {
                 account: null,
+                access_token: null,
                 error: null,
                 loadingPage: false
             }
@@ -91,9 +92,11 @@
             axios.get(window.location.origin + '/api/deezer/account')
             	.then((response)  =>  {
             		this.loadingPage = false;
+                    	console.log(response.data);
 
                     if (response.status === 200) {
-                    	this.account = response.data;
+                    	this.account = response.data.response;
+                    	this.access_token = response.data.access_token;
                     } else {
                     	console.log(response);
                     }

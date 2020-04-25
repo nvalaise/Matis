@@ -2132,6 +2132,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       account: null,
+      access_token: null,
       error: null,
       loadingPage: false
     };
@@ -2142,9 +2143,11 @@ __webpack_require__.r(__webpack_exports__);
     this.loadingPage = true;
     axios.get(window.location.origin + '/api/deezer/account').then(function (response) {
       _this.loadingPage = false;
+      console.log(response.data);
 
       if (response.status === 200) {
-        _this.account = response.data;
+        _this.account = response.data.response;
+        _this.access_token = response.data.access_token;
       } else {
         console.log(response);
       }
@@ -64627,21 +64630,14 @@ var render = function() {
                 _c("div", { staticClass: "col-10" }, [
                   _c("h4", [
                     _vm._v(_vm._s(_vm.account.name) + " "),
-                    _c("small", [
-                      _vm._v("(#" + _vm._s(_vm.account.deezerId) + ")")
-                    ])
+                    _c("small", [_vm._v("(#" + _vm._s(_vm.account.id) + ")")])
                   ]),
                   _vm._v(" "),
                   _c("p", [
                     _c(
                       "a",
-                      {
-                        attrs: {
-                          href: _vm.account.profileLink,
-                          target: "_blank"
-                        }
-                      },
-                      [_vm._v(_vm._s(_vm.account.profileLink))]
+                      { attrs: { href: _vm.account.link, target: "_blank" } },
+                      [_vm._v(_vm._s(_vm.account.link))]
                     )
                   ]),
                   _vm._v(" "),
@@ -64677,7 +64673,7 @@ var render = function() {
                         id: "InputAccessToken",
                         "aria-describedby": "tokenHelp"
                       },
-                      domProps: { value: _vm.account.accessToken }
+                      domProps: { value: _vm.access_token }
                     }),
                     _vm._v(" "),
                     _vm._m(0)
@@ -64754,7 +64750,7 @@ var render = function() {
                         id: "InputDate",
                         disabled: ""
                       },
-                      domProps: { value: _vm.account.inscriptionDate }
+                      domProps: { value: _vm.account.inscription_date }
                     })
                   ])
                 ])
@@ -65074,7 +65070,7 @@ var render = function() {
                     (_vm.loadingPlaylist || _vm.playlistsContent != null) &&
                     _vm.pageCount > 0
                       ? _c("paginate", {
-                          staticClass: "text-center",
+                          staticClass: "d-flex justify-content-center",
                           attrs: {
                             "force-page": _vm.playlistPage,
                             "page-count": _vm.pageCount,

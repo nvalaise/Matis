@@ -116,7 +116,14 @@ class LoginController extends Controller
 		}
 
 		// login the user
-		Auth::login($user, true);
+		Auth::loginUsingId($user->id);
+
+		//dd(Auth::check(), Auth::user());
+
+/*		Auth::attempt([
+			'provider' => $driver,
+			'provider_id' => $providerUser->id,
+		]);*/
 
 		if(Auth::check()) {
 			Session::flash('flash_type', 'alert-success');
@@ -126,8 +133,7 @@ class LoginController extends Controller
 			Session::flash('flash_message', '<p><b>Oups !</b> Something went wrong....</p>');
 		}
 
-		Session::save();
-		//dd(\Session::all(), Auth::user());
+		//Session::save();
 
 		return redirect()->route('auth.index');
 	}

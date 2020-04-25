@@ -23,6 +23,7 @@ class CheckIsDeezer
             return response()->json(['code' => 403, 'message' => 'Your have not been connected with Deezer yet.'], 403);
         }
 
+        //dd(Auth::user()->has('deezer'), Auth::user(), Auth::user()->accessToken);
         return $next($request);
     }
 }

@@ -71,7 +71,7 @@
                     </div>
 
                     <paginate v-if="(loadingPlaylist || playlistsContent != null) && pageCount > 0"
-                        class="text-center"
+                        class="d-flex justify-content-center"
                         :force-page="playlistPage"
                         :page-count="pageCount"
                         :page-range="3"

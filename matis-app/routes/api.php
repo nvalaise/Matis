@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*
-Route::group(['prefix' => 'deezer',  'middleware' => 'isDeezer'], function() {
+Route::prefix('deezer')->group(function () {
 	Route::get('/account', 'Board\BoardDeezerController@account')->name('deezer.account');
 	Route::get('/playlists', 'Board\BoardDeezerController@playlists')->name('deezer.playlists');
 	Route::get('/history', 'Board\BoardDeezerController@history')->name('deezer.history');
@@ -26,4 +25,3 @@ Route::group(['prefix' => 'deezer',  'middleware' => 'isDeezer'], function() {
 		->where('id', '[0-9]+')
 		->where('start', '[0-9]+');
 });
-*/
