@@ -10,10 +10,15 @@
 @section('sidebar-deezer')	
 	<li class="nav-item has-treeview menu-open">
 		<a href="#" class="nav-link active">
-			<i class="nav-icon fas fa-tachometer-alt"></i>
+			<i class="nav-icon fas fa-code"></i>
 			<p>
 				Deezer
 				<i class="right fas fa-angle-left"></i>
+				@if(Auth::check() && Auth::user()->has('deezer'))
+            	<span class="right badge badge-danger">Active</span>
+            	@else
+            	<span class="right badge badge-danger">Inactive</span>
+            	@endif
 			</p>
 		</a>
 		<ul class="nav nav-treeview">
@@ -35,7 +40,7 @@
 
 @section('content')
 	<h3>@yield('title')</h3>
-	
+
 	<router-view></router-view>
 @endsection
 

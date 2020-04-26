@@ -2005,6 +2005,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2155,6 +2156,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Component mounted.');
@@ -2173,7 +2175,6 @@ __webpack_require__.r(__webpack_exports__);
     this.loadingPage = true;
     axios.get(window.location.origin + '/api/deezer/account').then(function (response) {
       _this.loadingPage = false;
-      console.log(response.data);
 
       if (response.status === 200) {
         _this.account = response.data.response;
@@ -2199,6 +2200,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -2418,7 +2420,6 @@ __webpack_require__.r(__webpack_exports__);
     }, function (error) {
       _this2.loadingPage = false;
       _this2.error = error.response.data;
-      console.log(error);
     });
   },
   mounted: function mounted() {
@@ -2437,6 +2438,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -51986,7 +51988,10 @@ var render = function() {
               })
             ]
           ),
-          _vm._v("\n        " + _vm._s(_vm.error.message) + "\n    ")
+          _vm._v(" "),
+          _vm.error.message != null
+            ? _c("span", [_vm._v(_vm._s(_vm.error.message))])
+            : _c("span", [_vm._v(_vm._s(_vm.error))])
         ]),
         _vm._v(" "),
         _vm.error.code == 403
@@ -52310,7 +52315,10 @@ var render = function() {
               })
             ]
           ),
-          _vm._v("\n\t\t\t" + _vm._s(_vm.error.message) + "\n\t\t")
+          _vm._v(" "),
+          _vm.error.message != null
+            ? _c("span", [_vm._v(_vm._s(_vm.error.message))])
+            : _c("span", [_vm._v(_vm._s(_vm.error))])
         ]),
         _vm._v(" "),
         _vm.error.code == 403
@@ -52640,7 +52648,10 @@ var render = function() {
               })
             ]
           ),
-          _vm._v("\n        " + _vm._s(_vm.error.message) + "\n    ")
+          _vm._v(" "),
+          _vm.error.message != null
+            ? _c("span", [_vm._v(_vm._s(_vm.error.message))])
+            : _c("span", [_vm._v(_vm._s(_vm.error))])
         ]),
         _vm._v(" "),
         _vm.error.code == 403
@@ -53085,7 +53096,10 @@ var render = function() {
               })
             ]
           ),
-          _vm._v("\n        " + _vm._s(_vm.error.message) + "\n    ")
+          _vm._v(" "),
+          _vm.error.message != null
+            ? _c("span", [_vm._v(_vm._s(_vm.error.message))])
+            : _c("span", [_vm._v(_vm._s(_vm.error))])
         ]),
         _vm._v(" "),
         _vm.error.code == 403

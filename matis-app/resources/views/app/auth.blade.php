@@ -25,7 +25,7 @@
 			<ul class="list-group" id="list-tab" role="tablist">
 				<li class="list-group-item d-flex justify-content-between align-items-center">
 					<a class="collection-item" id="list-deezer-list" data-toggle="list" href="#list-deezer" role="tab" aria-controls="deezer">Deezer</a>
-					@if(Auth::check() && Auth::user()->has('deezer')) 
+					@if(Auth::check() && Auth::user()->has('deezer'))
 					<span class="badge badge-primary badge-pill">Active</span>
 					@endif
 				</li>
@@ -58,7 +58,6 @@
 
 				<div class="tab-pane fade" id="list-spotify" role="tabpanel" aria-labelledby="list-spotify-list">
 					<p>
-						<a href="#" class="btn btn-primary">Save</a>
 						<a href="#" class="btn btn-success">Connect</a>
 						<a href="#" class="btn btn-danger">Logout</a>
 					</p>
@@ -78,7 +77,6 @@
 				</div>
 				<div class="tab-pane fade" id="list-discogs" role="tabpanel" aria-labelledby="list-discogs-list">
 					<p>
-						<a href="#" class="btn btn-primary">Save</a>
 						<a href="#" class="btn btn-success">Connect</a>
 						<a href="#" class="btn btn-danger">Logout</a>
 					</p>

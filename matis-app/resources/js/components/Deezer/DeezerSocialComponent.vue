@@ -16,7 +16,8 @@
             <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                 <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
             </svg>
-            {{ error.message }}
+            <span v-if="error.message != null">{{ error.message }}</span>
+            <span v-else>{{ error }}</span>
         </p>
         <p v-if="error.code == 403">
             You can get connected <a href="/auth/deezer/login">here</a>.
