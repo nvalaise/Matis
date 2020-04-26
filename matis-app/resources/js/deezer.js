@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+require('vue-calendar-heatmap');
 
 import Vue from 'vue'
 
