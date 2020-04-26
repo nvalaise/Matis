@@ -31,6 +31,19 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function accounts() {
+        return $this->hasOne('App\Models\UserAccount', $this->provider.'_id', 'id')->first();
+    }
+
+    public function pseudo() {
+        $accounts = $this->accounts();
+
+        if (!is_null($accounts)) {
+            return $accounts->pseudo;
+        }
+        return null;
+    }
+
     public function has($driver) {
         return $this->hasOne('App\Models\UserAccount', $driver.'_id', 'id')->first();
     }
