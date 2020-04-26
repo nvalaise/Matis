@@ -4,7 +4,6 @@
 
 @section('content')
 <div id="content" class="container">
-<div class="mt-2">
 	<div class="jumbotron">
 		<h1 class="display-4">Hello, @if(Auth::check()) <i class="text-info"> {{ Auth::user()->name }} </i> @else<i>world</i>@endif !</h1>
 		<p class="lead">Welcome on board with Matis, this beautiful app that aims to give you visibility over your applications.</p>
@@ -15,7 +14,6 @@
 			<a class="btn btn-success btn-lg" href="/auth" role="button">Choose your apps</a>
 		</p>
 	</div>
-</div>
 </div>
 @endsection
 

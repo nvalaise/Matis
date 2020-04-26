@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-<div class="mt-5">
+<div>
 
 	@if ( Session::has('flash_message') )
 	<div class="row">
@@ -22,11 +22,20 @@
 	</div>
 	<div class="row">
 		<div class="col-4">
-			<div class="collection list-group" id="list-tab" role="tablist">
-				<a class="collection-item @if(Auth::check() && Auth::user()->has('deezer')) active @endif" id="list-deezer-list" data-toggle="list" href="#list-deezer" role="tab" aria-controls="deezer">Deezer</a>
-				<a class="collection-item" id="list-spotify-list" data-toggle="list" href="#list-spotify" role="tab" aria-controls="spotify">Spotify</a>
-				<a class="collection-item" id="list-discogs-list" data-toggle="list" href="#list-discogs" role="tab" aria-controls="discogs">Discogs</a>
-			</div>
+			<ul class="list-group" id="list-tab" role="tablist">
+				<li class="list-group-item d-flex justify-content-between align-items-center">
+					<a class="collection-item" id="list-deezer-list" data-toggle="list" href="#list-deezer" role="tab" aria-controls="deezer">Deezer</a>
+					@if(Auth::check() && Auth::user()->has('deezer')) 
+					<span class="badge badge-primary badge-pill">Active</span>
+					@endif
+				</li>
+				<li class="list-group-item">
+					<a class="collection-item" id="list-spotify-list" data-toggle="list" href="#list-spotify" role="tab" aria-controls="spotify">Spotify</a>
+				</li>
+				<li class="list-group-item">
+					<a class="collection-item" id="list-discogs-list" data-toggle="list" href="#list-discogs" role="tab" aria-controls="discogs">Discogs</a>
+				</li>
+			</ul>
 		</div>
 		<div class="col-8">
 			<div class="tab-content" id="nav-tabContent">
@@ -74,7 +83,10 @@
 						<a href="#" class="btn btn-danger">Logout</a>
 					</p>
 					<p>
-						Discogs (short for discographies) is a website and crowdsourced database of information about audio recordings, including commercial releases, promotional releases, and bootleg or off-label releases. The Discogs servers, currently hosted under the domain name discogs.com, are owned by Zink Media, Inc. and located in Portland, Oregon, US. While the site was originally created with a goal of becoming the largest online database of electronic music, there are now releases in all genres and on all formats on the site. In fact, after the database was opened to contributions from the public, rock music began to take over as the most prevalent genre. Discogs currently contains over 11.6 million releases, by over 6 million artists, across over 1.3 million labels, contributed from over 456,000 contributor user accounts—with these figures constantly growing as users continually add previously unlisted releases to the site over time. 
+						Discogs (short for discographies) is a website and crowdsourced database of information about audio recordings, including commercial releases, promotional releases, and bootleg or off-label releases. The Discogs servers, currently hosted under the domain name discogs.com, are owned by Zink Media, Inc. and located in Portland, Oregon, US. While the site was originally created with a goal of becoming the largest online database of electronic music, there are now releases in all genres and on all formats on the site. In fact, after the database was opened to contributions from the public, rock music began to take over as the most prevalent genre. 
+					</p>
+					<p>
+						Discogs currently contains over 11.6 million releases, by over 6 million artists, across over 1.3 million labels, contributed from over 456,000 contributor user accounts—with these figures constantly growing as users continually add previously unlisted releases to the site over time. 
 					</p>
 					<p class="text-right">
 						<a class="btn btn-success" href="/deezer" role="button">Dashboard</a>

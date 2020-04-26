@@ -41,5 +41,13 @@ const routes = [
 const router = new VueRouter({routes, mode: 'history'});
 
 const app = new Vue({
-  router
+  router,
+  scrollBehavior (to, from, savedPosition) {
+  if (to.hash) {
+    return {
+      selector: to.hash
+    }
+  }
+}
+
 }).$mount('#app')

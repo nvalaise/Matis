@@ -1,18 +1,27 @@
 <template>
-    <div v-if="loadingPage"class="alert alert-warning" role="alert">
-        <h4>Loading...</h4>
+    <div v-if="loadingPage" class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Loading...</h3>
+        </div>
+        <div class="card-body">
+            We are getting the data...
+        </div>
+        <div class="overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
     </div>
-    <div v-else-if="error != null" class="alert alert-danger" role="alert">
+    <blockquote v-else-if="error != null" class="quote-danger">
+        <h5>Oups!</h5>
         <p>         
             <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                 <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
             </svg>
-            <b>Oups!</b> {{ error.message }}
+            {{ error.message }}
         </p>
         <p v-if="error.code == 403">
             You can get connected <a href="/auth/deezer/login">here</a>.
         </p>
-    </div>
+    </blockquote>
     <div v-else-if="history != null">
         <div v-if="history.error != null" class="alert alert-danger" role="alert">
             <p>
@@ -74,9 +83,15 @@
             </div>
         </div>
     </div>
-    <div v-else class="alert alert-danger" role="alert">
-        <p><b>Oups!</b> Something bad happened...</p>
-    </div>
+    <blockquote v-else class="quote-danger">
+        <h5>Oups!</h5>
+        <p>         
+            <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+            </svg>
+            Something bad happened...
+        </p>
+    </blockquote>
 </template>
 
 <script>

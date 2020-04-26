@@ -1,18 +1,27 @@
 <template>
-    <div v-if="loadingPage"class="alert alert-warning" role="alert">
-        <h4>Loading...</h4>
+    <div v-if="loadingPage" class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Loading...</h3>
+        </div>
+        <div class="card-body">
+            We are getting the data...
+        </div>
+        <div class="overlay">
+            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+        </div>
     </div>
-    <div v-else-if="error != null" class="alert alert-danger" role="alert">
+    <blockquote v-else-if="error != null" class="quote-danger">
+        <h5>Oups!</h5>
         <p>         
             <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                 <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
             </svg>
-            <b>Oups!</b> {{ error.message }}
+            {{ error.message }}
         </p>
         <p v-if="error.code == 403">
             You can get connected <a href="/auth/deezer/login">here</a>.
         </p>
-    </div>
+    </blockquote>
     <div v-else-if="playlists != null">
         <div v-if="playlists.error != null" class="alert alert-danger" role="alert">
             <p>
@@ -32,63 +41,100 @@
                 </div>    
             </div>
             <div class="row">            
-                <div class="col-5">
+                <div class="col-4">
                     <p><i>{{ playlists.data.length }} playlists</i></p>
+                    <div class="card card-outline card-primary"
+                        v-for="playlist in playlists.data"
+                        v-bind:key="playlist.id">
 
-                    <ul class="collection">
-                        <li class="collection-item avatar"
-                            v-for="playlist in playlists.data"
-                            v-bind:key="playlist.id">
-
-                            <img v-bind:src="playlist.picture" alt="picture playlist" class="circle">
-                            <span class="title">{{ playlist.title }}</span>
-                            <p>{{ playlist.nb_tracks }} tracks<br>
-                            Duration: {{ timePlaylist(playlist.duration) }}
-                            </p>
-                            
-                            <button v-on:click="getPlaylistContent(playlist.id)" class="secondary-content btn btn-success" name="action">See</button>
-                        </li>
-                    </ul>
+                        <div class="card-header">
+                            {{ playlist.title }}
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <img v-bind:src="playlist.picture" alt="picture playlist" class="img-fluid img-circle">
+                                </div>
+                                <div class="col-9">
+                                    <p>{{ playlist.nb_tracks }} tracks</p>
+                                    <p>Duration: {{ timePlaylist(playlist.duration) }}</p>
+                                    <p><br>
+                                    <span class="d-flex justify-content-end">
+                                        <button v-on:click="clickSee(playlist.id)" class="btn btn-primary" name="action">See</button>
+                                    </span>
+                                    </p>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
                 </div>
-                <div class="col-7">
-                    <h3 class="text-right">Playlist content</h3>
+                <div class="col-8">
+                    <h3 class="text-right" id="playlist">Playlist content</h3>
                     <hr>
-                    <div v-if="loadingPlaylist" class="alert alert-warning" role="alert">
-                        <h4>Loading...</h4>
-                    </div>
-                    <div v-else-if="playlistsContent != null">
-                        <p><i>{{ playlistsContent.total }} tracks</i></p>
-                        <ul v-if="playlistsContent.data.length > 0" id="playlist-content" class="collection">
-                            <li class="collection-item" 
-                                v-for="(track, index) in playlistsContent.data"
-                                v-bind:key="track.id">
-                                #{{ index+1 + (playlistPage-1)*20 }} {{ track.title }} | <a :href="track.artist.link">{{ track.artist.name }}</a> | {{ timeTrack(track.duration) }}
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-else class="alert alert-warning" role="alert">
-                        <h4>No playlist loaded.</h4>                        
+
+                    <div v-if="playlistsSelected != null" class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ playlistsSelected.title }}</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div v-if="loadingPlaylist">
+                                Loading...
+                            </div>
+                            <div v-else>
+                                <p><i>{{ playlistsContent.total }} tracks</i></p>
+                                <ul v-if="playlistsContent.data.length > 0" id="playlist-content" class="list-group">
+                                    <li class="list-group-item" 
+                                        v-for="(track, index) in playlistsContent.data"
+                                        v-bind:key="index">
+                                        #{{ index+1 + (playlistPage-1)*20 }} {{ track.title }} | <a :href="track.artist.link">{{ track.artist.name }}</a> | {{ timeTrack(track.duration) }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <paginate v-if="(!loadingPlaylist || playlistsContent != null) && pageCount > 0"
+                                  :force-page="playlistPage"
+                                  :page-count="pageCount"
+                                  :click-handler="clickPagination"
+                                  :prev-text="'Prev'"
+                                  :next-text="'Next'"
+                                  :container-class="'pagination d-flex justify-content-center mt-4'"
+                                  :page-class="'page-item'"
+                                  :page-link-class="'page-link'"
+                                  :prev-class="'page-item'"
+                                  :next-class="'page-item'"
+                                  :prev-link-class="'page-link'"
+                                  :next-link-class="'page-link'"
+                                  :active-class="'active'">
+                                </paginate>
+
+                        <div v-if="loadingPlaylist" class="overlay">
+                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                        </div>
                     </div>
 
-                    <paginate v-if="(loadingPlaylist || playlistsContent != null) && pageCount > 0"
-                        class="d-flex justify-content-center"
-                        :force-page="playlistPage"
-                        :page-count="pageCount"
-                        :page-range="3"
-                        :margin-pages="2"
-                        :click-handler="clickCallback"
-                        :prev-text="'Prev'"
-                        :next-text="'Next'"
-                        :container-class="'pagination'"
-                        :page-class="'page-item'">
-                    </paginate>    
+                    <blockquote v-else class="quote-warning">
+                        <p>         
+                            <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+                            </svg>
+                            No playlist loaded
+                        </p>
+                    </blockquote>
                 </div>
             </div>
         </div>
     </div>
-    <div v-else class="alert alert-danger" role="alert">
-        <p><b>Oups!</b> Something bad happened...</p>
-    </div>
+    <blockquote v-else class="quote-danger">
+        <h5>Oups!</h5>
+        <p>         
+            <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+            </svg>
+            Something bad happened...
+        </p>
+    </blockquote>
 </template>
 
 <script>
@@ -106,13 +152,13 @@
                 return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
             },
             getPlaylistContent: function (id, page = 1) {
-                
-                this.loadingPlaylist = true;
-                this.playlistID = id;
 
+                this.loadingPlaylist = true;
                 var prev = this.playlistPage;
                 this.playlistPage = page;
 
+var element = document.getElementById("playlist");
+element.scrollIntoView({behavior: "smooth"});
 
                 axios.get("/api/deezer/playlist/" + id + "/" + (page-1)*20)
                     .then((response)  =>  {
@@ -126,23 +172,32 @@
                     }, (error)  =>  {
                         this.loadingPlaylist = false;
                         this.playlistPage = prev;
-
+                        
+                        this.error = error.response.data;
                         console.log(error);
                     });
             },
-            clickCallback: function (pageNum) {
-                this.getPlaylistContent(this.playlistID, pageNum);
+            clickSee: function (id) {
+                if(this.playlists != null) {
+                    this.playlistsSelected = this.playlists.data.find(item => {
+                        return item.id == id;
+                    })
+                }
+
+                this.getPlaylistContent(id, 1);
+            },
+            clickPagination: function (pageNum) {
+                this.getPlaylistContent(this.playlistsSelected.id, pageNum);
             }
         },
         data() {
             return {
                 playlists: null,
-                playlistsSelected: null,
 
+                playlistsSelected: null, // return the object of the seletec playlist
                 playlistsContent: null, // return the playlist content
                 pageCount: 1, // return the number of page
                 playlistPage: 1, // return the selected page
-                playlistID: null, // return the selected playlist ID
 
                 error: null,
                 loadingPage: false,
@@ -151,7 +206,6 @@
         },
 
         created() {
-            this.playlistPage = 1;
             this.loadingPage = true;
             axios.get(window.location.origin + '/api/deezer/playlists')
                 .then((response)  =>  {

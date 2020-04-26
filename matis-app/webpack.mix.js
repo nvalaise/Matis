@@ -17,5 +17,17 @@ mix
 
 mix
  	.js('node_modules/bootstrap/dist/js/bootstrap.min.js', 'public/js')
-	.js('node_modules/materialize-css/dist/js/materialize.min.js', 'public/js')
-	.sass('node_modules/materialize-css/sass/materialize.scss', 'public/css');
+	.js('node_modules/admin-lte/dist/js/adminlte.min.js', 'public/js');
+
+mix.copyDirectory('node_modules/admin-lte/plugins/fontawesome-free/webfonts', 'public/webfonts');
+
+mix.styles([
+    'node_modules/admin-lte/dist/css/adminlte.min.css',
+    'node_modules/admin-lte/plugins/fontawesome-free/css/all.min.css',
+    'node_modules/admin-lte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css',
+    'node_modules/admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css',
+    'node_modules/admin-lte/plugins/jqvmap/jqvmap.min.css',
+    'node_modules/admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
+    'node_modules/admin-lte/plugins/daterangepicker/daterangepicker.css',
+    'node_modules/admin-lte/plugins/summernote/summernote-bs4.css'
+], 'public/css/adminlte.css');
