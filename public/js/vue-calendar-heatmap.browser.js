@@ -104,7 +104,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/nicolasvalaise/Web/Matis/matis-app/node_modules/vue-calendar-heatmap/dist/vue-calendar-heatmap.browser.js */"./node_modules/vue-calendar-heatmap/dist/vue-calendar-heatmap.browser.js");
+module.exports = __webpack_require__(/*! /Users/nicolasvalaise/Web/Matis/node_modules/vue-calendar-heatmap/dist/vue-calendar-heatmap.browser.js */"./node_modules/vue-calendar-heatmap/dist/vue-calendar-heatmap.browser.js");
 
 
 /***/ })

@@ -1908,7 +1908,6 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_calendar_heatmap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-calendar-heatmap */ "./node_modules/vue-calendar-heatmap/index.js");
 //
 //
 //
@@ -2006,11 +2005,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    CalendarHeatmap: vue_calendar_heatmap__WEBPACK_IMPORTED_MODULE_0__["CalendarHeatmap"]
-  },
   methods: {
     playedAt: function playedAt(seconds) {
       return moment.unix(seconds).format("ddd D MMM HH:mm");
@@ -2026,7 +2025,7 @@ __webpack_require__.r(__webpack_exports__);
       history: null,
       error: null,
       // graph
-      historyValues: null,
+      historyValues: [],
       maxActivity: 0,
       endDateValue: moment().format("YYYY-MM-DD"),
       tooltipUnitValue: 'listenings'
@@ -2046,6 +2045,15 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         console.log(response);
       }
+
+      console.log("historyValues");
+      console.log(_this.historyValues);
+      console.log("endDateValue");
+      console.log(_this.endDateValue);
+      console.log("maxActivity");
+      console.log(_this.maxActivity);
+      console.log("tooltipUnitValue");
+      console.log(_this.tooltipUnitValue);
     }, function (error) {
       _this.loadingPage = false;
       _this.error = error.response.data;
@@ -52054,12 +52062,26 @@ var render = function() {
           ? _c("div", [
               _c(
                 "div",
+                [
+                  _c("calendar-heatmap", {
+                    attrs: {
+                      values: [{ date: "2020-04-23", count: 38 }],
+                      "end-date": "2020-04-27",
+                      tooltipUnit: "testing"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
                 { staticClass: "row" },
                 [
                   _c("calendar-heatmap", {
                     attrs: {
                       values: _vm.historyValues,
-                      endDate: _vm.endDateValue,
+                      "end-date": _vm.endDateValue,
                       max: _vm.maxActivity,
                       tooltipUnit: _vm.tooltipUnitValue
                     }
@@ -68732,6 +68754,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('paginate', vuejs_paginate__WEBPACK_IMPORTED_MODULE_2___default.a);
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_calendar_heatmap__WEBPACK_IMPORTED_MODULE_3__["default"]);
+console.log(vue_calendar_heatmap__WEBPACK_IMPORTED_MODULE_3__["default"]);
 
 
 
@@ -68788,8 +68811,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/nicolasvalaise/Web/Matis/matis-app/resources/js/deezer.js */"./resources/js/deezer.js");
-module.exports = __webpack_require__(/*! /Users/nicolasvalaise/Web/Matis/matis-app/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/nicolasvalaise/Web/Matis/resources/js/deezer.js */"./resources/js/deezer.js");
+module.exports = __webpack_require__(/*! /Users/nicolasvalaise/Web/Matis/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

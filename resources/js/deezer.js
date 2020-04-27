@@ -18,6 +18,8 @@ Vue.component('paginate', Paginate)
 import VueCalendarHeatmap from 'vue-calendar-heatmap'
 Vue.use(VueCalendarHeatmap)
 
+console.log(VueCalendarHeatmap);
+
 import DeezerHome from './components/Deezer/DeezerHomeComponent.vue';
 import DeezerPlaylist from './components/Deezer/DeezerPlaylistsComponent.vue';
 import DeezerHistory from './components/Deezer/DeezerHistoryComponent.vue';
