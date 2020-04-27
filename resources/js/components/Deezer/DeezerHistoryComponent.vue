@@ -46,7 +46,7 @@
             </div>
             <div class="row">            
                 <div class="col-6">
-                    <h4>Latest history</h4>            
+                    <h4>Last 50 tracks listened</h4>            
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between list-group-item-action"
                             v-for="(track, index) in history.data"
@@ -70,7 +70,7 @@
                     </ul>
                 </div>
                 <div class="col-6">
-                    <h4>Saved history</h4>
+                    <h4>Saved activity</h4>
                     <div class="alert alert-danger" role="alert">
                         <p>         
                             <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
