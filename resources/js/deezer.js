@@ -28,7 +28,7 @@ import DeezerSocial from './components/Deezer/DeezerSocialComponent.vue';
 
 const routes = [
 	{
-		path: '/deezer', name: 'home', component: DeezerHome
+		path: '/deezer/', name: 'home', component: DeezerHome
 	},
 	{
 		path: '/deezer/playlists', name: 'playlists', component: DeezerPlaylist
@@ -45,12 +45,5 @@ const router = new VueRouter({routes, mode: 'history'});
 
 const app = new Vue({
   router,
-  scrollBehavior (to, from, savedPosition) {
-  if (to.hash) {
-    return {
-      selector: to.hash
-    }
-  }
-}
-
-}).$mount('#app')
+  linkExactActiveClass: 'active',
+}).$mount('#app');
