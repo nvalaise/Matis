@@ -34,13 +34,8 @@
             <p v-if="history.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
         </div>
         <div v-else-if="history.data != null">
-                <div>
-         <calendar-heatmap :values="[{ date: '2020-04-23', count: 38 }]" end-date="2020-04-27" tooltipUnit="testing" />
-    </div>
+            <calendar-heatmap :values="historyValues" :end-date="endDateValue" :max="maxActivity" :tooltipUnit="tooltipUnitValue"/>
 
-            <div class="row">
-                <calendar-heatmap :values="historyValues" :end-date="endDateValue" :max="maxActivity" :tooltipUnit="tooltipUnitValue"/>
-            </div>
             <div class="row">
                 <div class="col-12">
                     <p>                
@@ -143,18 +138,6 @@
                         console.log(response);
                     }
 
-                    console.log("historyValues");
-                    console.log(this.historyValues);
-
-                    console.log("endDateValue");
-                    console.log(this.endDateValue);
-
-                    console.log("maxActivity");
-                    console.log(this.maxActivity);
-
-                    console.log("tooltipUnitValue");
-                    console.log(this.tooltipUnitValue);
-
                 }, (error)  =>  {
                     this.loadingPage = false;
                     this.error = error.response.data;
@@ -162,7 +145,7 @@
         },
 
         mounted() {
-            console.log('Component mounted.');
+            //console.log('Component mounted.');
         }
     }
 </script>

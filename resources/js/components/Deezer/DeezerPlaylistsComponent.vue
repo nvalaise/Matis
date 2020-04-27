@@ -158,8 +158,8 @@
                 var prev = this.playlistPage;
                 this.playlistPage = page;
 
-var element = document.getElementById("playlist");
-element.scrollIntoView({behavior: "smooth"});
+                var element = document.getElementById("playlist");
+                element.scrollIntoView({behavior: "smooth"});
 
                 axios.get("/api/deezer/playlist/" + id + "/" + (page-1)*20)
                     .then((response)  =>  {
@@ -224,7 +224,7 @@ element.scrollIntoView({behavior: "smooth"});
         },
 
         mounted() {
-            console.log('Component mounted.');
+            // console.log('Component mounted.');
         }
     }
 </script>

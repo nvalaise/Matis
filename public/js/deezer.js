@@ -2004,11 +2004,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   methods: {
     playedAt: function playedAt(seconds) {
@@ -2045,22 +2040,12 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         console.log(response);
       }
-
-      console.log("historyValues");
-      console.log(_this.historyValues);
-      console.log("endDateValue");
-      console.log(_this.endDateValue);
-      console.log("maxActivity");
-      console.log(_this.maxActivity);
-      console.log("tooltipUnitValue");
-      console.log(_this.tooltipUnitValue);
     }, function (error) {
       _this.loadingPage = false;
       _this.error = error.response.data;
     });
   },
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  mounted: function mounted() {//console.log('Component mounted.');
   }
 });
 
@@ -2166,8 +2151,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  mounted: function mounted() {// console.log('Component mounted.');
   },
   data: function data() {
     return {
@@ -2430,8 +2414,7 @@ __webpack_require__.r(__webpack_exports__);
       _this2.error = error.response.data;
     });
   },
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  mounted: function mounted() {// console.log('Component mounted.');
   }
 });
 
@@ -2554,8 +2537,7 @@ __webpack_require__.r(__webpack_exports__);
       _this.error = error.response.data;
     });
   },
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  mounted: function mounted() {// console.log('Component mounted.');
   }
 });
 
@@ -52059,149 +52041,135 @@ var render = function() {
               ]
             )
           : _vm.history.data != null
-          ? _c("div", [
-              _c(
-                "div",
-                [
-                  _c("calendar-heatmap", {
-                    attrs: {
-                      values: [{ date: "2020-04-23", count: 38 }],
-                      "end-date": "2020-04-27",
-                      tooltipUnit: "testing"
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "row" },
-                [
-                  _c("calendar-heatmap", {
-                    attrs: {
-                      values: _vm.historyValues,
-                      "end-date": _vm.endDateValue,
-                      max: _vm.maxActivity,
-                      tooltipUnit: _vm.tooltipUnitValue
-                    }
-                  })
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _vm._m(2),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-6" }, [
-                  _c("h4", [_vm._v("Latest history")]),
-                  _vm._v(" "),
-                  _c(
-                    "ul",
-                    { staticClass: "list-group" },
-                    _vm._l(_vm.history.data, function(track, index) {
-                      return _c(
-                        "li",
-                        {
-                          key: track.id + track.timestamp,
-                          staticClass:
-                            "list-group-item d-flex justify-content-between list-group-item-action"
-                        },
-                        [
-                          _c("div", { staticClass: "col-3" }, [
-                            track.album.cover
-                              ? _c("img", {
-                                  staticClass: "circle img-responsive",
-                                  attrs: {
-                                    src: track.album.cover,
-                                    alt: "picture track history"
-                                  }
-                                })
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-7" }, [
-                            _c("p", [
-                              _vm._v(
-                                "#" +
-                                  _vm._s(index + 1) +
-                                  " | " +
-                                  _vm._s(_vm.playedAt(track.timestamp))
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("p", [
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: track.link, target: "_blank" }
-                                },
-                                [_vm._v(_vm._s(track.title))]
-                              ),
-                              _vm._v(
-                                " |\n                                " +
-                                  _vm._s(track.artist.name) +
-                                  "\n                            "
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col-2" }, [
-                            _c("p", [
-                              _vm._v(_vm._s(_vm.timeTrack(track.duration)))
-                            ])
-                          ])
-                        ]
-                      )
-                    }),
-                    0
-                  )
-                ]),
+          ? _c(
+              "div",
+              [
+                _c("calendar-heatmap", {
+                  attrs: {
+                    values: _vm.historyValues,
+                    "end-date": _vm.endDateValue,
+                    max: _vm.maxActivity,
+                    tooltipUnit: _vm.tooltipUnitValue
+                  }
+                }),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-6" }, [
-                  _c("h4", [_vm._v("Saved history")]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "alert alert-danger",
-                      attrs: { role: "alert" }
-                    },
-                    [
-                      _c("p", [
-                        _c(
-                          "svg",
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-6" }, [
+                    _c("h4", [_vm._v("Latest history")]),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      { staticClass: "list-group" },
+                      _vm._l(_vm.history.data, function(track, index) {
+                        return _c(
+                          "li",
                           {
-                            attrs: {
-                              id: "i-msg",
-                              xmlns: "http://www.w3.org/2000/svg",
-                              viewBox: "0 0 32 32",
-                              width: "32",
-                              height: "32",
-                              fill: "none",
-                              stroke: "currentcolor",
-                              "stroke-linecap": "round",
-                              "stroke-linejoin": "round",
-                              "stroke-width": "2"
-                            }
+                            key: track.id + track.timestamp,
+                            staticClass:
+                              "list-group-item d-flex justify-content-between list-group-item-action"
                           },
                           [
-                            _c("path", {
-                              attrs: {
-                                d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z"
-                              }
-                            })
+                            _c("div", { staticClass: "col-3" }, [
+                              track.album.cover
+                                ? _c("img", {
+                                    staticClass: "circle img-responsive",
+                                    attrs: {
+                                      src: track.album.cover,
+                                      alt: "picture track history"
+                                    }
+                                  })
+                                : _vm._e()
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-7" }, [
+                              _c("p", [
+                                _vm._v(
+                                  "#" +
+                                    _vm._s(index + 1) +
+                                    " | " +
+                                    _vm._s(_vm.playedAt(track.timestamp))
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("p", [
+                                _c(
+                                  "a",
+                                  {
+                                    attrs: {
+                                      href: track.link,
+                                      target: "_blank"
+                                    }
+                                  },
+                                  [_vm._v(_vm._s(track.title))]
+                                ),
+                                _vm._v(
+                                  " |\n                                " +
+                                    _vm._s(track.artist.name) +
+                                    "\n                            "
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-2" }, [
+                              _c("p", [
+                                _vm._v(_vm._s(_vm.timeTrack(track.duration)))
+                              ])
+                            ])
                           ]
-                        ),
-                        _vm._v(" "),
-                        _c("b", [_vm._v("Wait!")]),
-                        _vm._v(" Not available today\n                    ")
-                      ])
-                    ]
-                  )
+                        )
+                      }),
+                      0
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-6" }, [
+                    _c("h4", [_vm._v("Saved history")]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "alert alert-danger",
+                        attrs: { role: "alert" }
+                      },
+                      [
+                        _c("p", [
+                          _c(
+                            "svg",
+                            {
+                              attrs: {
+                                id: "i-msg",
+                                xmlns: "http://www.w3.org/2000/svg",
+                                viewBox: "0 0 32 32",
+                                width: "32",
+                                height: "32",
+                                fill: "none",
+                                stroke: "currentcolor",
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z"
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("b", [_vm._v("Wait!")]),
+                          _vm._v(" Not available today\n                    ")
+                        ])
+                      ]
+                    )
+                  ])
                 ])
-              ])
-            ])
+              ],
+              1
+            )
           : _vm._e()
       ])
     : _c("blockquote", { staticClass: "quote-danger" }, [
