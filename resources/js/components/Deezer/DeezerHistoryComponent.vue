@@ -34,9 +34,8 @@
             <p v-if="history.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
         </div>
         <div v-else-if="history.data != null">
-            <div class="row">
-                <calendar-heatmap :values="historyValues" :endDate="endDateValue" :max="maxActivity" :tooltipUnit="tooltipUnitValue"/>
-            </div>
+            <calendar-heatmap :values="historyValues" :end-date="endDateValue" :max="maxActivity" :tooltipUnit="tooltipUnitValue"/>
+
             <div class="row">
                 <div class="col-12">
                     <p>                
@@ -47,7 +46,7 @@
             </div>
             <div class="row">            
                 <div class="col-6">
-                    <h4>Latest history</h4>            
+                    <h4>Last 50 tracks listened</h4>            
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between list-group-item-action"
                             v-for="(track, index) in history.data"
@@ -71,7 +70,7 @@
                     </ul>
                 </div>
                 <div class="col-6">
-                    <h4>Saved history</h4>
+                    <h4>Saved activity</h4>
                     <div class="alert alert-danger" role="alert">
                         <p>         
                             <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -96,12 +95,7 @@
 </template>
 
 <script>
-    import { CalendarHeatmap } from 'vue-calendar-heatmap'
-
     export default {
-        components: {
-            CalendarHeatmap
-        },
         methods: {
             playedAt: function (seconds) {
                 return moment.unix(seconds).format("ddd D MMM HH:mm");
@@ -120,7 +114,7 @@
                 error: null,
 
                 // graph
-                historyValues: null,
+                historyValues: [],
                 maxActivity: 0,
                 endDateValue: moment().format("YYYY-MM-DD"),
                 tooltipUnitValue: 'listenings'
@@ -131,6 +125,7 @@
             this.loadingPage = true;
             axios.get(window.location.origin + '/api/deezer/history')
                 .then((response)  =>  {
+
                     this.loadingPage = false;
 
                     if (response.status === 200) {
@@ -142,6 +137,7 @@
                     } else {
                         console.log(response);
                     }
+
                 }, (error)  =>  {
                     this.loadingPage = false;
                     this.error = error.response.data;
@@ -149,7 +145,7 @@
         },
 
         mounted() {
-            console.log('Component mounted.');
+            //console.log('Component mounted.');
         }
     }
 </script>
