@@ -92,7 +92,14 @@
                                     <li class="list-group-item" 
                                         v-for="(track, index) in playlistsContent.data"
                                         v-bind:key="index">
-                                        #{{ index+1 + (playlistPage-1)*20 }} {{ track.title }} | <a :href="track.artist.link">{{ track.artist.name }}</a> | {{ timeTrack(track.duration) }}
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <img v-bind:src="track.album.cover_small" alt="picture playlist" class="img-fluid img-circle">
+                                            </div>
+                                            <div class="col-10">
+                                                #{{ index+1 + (playlistPage-1)*20 }} {{ track.title }} | <a :href="track.artist.link">{{ track.artist.name }}</a> | {{ timeTrack(track.duration) }}
+                                            </div>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
