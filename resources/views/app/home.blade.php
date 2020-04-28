@@ -30,7 +30,7 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
-      	<p>What to promote a new application or feature (... or report a bug 🙃) ? Feel free to contact me: <i class="font-weight-bold">nicolas [dot] valaise [at] hotmail [dot] fr</i></p>
+      	<p>Want to promote a new application or feature (... or report a bug 🙃) ? Feel free to contact me: <i class="font-weight-bold">nicolas [dot] valaise [at] hotmail [dot] fr</i></p>
       	<p>Follow the developments on <a href="https://github.com/nvalaise/Matis">Github</a>.</p>
 
         <ul class="todo-list" data-widget="todo-list">
