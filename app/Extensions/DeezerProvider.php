@@ -11,7 +11,13 @@ class DeezerProvider extends AbstractProvider implements ProviderInterface {
     /**
      * {@inheritdoc}
      */
-    protected $scopes = ['basic_access', 'email', 'manage_library', 'manage_community', 'listening_history'];
+    // protected $scopes = ['basic_access', 'email', 'manage_library', 'manage_community', 'listening_history'];
+
+    /**
+     * Unique Provider Identifier.
+     */
+    const IDENTIFIER = 'DEEZER';
+
 
     /**
      * {@inheritdoc}

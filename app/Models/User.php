@@ -45,7 +45,9 @@ class User extends Authenticatable
     }
 
     public function has($driver) {
-        return $this->hasOne('App\Models\UserAccount', $driver.'_id', 'id')->first();
+        $accounts = $this->accounts();
+        
+        return ! empty((array) $accounts[$driver.'_id']);
     }
 
     /**
@@ -54,6 +56,14 @@ class User extends Authenticatable
     public function deezer()
     {
         return $this->hasOne('App\Models\UserAccount', 'deezer_id', 'id');
+    }
+
+    /**
+     * Get the phone record associated with the user.
+     */
+    public function spotify()
+    {
+        return $this->hasOne('App\Models\UserAccount', 'spotify_id', 'id');
     }
 
     /**

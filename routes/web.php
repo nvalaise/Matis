@@ -38,6 +38,13 @@ Route::prefix('auth')->group(function () {
 
 // Route to handle page reload in Vue except for api routes
 Route::get('/deezer/{any?}', function () {
+	dd(Auth::user());	
 
     return view('app.deezer');
-})->where('any', '^(?!api\/)[\/\w\.-]*')->name('deezer.vue');;
+})->where('any', '^(?!api\/)[\/\w\.-]*')->middleware('switchAccount')->name('deezer.vue');;
+
+Route::get('/spotify/{any?}', function () {
+	dd(Auth::user());
+	
+    // return view('app.spotify');
+})->where('any', '^(?!api\/)[\/\w\.-]*')->middleware('switchAccount')->name('spotify.vue');;

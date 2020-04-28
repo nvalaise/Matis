@@ -34,6 +34,12 @@ return [
         'client_id' => env('DEEZER_KEY'),
         'client_secret' => env('DEEZER_SECRET'),
         'redirect' => env('APP_URL') . '/auth/deezer/callback'
-    ]
+    ],
+
+    'spotify' => [
+        'client_id' => env('SPOTIFY_KEY'),
+        'client_secret' => env('SPOTIFY_SECRET'),
+        'redirect' => env('APP_URL') . '/auth/spotify/callback'
+    ],
 
 ];

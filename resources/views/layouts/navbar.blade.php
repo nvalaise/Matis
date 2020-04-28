@@ -101,6 +101,19 @@
         </a>
       </li>
       @show
+      @section('sidebar-spotify')
+      <li class="nav-item">
+        <a href="/spotify" class="nav-link">
+          <i class="nav-icon fas fa-code"></i>
+          <p>
+            Spotify
+            @if(Auth::check() && Auth::user()->has('spotify'))
+            <span class="right badge badge-danger">Active</span>
+            @endif
+          </p>
+        </a>
+      </li>
+      @show
       <li class="nav-item">
         <a href="#" class="nav-link @if (Request::path() == 'terms') active @endif">
           <i class="nav-icon far fa-plus-square"></i>

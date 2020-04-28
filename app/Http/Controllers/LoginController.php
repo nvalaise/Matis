@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 use App\Services\RandomPseudo\RandomPseudo;
 use App\Models\User;
@@ -29,6 +30,7 @@ class LoginController extends Controller
 		}
 
 		try {
+			Session::put('__redirect_url', URL::previous());
 			return Socialite::with($driver)->stateless(false)->redirect();
 		} catch (Exception $e) {
 			return $this->sendFailedResponse($e->getMessage());
@@ -53,40 +55,57 @@ class LoginController extends Controller
 			return $this->sendFailedResponse("{$driver} is not currently supported");
 		}
 
-		// check for already has account
-		$user = User::where('provider', $driver)
+		$authUser = Auth::user();
+
+		// check if user already has account with this provider
+		$userFromProvider = User::where('provider', $driver)
 			->where('provider_id', $providerUser->id)
 			->first();
 
-		// if user already found
-		if( $user ) {
-			
-			$user->update([
-				'provider' => $driver,
-				'provider_id' => $providerUser->id,
-				'access_token' => $providerUser->token
-			]);
-			$user->save();
-
-			if(! ($user_account = $user->has($driver))) {
-				switch ($driver) {
-					case 'deezer':
-						$user_account->deezer_id = $user->id;
-						break;
-					
-					default:
-						break;
-				}
-
-				$user_account->save();
-			}
-		} else {
+		/////
+		///// 1. first connection with this provider and not authenticated
+		/////
+		if ( is_null($userFromProvider) && is_null($authUser)) {
+			// create the user and create the accounts reference
+			$pseudo = RandomPseudo::generate();
 			DB::beginTransaction();
-
 			try {
-				// create a new user
-				$pseudo = RandomPseudo::generate();
+				$authUser = User::create([
+					'provider' => $driver,
+					'provider_id' => $providerUser->id,
+					'email' => $providerUser->email,
+					'password' => Hash::make("mdp" . $pseudo), // user can use reset password to create a password					
+					'access_token' => $providerUser->token,
+				]);
+				$authUser->save();
+				$new_userAccount = UserAccount::create([
+					'pseudo' => RandomPseudo::generate(),
+					$driver . '_id' => $user->id
+				]);
+				$new_userAccount->save();
+				DB::commit();
+			} catch (\Exception $e) {
+				// something went wrong elsewhere, handle gracefully
+				DB::rollBack();
+				Session::flash('flash_type', 'alert-danger');
+				Session::flash('flash_message', '<p><b>Error!</b> Database error code:'. $e->getMessage() .'</p>');
+				return redirect()->route('auth.index');
+			}
+			Session::flash('flash_type', 'alert-success');
+			Session::flash('flash_message', '<p><b>Welcome '.$pseudo.'!</b> Hope you will enjoy Matis.</p>');
+			Auth::loginUsingId($authUser->id);
+			return $this->redirectPreviousOrView();
+		}
 
+		/////
+		///// 2. first connection with this provider and authenticated
+		/////
+		if ( is_null($userFromProvider) && ! is_null($authUser)) {
+			// create the user and link it to its accounts
+			$pseudo = $authUser->pseudo();
+			if(is_null($pseudo)) { $pseudo = RandomPseudo::generate(); }
+			DB::beginTransaction();
+			try {
 				$user = User::create([
 					'provider' => $driver,
 					'provider_id' => $providerUser->id,
@@ -95,37 +114,88 @@ class LoginController extends Controller
 					'access_token' => $providerUser->token,
 				]);
 				$user->save();
-
-				$user_account = UserAccount::create([
-					'pseudo' => RandomPseudo::generate(),
-					$driver . '_id' => $user->id
-				]);
-				$user_account->save();
-	
+				UserAccount::where($authUser->provider . '_id', $authUser->id)
+					->update([$driver . '_id' => $user->id]);
 				DB::commit();
-
 			} catch (\Exception $e) {
 				// something went wrong elsewhere, handle gracefully
 				DB::rollBack();
-
 				Session::flash('flash_type', 'alert-danger');
 				Session::flash('flash_message', '<p><b>Error!</b> Database error code:'. $e->getMessage() .'</p>');
-				
 				return redirect()->route('auth.index');
-			}			
-		}
-
-		Auth::loginUsingId($user->id);
-
-		if(Auth::check()) {
+			}
 			Session::flash('flash_type', 'alert-success');
-			Session::flash('flash_message', '<p><b>Welcome !</b> You successfully logged in to this website with Deezer.</p>');
-		} else {
-			Session::flash('flash_type', 'alert-danger');
-			Session::flash('flash_message', '<p><b>Oups !</b> Something went wrong....</p>');
+			Session::flash('flash_message', '<p><b>Welcome '.$pseudo.'!</b> Your account with '.ucfirst($driver).' has been successfly connected.</p>');
+			return $this->redirectPreviousOrView();
 		}
 
-		return redirect()->route('auth.index');
+		/////
+		///// 3. has been already connected with this provider but not authenticated
+		/////
+		if (! is_null($userFromProvider) && is_null($authUser)) { 
+			// refresh access token
+			DB::beginTransaction();
+			try {
+				$userFromProvider->update([
+					'provider' => $driver,
+					'provider_id' => $providerUser->id,
+					'access_token' => $providerUser->token
+				]);
+				$userFromProvider->save();
+				DB::commit();
+			} catch (\Exception $e) {
+				// something went wrong elsewhere, handle gracefully
+				DB::rollBack();
+				Session::flash('flash_type', 'alert-danger');
+				Session::flash('flash_message', '<p><b>Error!</b> Database error code:'. $e->getMessage() .'</p>');
+				return redirect()->route('auth.index');
+			}
+			Auth::loginUsingId($userFromProvider->id);
+			Session::flash('flash_type', 'alert-success');
+			Session::flash('flash_message', '<p><b>Welcome back '.Auth::user()->pseudo().'!</b> You are ready to manage your data.</p>');
+			return $this->redirectPreviousOrView();
+		}
+
+		/////
+		///// 4. has been already connected with this provider and authenticated 
+		/////
+		if (! is_null($userFromProvider) && !is_null($authUser)) { // 
+			// refresh access token
+			DB::beginTransaction();
+			try {
+				$user->update([
+					'provider' => $driver,
+					'provider_id' => $providerUser->id,
+					'access_token' => $providerUser->token
+				]);
+				$user->save();
+				DB::commit();
+			} catch (\Exception $e) {
+				// something went wrong elsewhere, handle gracefully
+				DB::rollBack();
+				Session::flash('flash_type', 'alert-danger');
+				Session::flash('flash_message', '<p><b>Error!</b> Database error code:'. $e->getMessage() .'</p>');
+				return redirect()->route('auth.index');
+			}
+			Session::flash('flash_type', 'alert-success');
+			Session::flash('flash_message', '<p><b>Welcome '.$pseudo.'!</b> Your session has been refreshed with '.ucfirst($driver).'.</p>');
+			return $this->redirectPreviousOrView();
+		}
+	}
+
+	public function redirectPreviousOrView() {
+		if(!Auth::check()) {
+			Session::flash('flash_type', 'alert-danger');
+			Session::flash('flash_message', '<p><b>Oups !</b> Something went wrong.... You are not authenticated.</p>');
+		}
+
+		$redirect = Session::get('__redirect_url');
+		if (isset($redirect)) {
+			Session::forget('__redirect_url');
+			return redirect($redirect);
+		} else {
+			return redirect()->route('auth.index');
+		}
 	}
 
 	public function logout() {
