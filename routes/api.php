@@ -16,12 +16,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('deezer')->group(function () {
 	Route::get('/account', 'Board\BoardDeezerController@account')->name('deezer.account');
-	Route::get('/playlists', 'Board\BoardDeezerController@playlists')->name('deezer.playlists');
 	Route::get('/history', 'Board\BoardDeezerController@history')->name('deezer.history');
 	Route::get('/social', 'Board\BoardDeezerController@social')->name('deezer.social');
 
+	Route::get('/playlists', 'Board\BoardDeezerController@playlists')->name('deezer.playlists');
 	Route::get('/playlist/{id}/{start?}', 'Board\BoardDeezerController@playlist')
 		->name('deezer.playlist')
 		->where('id', '[0-9]+')
 		->where('start', '[0-9]+');
+
+	Route::get('/artists/{start?}', 'Board\BoardDeezerController@artists')
+		->name('deezer.artists')
+		->where('start', '[0-9]+');
+
+	Route::get('/artist/{id}', 'Board\BoardDeezerController@artist')
+		->name('deezer.artist')
+		->where('id', '[0-9]+');
 });

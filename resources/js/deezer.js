@@ -22,6 +22,7 @@ console.log(VueCalendarHeatmap);
 
 import DeezerHome from './components/Deezer/DeezerHomeComponent.vue';
 import DeezerPlaylist from './components/Deezer/DeezerPlaylistsComponent.vue';
+import DeezerArtist from './components/Deezer/DeezerArtistsComponent.vue';
 import DeezerHistory from './components/Deezer/DeezerHistoryComponent.vue';
 import DeezerSocial from './components/Deezer/DeezerSocialComponent.vue';
 
@@ -38,6 +39,9 @@ const routes = [
 	},
 	{
 		path: '/deezer/history', name: 'history', component: DeezerHistory
+	},
+	{
+		path: '/deezer/artists', name: 'artists', component: DeezerArtist
 	}
 ];
 

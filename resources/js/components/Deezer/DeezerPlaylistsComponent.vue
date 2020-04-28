@@ -37,7 +37,10 @@
             <div class="row">
                 <div class="col-12">
                     <p>                
-                        <a href="#" class="btn btn-primary mx-2">Save</a> This action will save or update your data in <i>Matis</i> database.               
+                        <a href="#" class="btn btn-warning mx-2">Save</a> This action will save or update your data in <i>Matis</i> database.               
+                    </p>
+                    <p>                
+                        <a href="#" class="btn btn-success mx-2">Save</a> The button in green means that you have already saved the playlist in <i>Matis</i> database.               
                     </p>
                 </div>    
             </div>
@@ -57,15 +60,16 @@
                                     <img v-bind:src="playlist.picture" alt="picture playlist" class="img-fluid img-circle">
                                 </div>
                                 <div class="col-9">
+                                    <div></div>
                                     <p>{{ playlist.nb_tracks }} tracks</p>
                                     <p>Duration: {{ timePlaylist(playlist.duration) }}</p>
-                                    <p><br>
-                                    <span class="d-flex justify-content-end">
-                                        <button v-on:click="clickSee(playlist.id)" class="btn btn-primary" name="action">See</button>
-                                    </span>
-                                    </p>
                                 </div>
-                            </div>                        
+                            </div>                                
+                            <div class="row d-flex justify-content-between">
+                                <button v-on:click="clickSee(playlist.id)" class="btn btn-primary" name="action">See</button>
+
+                                <button class="btn btn-warning" name="action">Save</button>                                
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -164,18 +168,17 @@
                 axios.get("/api/deezer/playlist/" + id + "/" + (page-1)*20)
                     .then((response)  =>  {
                         if (response.status === 200) {
-                            this.loadingPlaylist = false;
-
                             this.playlistsContent = response.data;
                             this.pageCount = Math.ceil(this.playlistsContent.total/20);   
 
+                            this.loadingPlaylist = false;
                         }
                     }, (error)  =>  {
-                        this.loadingPlaylist = false;
-                        this.playlistPage = prev;
-                        
+                        this.playlistPage = prev;                        
                         this.error = error.response.data;
                         console.log(error);
+                        
+                        this.loadingPlaylist = false;
                     });
             },
             clickSee: function (id) {
