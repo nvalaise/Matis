@@ -19,7 +19,7 @@
 			<span v-if="error.message != null">{{ error.message }}</span>
             <span v-else>{{ error }}</span>
 		</p>
-        <p v-if="error.code == 401">
+        <p v-if="error.code == 403">
         	You can get connected <a href="/auth/spotify/login">here</a>.
         </p>
     </blockquote>

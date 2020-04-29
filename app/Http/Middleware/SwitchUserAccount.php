@@ -53,7 +53,7 @@ class SwitchUserAccount
                 try {
                     $socialiteUser = Socialite::driver($driver)->userFromToken($user->access_token);
                 } catch (\GuzzleHttp\Exception\ClientException $e) {
-                    return response()->json(['code' => 401, 'message' => 'Can\'t connect your account with '.ucfirst($driver).'. Try to authenticate again.'], 401);                    
+                    return response()->json(['code' => 403, 'message' => 'Can\'t connect your account with '.ucfirst($driver).'. Try to authenticate again.'], 403);
                 }
             }
         }
