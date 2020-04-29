@@ -13,18 +13,13 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('app.home');
-});
+Route::get('/', 'ViewController@home')->name('home');
 
 // => /auth/...
 Route::prefix('auth')->group(function () {
 
 	// => /auth
-	Route::get('/', function () {
-
-		return view('app.auth');
-	})->name('auth.index');
+	Route::get('/', 'ViewController@auth')->name('auth.index');
 	
 	Route::group(['prefix' => '{driver}'], function () {
 
@@ -36,10 +31,10 @@ Route::prefix('auth')->group(function () {
 });
 
 // Route to handle page reload in Vue except for api routes
-Route::get('/deezer/{any?}', function () {
-    return view('app.deezer');
-})->where('any', '^(?!api\/)[\/\w\.-]*')->name('deezer.vue');;
+Route::get('/deezer/{any?}', 'ViewController@deezer')
+	->where('any', '^(?!api\/)[\/\w\.-]*')
+	->name('deezer.vue');
 
-Route::get('/spotify/{any?}', function () {
-    return view('app.spotify');
-})->where('any', '^(?!api\/)[\/\w\.-]*')->name('spotify.vue');;
+Route::get('/spotify/{any?}', 'ViewController@spotify')
+	->where('any', '^(?!api\/)[\/\w\.-]*')
+	->name('spotify.vue');

@@ -24,7 +24,7 @@
 				@if(Auth::check() && Auth::user()->has('spotify'))
             	<span class="right badge bg-green">Active</span>
             	@else
-            	<span class="right badge bg-green">Inactive</span>
+            	<span class="right badge badge-danger">Inactive</span>
             	@endif
 			</p>
 		</a>
