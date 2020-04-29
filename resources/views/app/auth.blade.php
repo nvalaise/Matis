@@ -37,7 +37,6 @@
             	@if(Auth::check() && Auth::user()->has('deezer'))
       					<a href="{{ route('auth.login', 'deezer') }}" class="btn btn-primary">Refresh</a>
       					<a class="btn btn-success" href="/deezer" role="button">Dashboard</a>
-      					<a href="{{ route('auth.logout', 'deezer') }}" class="btn btn-danger">Logout</a>
       				@else
       					<a href="{{ route('auth.login', 'deezer') }}" class="btn btn-success">Connect</a>
       				@endif
@@ -53,7 +52,6 @@
               @if(Auth::check() && Auth::user()->has('spotify'))
                 <a href="{{ route('auth.login', 'spotify') }}" class="btn btn-primary">Refresh</a>
                 <a class="btn btn-success" href="/spotify" role="button">Dashboard</a>
-                <a href="{{ route('auth.logout', 'spotify') }}" class="btn btn-danger">Logout</a>
               @else
                 <a href="{{ route('auth.login', 'spotify') }}" class="btn btn-success">Connect</a>
               @endif
@@ -74,7 +72,6 @@
           <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3">
           	<div class="row d-flex justify-content-between">
             	<a href="#" class="btn btn-primary">Connect</a>
-				<a href="#" class="btn btn-danger">Logout</a>
             </div>
             <hr>
              <p>

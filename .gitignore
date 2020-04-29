@@ -12,6 +12,7 @@ app/storage/
 /public/hot
 /public/css/*
 /public/js/*
+/public/mix-manifest.json
 
 /public
 

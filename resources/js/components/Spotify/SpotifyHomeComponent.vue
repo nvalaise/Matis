@@ -19,8 +19,8 @@
 			<span v-if="error.message != null">{{ error.message }}</span>
             <span v-else>{{ error }}</span>
 		</p>
-        <p v-if="error.code == 403">
-        	You can get connected <a href="/auth/deezer/login">here</a>.
+        <p v-if="error.code == 401">
+        	You can get connected <a href="/auth/spotify/login">here</a>.
         </p>
     </blockquote>
 	<div v-else-if="account != null">
@@ -31,17 +31,16 @@
 				</svg>
 				<b>Oups!</b> {{ account.error.message }}
 			</p>
-	        <p v-if="account.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
+	        <p v-if="account.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/spotify/login">here</a>.</p>
 		</div>
 		<div v-else-if="account != null">
 			<div class="row">
 				<div class="col-2">
-					<p><img :src="account.picture" class="rounded img-fluid"></p>		
+					<p><img :src="account.images[0].url" class="rounded img-fluid"></p>		
 				</div>
 				<div class="col-10">
-					<h4>{{ account.name }} <small>(#{{ account.id }})</small></h4>
-					<p><a :href="account.link" target="_blank">{{ account.linkgit }}</a></p>
-					<p>Flow (API): <a :href="account.tracklist" target="_blank">tracklist</a></p>
+					<h4>{{ account.display_name }} <small>(#{{ account.id }})</small></h4>
+					<p><a :href="account.external_urls.spotify" target="_blank">{{ account.external_urls.spotify }}</a></p>
 				</div>
 			</div>
 
@@ -50,28 +49,13 @@
 					<label for="InputAccessToken" class="col-2 col-form-label">Access Token</label>
 					<div class="col-10">
 						<input type="email" class="form-control" id="InputAccessToken" aria-describedby="tokenHelp" :value="access_token">
-						<small id="tokenHelp" class="form-text text-muted">Try it out right here: <a href="https://developers.deezer.com/api/explorer" target="_blank">Deezer Explorer</a></small>
+						<small id="tokenHelp" class="form-text text-muted">Try it out right here: <a href="https://developer.spotify.com/console/" target="_blank">Spotify Console</a></small>
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="InputMail" class="col-2 col-form-label">Email</label>
 					<div class="col-10">
 						<input type="text" readonly class="form-control-plaintext" id="InputMail" :value="account.email" disabled>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="InputName" class="col-2 col-form-label">Name</label>
-					<div class="col-5">
-						<input type="text" class="form-control" id="InputName" :value="account.firstname" disabled>
-					</div>
-					<div class="col-5">
-						<input type="text" class="form-control" id="InputName" :value="account.lastname" disabled>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="InputDate" class="col-2 col-form-label">Registration</label>
-					<div class="col-10">
-						<input type="text" readonly class="form-control-plaintext" id="InputDate" :value="account.inscription_date" disabled>
 					</div>
 				</div>
 			</form>
@@ -105,10 +89,9 @@
 
         created() {
         	this.loadingPage = true;
-            axios.get(window.location.origin + '/api/deezer/account')
+            axios.get(window.location.origin + '/api/spotify/account')
             	.then((response)  =>  {
             		this.loadingPage = false;
-
                     if (response.status === 200) {
                     	this.account = response.data.response;
                     	this.access_token = response.data.access_token;

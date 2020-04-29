@@ -33,3 +33,8 @@ Route::prefix('deezer')->group(function () {
 		->name('deezer.artist')
 		->where('id', '[0-9]+');
 });
+
+Route::prefix('spotify')->group(function () {
+	Route::get('/account', 'Board\BoardSpotifyController@account')->name('spotify.account');
+
+});

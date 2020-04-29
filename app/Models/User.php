@@ -36,7 +36,17 @@ class User extends Authenticatable
     }
 
     public function account($driver) {
-        return $this->hasOne('App\Models\UserAccount', $driver.'_id', 'id')->first();
+
+        if ($this->provider == $driver) {
+            return $this;
+        }
+
+        $accounts = $this->accounts();
+        if (! empty($accounts)) {
+            return $accounts->user($driver);
+        }
+
+        return null;
     }
 
     public function pseudo() {

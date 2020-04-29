@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-
     return view('app.home');
 });
 
@@ -30,23 +29,17 @@ Route::prefix('auth')->group(function () {
 	Route::group(['prefix' => '{driver}'], function () {
 
 		Route::get('/login', 'LoginController@redirectToProvider')->name('auth.login');
-		Route::get('/callback', 'LoginController@handleProviderCallback')->name('auth.callback');
-		
-		Route::get('/logout', 'LoginController@logout')->name('auth.logout');
+		Route::get('/callback', 'LoginController@handleProviderCallback')->name('auth.callback');		
 	});
+	Route::get('/logout', 'LoginController@logout')->name('auth.logout');
+
 });
 
 // Route to handle page reload in Vue except for api routes
 Route::get('/deezer/{any?}', function () {
-	//dd(Auth::user());	
-
     return view('app.deezer');
-})->where('any', '^(?!api\/)[\/\w\.-]*')->middleware('switchAccount')->name('deezer.vue');;
+})->where('any', '^(?!api\/)[\/\w\.-]*')->name('deezer.vue');;
 
 Route::get('/spotify/{any?}', function () {
-	//dd(Auth::user());
-
-    return view('app.deezer');
-
-    // return view('app.spotify');
-})->where('any', '^(?!api\/)[\/\w\.-]*')->middleware('switchAccount')->name('spotify.vue');;
+    return view('app.spotify');
+})->where('any', '^(?!api\/)[\/\w\.-]*')->name('spotify.vue');;

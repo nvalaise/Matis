@@ -18,29 +18,29 @@ Vue.component('paginate', Paginate)
 import VueCalendarHeatmap from 'vue-calendar-heatmap'
 Vue.use(VueCalendarHeatmap)
 
-import DeezerHome from './components/Deezer/DeezerHomeComponent.vue';
-import DeezerPlaylist from './components/Deezer/DeezerPlaylistsComponent.vue';
+import SpotifyHome from './components/Spotify/SpotifyHomeComponent.vue';
+/*import DeezerPlaylist from './components/Deezer/DeezerPlaylistsComponent.vue';
 import DeezerArtist from './components/Deezer/DeezerArtistsComponent.vue';
 import DeezerHistory from './components/Deezer/DeezerHistoryComponent.vue';
-import DeezerSocial from './components/Deezer/DeezerSocialComponent.vue';
+import DeezerSocial from './components/Deezer/DeezerSocialComponent.vue';*/
 
 
 const routes = [
 	{
-		path: '/deezer/', name: 'home', component: DeezerHome
+		path: '/spotify/', name: 'home', component: SpotifyHome
+	}/*,
+	{
+		path: '/spotify/playlists', name: 'playlists', component: DeezerPlaylist
 	},
 	{
-		path: '/deezer/playlists', name: 'playlists', component: DeezerPlaylist
+		path: '/spotify/social', name: 'social', component: DeezerSocial
 	},
 	{
-		path: '/deezer/social', name: 'social', component: DeezerSocial
+		path: '/spotify/history', name: 'history', component: DeezerHistory
 	},
 	{
-		path: '/deezer/history', name: 'history', component: DeezerHistory
-	},
-	{
-		path: '/deezer/artists', name: 'artists', component: DeezerArtist
-	}
+		path: '/spotify/artists', name: 'artists', component: DeezerArtist
+	}*/
 ];
 
 const router = new VueRouter({routes, mode: 'history'});

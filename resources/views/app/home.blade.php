@@ -14,7 +14,7 @@
 		<p class="lead">Welcome on board with Matis. Through this website, you will be able to manage your data provided by your applications</p>
 		<hr class="my-4">
 		<p>We collect only the data provided by the different applications. Indeed, they open <i>REST API</i> so that we are able to display your data.</p>
-		<p>By default, none of your data is stored unless you explicitally click on the <a href="#" class="btn btn-primary mx-2">Save</a> button.</p>
+		<p>By default, <b>we keep only your e-mail adress</b> provided by the application. Otherwise, none of your data is stored unless you explicitally click on the <a href="#" class="btn btn-primary mx-2">Save</a> button.</p>
 		<p class="lead">
 			<a class="btn btn-success btn-lg" href="/auth" role="button">Get Started</a>
 		</p>

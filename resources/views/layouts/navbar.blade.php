@@ -60,9 +60,16 @@
 <div class="sidebar">
   <!-- Sidebar user panel (optional) -->
   @auth
-  <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-    <div class="info">
-      <a href="#" class="d-block"><span class="text-danger">#matis_id:</span> {{ Auth::user()->pseudo() }}</a>
+  <div class="user-panel mt-3 pb-3 mb-3">
+    <div class="row">
+      <div class="info">
+        <a href="#" class="d-block"><span class="text-danger">#matis_id:</span> {{ Auth::user()->pseudo() }}</a>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+      <p class="">
+        <a href="{{ route('auth.logout', 'deezer') }}" class="btn btn-sm btn-danger">Logout</a>
+      </p>
     </div>
   </div>
   @endauth
@@ -95,7 +102,7 @@
           <p>
             Deezer
             @if(Auth::check() && Auth::user()->has('deezer'))
-            <span class="right badge badge-danger">Active</span>
+            <span class="right badge bg-green">Active</span>
             @endif
           </p>
         </a>
@@ -108,7 +115,7 @@
           <p>
             Spotify
             @if(Auth::check() && Auth::user()->has('spotify'))
-            <span class="right badge badge-danger">Active</span>
+            <span class="right badge bg-green">Active</span>
             @endif
           </p>
         </a>

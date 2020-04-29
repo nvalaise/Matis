@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Deezer')
+@section('title', 'Spotify')
 
 @section('asset')
 <script src="{{ mix('js/vue-calendar-heatmap.browser.js') }}"></script>
@@ -14,14 +14,14 @@
 </style>
 @endsection
 
-@section('sidebar-deezer')	
+@section('sidebar-spotify')	
 	<li class="nav-item has-treeview menu-open">
 		<a href="#" class="nav-link active">
 			<i class="nav-icon fas fa-code"></i>
 			<p>
-				Deezer
+				Spotify
 				<i class="right fas fa-angle-left"></i>
-				@if(Auth::check() && Auth::user()->has('deezer'))
+				@if(Auth::check() && Auth::user()->has('spotify'))
             	<span class="right badge bg-green">Active</span>
             	@else
             	<span class="right badge bg-green">Inactive</span>
@@ -32,6 +32,7 @@
 			<li class="nav-item">
 				<router-link class="nav-link" :to="{ name: 'home' }" active-class="active" exact><i class="far fa-circle nav-icon"></i>Home</router-link>
 			</li>
+			<!--
 			<li class="nav-item">
 				<router-link class="nav-link" :to="{ name: 'artists' }" active-class="active" exact><i class="far fa-circle nav-icon"></i>Artists</router-link>
 			</li>
@@ -44,6 +45,7 @@
 			<li class="nav-item">
 				<router-link class="nav-link" :to="{ name: 'social' }" active-class="active" exact><i class="far fa-circle nav-icon"></i>Social</router-link>
 			</li>
+			-->
 		</ul>
 	</li>
 @stop
@@ -55,6 +57,7 @@
 			<li class="breadcrumb-item">
 				<router-link :to="{ name: 'home' }" active-class="disabled" exact>Home</router-link>
 			</li>
+			<!--
 			<li class="breadcrumb-item">
 				<router-link :to="{ name: 'artists' }" active-class="disabled" exact>Artists</router-link>
 			</li>
@@ -67,6 +70,7 @@
 			<li class="breadcrumb-item">
 				<router-link :to="{ name: 'social' }" active-class="disabled" exact>Social</router-link>
 			</li>
+			-->
 		</ol>
 	</nav>
 
@@ -74,5 +78,5 @@
 @endsection
 
 @section('vue')
-    <script src="{{ mix('js/deezer.js') }}"></script>
+    <script src="{{ mix('js/spotify.js') }}"></script>
 @endsection

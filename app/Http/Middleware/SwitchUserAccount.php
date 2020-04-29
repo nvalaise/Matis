@@ -19,20 +19,21 @@ class SwitchUserAccount
     public function handle($request, Closure $next)
     {
         $authUser = Auth::user();
+
         if (! is_null($authUser)) {
+            $driver = $request->segment(2);
             $accounts = $authUser->accounts();
+            switch ($driver) {
 
-            switch ($request->route()->getName()) {
-
-                case 'spotify.vue': // try to connect to Spotify account
+                case 'spotify': // try to connect to Spotify account
                     if(! is_null($accounts->spotify_id)) {
-                        return $this->trySwitching($request, $next, $authUser, 'spotify');
+                        return $this->trySwitching($request, $next, $authUser, $driver);
                     }
                     break;
 
-                case 'deezer.vue': // try to connect to Spotify account
+                case 'deezer': // try to connect to Spotify account
                     if(! is_null($accounts->deezer_id)) {
-                        return $this->trySwitching($request, $next, $authUser, 'deezer');
+                        return $this->trySwitching($request, $next, $authUser, $driver);
                     }
                     break;
             }
@@ -45,12 +46,19 @@ class SwitchUserAccount
     {
         if ($authUser->provider != $driver) {
             $user = $authUser->account($driver);
+
             if (isset($user)) {
+                Auth::logout();
                 Auth::loginUsingId($user->id);
-                $socialiteUser = Socialite::driver($driver)->userFromToken($user->access_token);
-                // dd(Auth::user(), $authUser, $user, $socialiteUser);
+                try {
+                    $socialiteUser = Socialite::driver($driver)->userFromToken($user->access_token);
+                } catch (\GuzzleHttp\Exception\ClientException $e) {
+                    return response()->json(['code' => 401, 'message' => 'Can\'t connect your account with '.ucfirst($driver).'. Try to authenticate again.'], 401);                    
+                }
             }
         }
+
+
 
         return $next($request);
     }
