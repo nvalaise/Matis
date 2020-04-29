@@ -80,7 +80,7 @@ class LoginController extends Controller
 				$authUser->save();
 				$new_userAccount = UserAccount::create([
 					'pseudo' => RandomPseudo::generate(),
-					$driver . '_id' => $user->id
+					$driver . '_id' => $authUser->id
 				]);
 				$new_userAccount->save();
 				DB::commit();
@@ -159,16 +159,15 @@ class LoginController extends Controller
 		/////
 		///// 4. has been already connected with this provider and authenticated 
 		/////
-		if (! is_null($userFromProvider) && !is_null($authUser)) { // 
+		if (! is_null($userFromProvider) && !is_null($authUser)) {
+
 			// refresh access token
 			DB::beginTransaction();
 			try {
-				$user->update([
-					'provider' => $driver,
-					'provider_id' => $providerUser->id,
-					'access_token' => $providerUser->token
-				]);
-				$user->save();
+				User::where('provider', $driver)
+					->where('provider_id', $providerUser->id)
+					->update(['access_token' => $providerUser->token]);
+
 				DB::commit();
 			} catch (\Exception $e) {
 				// something went wrong elsewhere, handle gracefully
@@ -177,8 +176,9 @@ class LoginController extends Controller
 				Session::flash('flash_message', '<p><b>Error!</b> Database error code:'. $e->getMessage() .'</p>');
 				return redirect()->route('auth.index');
 			}
+
 			Session::flash('flash_type', 'alert-success');
-			Session::flash('flash_message', '<p><b>Welcome '.$pseudo.'!</b> Your session has been refreshed with '.ucfirst($driver).'.</p>');
+			Session::flash('flash_message', '<p><b>Welcome '.$authUser->pseudo().'!</b> Your session has been refreshed with '.ucfirst($driver).'.</p>');
 			return $this->redirectPreviousOrView();
 		}
 	}

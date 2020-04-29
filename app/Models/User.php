@@ -35,6 +35,10 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\UserAccount', $this->provider.'_id', 'id')->first();
     }
 
+    public function account($driver) {
+        return $this->hasOne('App\Models\UserAccount', $driver.'_id', 'id')->first();
+    }
+
     public function pseudo() {
         $accounts = $this->accounts();
 
@@ -49,6 +53,8 @@ class User extends Authenticatable
         
         return ! empty((array) $accounts[$driver.'_id']);
     }
+
+
 
     /**
      * Get the phone record associated with the user.
