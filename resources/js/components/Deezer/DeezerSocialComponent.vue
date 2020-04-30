@@ -97,15 +97,14 @@
             this.loadingPage = true;
             axios.get(window.location.origin + '/api/deezer/social')
                 .then((response)  =>  {
-                    this.loadingPage = false;
-
                     if (response.status === 200) {
                         this.followings = response.data;
-                    } else {
-                        console.log(response);
                     }
+                    this.loadingPage = false;
+                    
                 }, (error)  =>  {
                     this.loadingPage = false;
+                    console.log(error);
                     this.error = error.response.data;
                 });
         },

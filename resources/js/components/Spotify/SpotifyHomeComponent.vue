@@ -95,10 +95,8 @@
             		this.loadingPage = false;
                     if (response.status === 200) {
                     	this.account = response.data.response;
-                    	this.access_token = response.data.access_token;
-                    } else {
-                    	console.log(response);
-                    }
+                    } 
+                    this.access_token = response.data.access_token;
                 }, (error)  =>  {
                 	this.loadingPage = false;
                 	this.error = error.response.data;

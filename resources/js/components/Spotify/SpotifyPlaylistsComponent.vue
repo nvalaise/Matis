@@ -227,13 +227,11 @@
                     }, (error)  =>  {
                         this.s_playlist_page = prev;                                                
                         this.error = error.response.data;
+                        console.log(response);
                         this.s_loading_playlist = this.s_loading_page = false;
                     });
-
-                return;
             },
             getPlaylistContent: function (id, page = 1) {
-                console.log(this.s_playlistsSelected);
 
                 this.s_loading_content_playlist = true;
                 var prev = this.s_playlist_page;
@@ -242,14 +240,11 @@
                 var element = document.getElementById("playlist");
                 element.scrollIntoView({behavior: "smooth"});
 
-                console.log(2);
                 axios.get("/api/spotify/playlist/" + id + "/" + (page-1)*20)
                     .then((response)  =>  {
                         if (response.status === 200) {
                             this.s_playlistsContent = response.data;
                             this.s_playlist_count_page = Math.ceil(this.s_playlistsContent.total/20);
-                        } else {
-                            console.log(response);
                         }
                         this.s_loading_content_playlist = false;
                     }, (error)  =>  {

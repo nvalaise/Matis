@@ -108,16 +108,15 @@
         	this.loadingPage = true;
             axios.get(window.location.origin + '/api/deezer/account')
             	.then((response)  =>  {
-            		this.loadingPage = false;
-
                     if (response.status === 200) {
                     	this.account = response.data.response;
                     	this.access_token = response.data.access_token;
-                    } else {
-                    	console.log(response);
                     }
+            		this.loadingPage = false;
+
                 }, (error)  =>  {
                 	this.loadingPage = false;
+                	console.log(error);
                 	this.error = error.response.data;
                 });
         },

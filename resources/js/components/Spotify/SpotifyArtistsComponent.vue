@@ -200,16 +200,13 @@
                         if (response.status === 200) {
                             this.s_artists = response.data.error ? response.data : response.data.artists;
                             this.s_page_count_artists = Math.ceil(this.s_artists.total/15);
-                            this.s_loading_artist= this.s_loading_page = false;
-
-                            console.log(response);
-
                         }
+                        this.s_loading_artist = this.s_loading_page = false;
                     }, (error)  =>  {
                         this.s_page_s_artists = prev;
                         this.error = error.response.data;
                         console.log(error);
-                        this.s_loading_artist= this.s_loading_page = false;
+                        this.s_loading_artist = this.s_loading_page = false;
                     });
             },
 
@@ -236,8 +233,6 @@
 
                         if (response.status === 200) {
                             this.s_artist_top = response.data.error ? response.data : response.data.tracks;
-                        } else {
-                            console.log(response);
                         }
                         this.s_loading_content_artist = false;
                     }, (error)  =>  {

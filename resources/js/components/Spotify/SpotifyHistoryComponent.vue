@@ -96,15 +96,6 @@
 
 <script>
     export default {
-        methods: {
-            playedAt: function (seconds) {
-                return moment.unix(seconds).format("ddd D MMM HH:mm");
-            },
-            timeTrack: function (seconds) {
-                return moment("1900-01-01 00:00:00").add(seconds, 'milliseconds').format("mm:ss");
-            },
-        },
-
         data() {
             return {
                 loadingPage: null,
@@ -120,34 +111,31 @@
                 tooltipUnitValue: 'listenings'
             }
         },
-
         created() {
             this.loadingPage = true;
             axios.get(window.location.origin + '/api/spotify/history')
                 .then((response)  =>  {
 
-                    this.loadingPage = false;
-
                     if (response.status === 200) {
                         this.history = response.data.response;
-                        console.log(response.data);
-
                         this.historyValues = JSON.parse(response.data.history);
                         this.maxActivity = response.data.max;
-                        console.log(this.historyValues);
-
-                    } else {
-                        console.log(response);
                     }
+                    this.loadingPage = false;
 
                 }, (error)  =>  {
-                    this.loadingPage = false;
                     this.error = error.response.data;
+                    console.log(error);
+                    this.loadingPage = false;
                 });
         },
-
-        mounted() {
-            //console.log('Component mounted.');
+        methods: {
+            playedAt: function (seconds) {
+                return moment.unix(seconds).format("ddd D MMM HH:mm");
+            },
+            timeTrack: function (seconds) {
+                return moment("1900-01-01 00:00:00").add(seconds, 'milliseconds').format("mm:ss");
+            },
         }
     }
 </script>

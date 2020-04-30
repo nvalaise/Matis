@@ -97,15 +97,6 @@
 
 <script>
     export default {
-        methods: {
-            playedAt: function (seconds) {
-                return moment.unix(seconds).format("ddd D MMM HH:mm");
-            },
-            timeTrack: function (seconds) {
-                return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
-            },
-        },
-
         data() {
             return {
                 loadingPage: null,
@@ -121,32 +112,31 @@
                 tooltipUnitValue: 'listenings'
             }
         },
-
         created() {
             this.loadingPage = true;
             axios.get(window.location.origin + '/api/deezer/history')
                 .then((response)  =>  {
 
-                    this.loadingPage = false;
-
                     if (response.status === 200) {
                         this.history = response.data.response;
-
                         this.historyValues = JSON.parse(response.data.history);
                         this.maxActivity = response.data.max;
-
-                    } else {
-                        console.log(response);
                     }
+                    this.loadingPage = false;
 
                 }, (error)  =>  {
                     this.loadingPage = false;
+                    console.log(error);
                     this.error = error.response.data;
                 });
         },
-
-        mounted() {
-            //console.log('Component mounted.');
+        methods: {
+            playedAt: function (seconds) {
+                return moment.unix(seconds).format("ddd D MMM HH:mm");
+            },
+            timeTrack: function (seconds) {
+                return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
+            },
         }
     }
 </script>

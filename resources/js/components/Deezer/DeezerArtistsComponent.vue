@@ -197,13 +197,13 @@
                         if (response.status === 200) {
                             this.d_artists = response.data;
                             this.d_page_count_artists = Math.ceil(this.d_artists.total/15);
-                            this.d_loading_artist= this.d_loading_page = false;
                         }
+                        this.d_loading_artist = this.d_loading_page = false;
                     }, (error)  =>  {
                         this.d_page_d_artists = prev;
                         this.error = error.response.data;
                         console.log(error);
-                        this.d_loading_artist= this.d_loading_page = false;
+                        this.d_loading_artist = this.d_loading_page = false;
                     });
             },
 
@@ -228,8 +228,8 @@
                     .then((response)  =>  {
                         if (response.status === 200) {
                             this.d_artist_top = response.data;   
-                            this.d_loading_content_artist = false;
                         }
+                        this.d_loading_content_artist = false;
                     }, (error)  =>  {
                         this.error = error.response.data;
                         console.log(error);

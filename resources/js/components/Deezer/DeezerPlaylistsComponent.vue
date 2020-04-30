@@ -228,17 +228,15 @@
                         if (response.status === 200) {
                             this.d_playlists = response.data;
                             this.d_playlists_count_page = Math.ceil(this.d_playlists.total/10);
-                        } else {
-                            console.log(response);
                         }
                         this.d_loading_playlist = this.d_loading_page = false;
                     }, (error)  =>  {
                         this.d_playlist_page = prev;                                                
                         this.error = error.response.data;
+                        console.log(error);
+
                         this.d_loading_playlist = this.d_loading_page = false;
                     });
-
-                return;
             },
             getPlaylistContent: function (id, page = 1) {
 
@@ -254,8 +252,6 @@
                         if (response.status === 200) {
                             this.d_playlistsContent = response.data;
                             this.d_playlist_count_page = Math.ceil(this.d_playlistsContent.total/20);   
-                        } else {
-                            console.log(response);
                         }
                         this.d_loading_content_playlist = false;
                     }, (error)  =>  {
