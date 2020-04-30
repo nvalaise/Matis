@@ -185,7 +185,7 @@
                 return moment.unix(seconds).format("ddd D MMM Y HH:mm");
             },
             timeTrack: function (seconds) {
-                return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
+                return moment("1900-01-01 00:00:00").add(seconds, 'milliseconds').format("mm:ss");
             },
 
             // return the list of the artist

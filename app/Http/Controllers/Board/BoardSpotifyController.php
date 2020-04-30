@@ -81,7 +81,7 @@ class BoardSpotifyController extends Controller
 
 	public function history() {
 
-		$url = "https://api.spotify.com/v1/me/player/recently-played";
+		$url = "https://api.spotify.com/v1/me/player/recently-played?limit=50";
 
 		$response = Http::withHeaders($this->headers())
 			->get($url)
@@ -96,7 +96,7 @@ class BoardSpotifyController extends Controller
 
 			foreach ($response['items'] as $history) {
 
-				$date = date("Y-m-d", $history['played_at']);
+				$date = substr($history['played_at'], 0, 10);
 				if(isset($mapHistory[$date])) {
 					$mapHistory[$date] = $mapHistory[$date]+1;
 				} else {

@@ -38,11 +38,10 @@
 			<li class="nav-item">
 				<router-link class="nav-link" :to="{ name: 'playlists' }" active-class="active" exact><i class="far fa-circle nav-icon"></i>Playlists</router-link>
 			</li>
-			<!--
 			<li class="nav-item">
 				<router-link class="nav-link" :to="{ name: 'history' }" active-class="active" exact><i class="far fa-circle nav-icon"></i>History</router-link>
 			</li>
-			<li class="nav-item">
+			<!--li class="nav-item">
 				<router-link class="nav-link" :to="{ name: 'social' }" active-class="active" exact><i class="far fa-circle nav-icon"></i>Social</router-link>
 			</li>
 			-->
@@ -63,11 +62,10 @@
 			<li class="breadcrumb-item">
 				<router-link :to="{ name: 'playlists' }" active-class="disabled" exact>Playlists</router-link>
 			</li>
-			<!--
 			<li class="breadcrumb-item">
 				<router-link :to="{ name: 'history' }" active-class="disabled" exact>History</router-link>
 			</li>
-			<li class="breadcrumb-item">
+			<!--li class="breadcrumb-item">
 				<router-link :to="{ name: 'social' }" active-class="disabled" exact>Social</router-link>
 			</li>
 			-->
