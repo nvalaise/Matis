@@ -46,7 +46,7 @@
             </div>
             <div class="row">            
                 <div class="col-4">
-                    <p><i>{{ d_artists.total }} artists</i></p>
+                    <p class="font-italic"><i>{{ d_artists.total }} artists</i><span v-if="d_page_count_artists > 0" class="small"> (grouped by 15)</span></p>
 
                     <paginate v-if="(!d_loading_artist || d_artists != null) && d_page_count_artists > 0"
                           :force-page="d_page_d_artists"
@@ -195,7 +195,7 @@
                     .then((response)  =>  {
                         if (response.status === 200) {
                             this.d_artists = response.data;
-                            this.d_page_count_artists = Math.ceil(this.d_artists.total/10);
+                            this.d_page_count_artists = Math.ceil(this.d_artists.total/15);
                             this.d_loading_artist= this.d_loading_page = false;
                         }
                     }, (error)  =>  {

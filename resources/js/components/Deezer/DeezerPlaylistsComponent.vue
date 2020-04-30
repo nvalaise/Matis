@@ -46,7 +46,7 @@
             </div>
             <div class="row">            
                 <div class="col-4">
-                    <p><i>{{ d_playlists.total }} playlists</i></p>
+                    <p class="font-italic"><i>{{ d_playlists.total }} playlists</i> <span v-if="d_playlists_count_page > 0" class="small"> (grouped by 10)</span></p>
 
                     <paginate v-if="(!d_loading_playlist || d_playlists != null) && d_playlists_count_page > 0"
                           :force-page="d_playlists_page"
