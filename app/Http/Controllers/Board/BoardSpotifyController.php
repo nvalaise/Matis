@@ -17,88 +17,86 @@ class BoardSpotifyController extends Controller
         $this->middleware('isSpotify');
     }
 
-	public function account() {
-
+    protected function headers() {
 		$token = $this->getToken();
-
-		$headers = [
+    	return [
 			'Authorization' => 'Bearer ' . $token,        
 			'Accept'        => 'application/json',
 		];
+    }
+	public function account() {
 
 		$url = "https://api.spotify.com/v1/me";
-
-		$response = Http::withHeaders($headers)
+		$response = Http::withHeaders($this->headers())
 			->get($url)
 			->json();
 
 		return response()->json([
 			'response' => $response,
-			'access_token' => $token
+			'access_token' => $this->getToken()
 		]);
 	}
 
-	public function playlists() {
+	public function playlists($start = null) {
 
-		$baseURL = "https://api.deezer.com/user/me/playlists";
-		$playlistsURL = $baseURL . $this->getTokenAsParameter();
-
-		return Http::get($playlistsURL)->json();
-
+		$index = empty($start) ? 0 : $start;
+		$url = "https://api.spotify.com/v1/me/playlists?limit=10&offset=" . $index;
+		
+		return Http::withHeaders($this->headers())
+			->get($url)
+			->json();
 	}
 
 	public function playlist($id, $start = null) {
 
 		$index = empty($start) ? 0 : $start;
-
-		$baseURL = "https://api.deezer.com/playlist/" . $id . "/tracks&limit=20&index=" . $index;
-		$playlistsURL = $baseURL . $this->getTokenAsParameter();
-
-		return Http::get($playlistsURL)->json();
-
+		$url = "https://api.spotify.com/v1/playlists/" . $id . "/tracks?limit=20&offset=" . $index;
+		
+		return Http::withHeaders($this->headers())
+			->get($url)
+			->json();
 	}
 
 	public function artists($start = null) {
 		
 		$index = empty($start) ? 0 : $start;
+		$url = "https://api.spotify.com/v1/me/top/artists?offset=" . $index;
 
-		$baseURL = "https://api.deezer.com/user/me/artists&index=" . $index;
-		$playlistsURL = $baseURL . $this->getTokenAsParameter();
-
-		return Http::get($playlistsURL)->json();
-
+		return Http::withHeaders($this->headers())
+			->get($url)
+			->json();
 	}
 
 	public function artist($id) {
 
 		$index = empty($start) ? 0 : $start;
+		$url = "https://api.spotify.com/v1/me/top/artists/" . $id . "/top";
 
-		$baseURL = "https://api.deezer.com/artist/" . $id . "/top";
-		$playlistsURL = $baseURL . $this->getTokenAsParameter();
-
-		return Http::get($playlistsURL)->json();
-
+		return Http::withHeaders($this->headers())
+			->get($url)
+			->json();
 	}
 
 
 
 	public function history() {
 
-		$baseURL = "https://api.deezer.com/user/me/history";
-		$playlistsURL = $baseURL . $this->getTokenAsParameter();
+		$url = "https://api.spotify.com/v1/me/player/recently-played";
 
-		$response = Http::get($playlistsURL)->json();
+		$response = Http::withHeaders($this->headers())
+			->get($url)
+			->json();
 
         $historyChart = array();
         $max = 0;
 
-		if (isset($response['data'])) {
+		if (isset($response['items'])) {
 
 			$mapHistory = array();
 
-			foreach ($response['data'] as $history) {
+			foreach ($response['items'] as $history) {
 
-				$date = date("Y-m-d", $history['timestamp']);
+				$date = date("Y-m-d", $history['played_at']);
 				if(isset($mapHistory[$date])) {
 					$mapHistory[$date] = $mapHistory[$date]+1;
 				} else {
@@ -124,20 +122,13 @@ class BoardSpotifyController extends Controller
 
 	public function social() {
 
-		$baseURL = "https://api.deezer.com/user/me/followings";
-		$playlistsURL = $baseURL . $this->getTokenAsParameter();
-
-		return Http::get($playlistsURL)->json();
-
+		$url = "https://api.spotify.com/v1/me/following?type=artist";
+		return Http::withHeaders($this->headers())
+			->get($url)
+			->json();
 	}
 
 	private function getToken() {
 		return Auth::user()->access_token;
-	}
-
-	private function getTokenAsParameter() {
-		if (($token = $this->getToken()) !== null) {
-			return '&access_token=' . $token;
-		}
 	}
 }

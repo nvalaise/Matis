@@ -19,8 +19,8 @@ import VueCalendarHeatmap from 'vue-calendar-heatmap'
 Vue.use(VueCalendarHeatmap)
 
 import SpotifyHome from './components/Spotify/SpotifyHomeComponent.vue';
-/*import DeezerPlaylist from './components/Deezer/DeezerPlaylistsComponent.vue';
-import DeezerArtist from './components/Deezer/DeezerArtistsComponent.vue';
+import SpotifyPlaylist from './components/Spotify/SpotifyPlaylistsComponent.vue';
+/*import DeezerArtist from './components/Deezer/DeezerArtistsComponent.vue';
 import DeezerHistory from './components/Deezer/DeezerHistoryComponent.vue';
 import DeezerSocial from './components/Deezer/DeezerSocialComponent.vue';*/
 
@@ -28,10 +28,10 @@ import DeezerSocial from './components/Deezer/DeezerSocialComponent.vue';*/
 const routes = [
 	{
 		path: '/spotify/', name: 'home', component: SpotifyHome
-	}/*,
-	{
-		path: '/spotify/playlists', name: 'playlists', component: DeezerPlaylist
 	},
+	{
+		path: '/spotify/playlists', name: 'playlists', component: SpotifyPlaylist
+	}/*,
 	{
 		path: '/spotify/social', name: 'social', component: DeezerSocial
 	},

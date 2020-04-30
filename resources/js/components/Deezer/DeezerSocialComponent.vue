@@ -24,15 +24,16 @@
         </p>
     </blockquote>
     <div v-else-if="followings != null">
-        <div v-if="followings.error != null" class="alert alert-danger" role="alert">
-        <p>
-            <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
-            </svg>
-            <b>Oups!</b> {{ followings.error.message }}
-        </p>
-        <p v-if="followings.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
-        </div>
+        <blockquote v-if="followings.error != null" class="quote-danger">
+            <h5>Oups!</h5>
+            <p>
+                <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
+                </svg>
+                {{ followings.error.message }}
+            </p>
+            <p v-if="followings.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
+        </blockquote>
         <div v-else-if="followings.data != null">
             <div class="row">
                 <div class="col-12">

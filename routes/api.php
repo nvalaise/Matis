@@ -40,4 +40,12 @@ Route::prefix('deezer')->group(function () {
 Route::prefix('spotify')->group(function () {
 	Route::get('/account', 'Board\BoardSpotifyController@account')->name('spotify.account');
 
+	Route::get('/playlists/{start?}', 'Board\BoardSpotifyController@playlists')
+		->where('start', '[0-9]+')
+		->name('spotify.playlists');
+
+	Route::get('/playlist/{id}/{start?}', 'Board\BoardSpotifyController@playlist')
+		->name('spotify.playlist')
+		->where('id', '[A-Za-z0-9]+')
+		->where('start', '[0-9]+');
 });

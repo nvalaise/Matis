@@ -44,6 +44,7 @@ class SwitchUserAccount
 
     public function trySwitching($request, Closure $next, $authUser, $driver)
     {
+
         if ($authUser->provider != $driver) {
             $user = $authUser->account($driver);
 
