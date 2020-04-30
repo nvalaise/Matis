@@ -34,9 +34,11 @@ class BoardDeezerController extends Controller
 		]);
 	}
 
-	public function playlists() {
+	public function playlists($start = null) {
 
-		$baseURL = "https://api.deezer.com/user/me/playlists";
+		$index = empty($start) ? 0 : $start;
+
+		$baseURL = "https://api.deezer.com/user/me/playlists&limit=10&index=" . $index;
 		$playlistsURL = $baseURL . $this->getTokenAsParameter();
 
 		return Http::get($playlistsURL)->json();
@@ -58,7 +60,7 @@ class BoardDeezerController extends Controller
 		
 		$index = empty($start) ? 0 : $start;
 
-		$baseURL = "https://api.deezer.com/user/me/artists&index=" . $index;
+		$baseURL = "https://api.deezer.com/user/me/artists&limit=15&index=" . $index;
 		$playlistsURL = $baseURL . $this->getTokenAsParameter();
 
 		return Http::get($playlistsURL)->json();

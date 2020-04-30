@@ -1,5 +1,5 @@
 <template>
-    <div v-if="loadingPage" class="card card-primary">
+    <div v-if="d_loading_page" class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Loading...</h3>
         </div>
@@ -23,17 +23,17 @@
             You can get connected <a href="/auth/deezer/login">here</a>.
         </p>
     </blockquote>
-    <div v-else-if="playlists != null">
-        <div v-if="playlists.error != null" class="alert alert-danger" role="alert">
+    <div v-else-if="d_playlists != null">
+        <div v-if="d_playlists.error != null" class="alert alert-danger" role="alert">
             <p>
                 <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
                 </svg>
-                <b>Oups!</b> {{ playlists.error.message }}
+                <b>Oups!</b> {{ d_playlists.error.message }}
             </p>
-            <p v-if="playlists.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
+            <p v-if="d_playlists.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
         </div>
-        <div v-else-if="playlists.data != null">
+        <div v-else-if="d_playlists.data != null">
             <div class="row">
                 <div class="col-12">
                     <p>                
@@ -46,9 +46,39 @@
             </div>
             <div class="row">            
                 <div class="col-4">
-                    <p><i>{{ playlists.data.length }} playlists</i></p>
+                    <p><i>{{ d_playlists.total }} playlists</i></p>
+
+                    <paginate v-if="(!d_loading_playlist || d_playlists != null) && d_playlists_count_page > 0"
+                          :force-page="d_playlists_page"
+                          :page-count="d_playlists_count_page"
+                          :click-handler="getPlaylistsList"
+                          :prev-text="'Prev'"
+                          :next-text="'Next'"
+                          :container-class="'pagination d-flex justify-content-center mt-4'"
+                          :page-class="'page-item'"
+                          :page-link-class="'page-link'"
+                          :prev-class="'page-item'"
+                          :next-class="'page-item'"
+                          :prev-link-class="'page-link'"
+                          :next-link-class="'page-link'"
+                          :active-class="'active'">
+                        </paginate>
+
+                    <div v-if="d_loading_playlist" class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Loading...</h3>
+                        </div>
+                        <div class="card-body">
+                            We are getting the data...
+                        </div>
+                        <div class="overlay">
+                            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+                        </div>
+                    </div>
+
                     <div class="card card-outline card-primary"
-                        v-for="playlist in playlists.data"
+                        v-else
+                        v-for="playlist in d_playlists.data"
                         v-bind:key="playlist.id">
 
                         <div class="card-header">
@@ -77,27 +107,27 @@
                     <h3 class="text-right" id="playlist">Playlist content</h3>
                     <hr>
 
-                    <div v-if="playlistsSelected != null" class="card card-primary">
+                    <div v-if="d_playlistsSelected != null" class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">{{ playlistsSelected.title }}</h3>
+                            <h3 class="card-title">{{ d_playlistsSelected.title }}</h3>
                         </div>
 
                         <div class="card-body">
-                            <div v-if="loadingPlaylist">
+                            <div v-if="d_loading_content_playlist">
                                 Loading...
                             </div>
                             <div v-else>
-                                <p><i>{{ playlistsContent.total }} tracks</i></p>
-                                <ul v-if="playlistsContent.data.length > 0" id="playlist-content" class="list-group">
+                                <p><i>{{ d_playlistsContent.total }} tracks</i></p>
+                                <ul v-if="d_playlistsContent.data.length > 0" id="playlist-content" class="list-group">
                                     <li class="list-group-item" 
-                                        v-for="(track, index) in playlistsContent.data"
+                                        v-for="(track, index) in d_playlistsContent.data"
                                         v-bind:key="index">
                                         <div class="row">
                                             <div class="col-2">
                                                 <img v-bind:src="track.album.cover_small" alt="picture playlist" class="img-fluid img-circle">
                                             </div>
                                             <div class="col-10">
-                                                #{{ index+1 + (playlistPage-1)*20 }} {{ track.title }} | <a :href="track.artist.link">{{ track.artist.name }}</a> | {{ timeTrack(track.duration) }}
+                                                #{{ index+1 + (d_playlist_page-1)*20 }} {{ track.title }} | <a :href="track.artist.link">{{ track.artist.name }}</a> | {{ timeTrack(track.duration) }}
                                             </div>
                                         </div>
                                     </li>
@@ -105,9 +135,9 @@
                             </div>
                         </div>
 
-                        <paginate v-if="(!loadingPlaylist || playlistsContent != null) && pageCount > 0"
-                                  :force-page="playlistPage"
-                                  :page-count="pageCount"
+                        <paginate v-if="(!d_loading_content_playlist || d_playlistsContent != null) && d_playlist_count_page > 0"
+                                  :force-page="d_playlist_page"
+                                  :page-count="d_playlist_count_page"
                                   :click-handler="clickPagination"
                                   :prev-text="'Prev'"
                                   :next-text="'Next'"
@@ -121,7 +151,7 @@
                                   :active-class="'active'">
                                 </paginate>
 
-                        <div v-if="loadingPlaylist" class="overlay">
+                        <div v-if="d_loading_content_playlist" class="overlay">
                             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                         </div>
                     </div>
@@ -151,6 +181,27 @@
 
 <script>
     export default {
+        data() {
+            return {
+                d_playlists: null,
+                d_playlists_count_page: 1, // return the number of page
+                d_playlists_page: 1, // return the selected page
+
+                d_playlistsSelected: null, // return the object of the seletec playlist
+                d_playlistsContent: null, // return the playlist content
+                d_playlist_count_page: 1, // return the number of page
+                d_playlist_page: 1, // return the selected page
+
+                error: null,
+                d_loading_page: false,
+                d_loading_playlist: false,
+                d_loading_content_playlist: false
+            }
+        },
+        created() {
+            this.d_loading_page = true;
+            this.getPlaylistsList(1);
+        },
         methods: {
             timePlaylist: function (seconds) {
                 var calcul = moment("1900-01-01 00:00:00").add(seconds, 'seconds');
@@ -163,11 +214,34 @@
             timeTrack: function (seconds) {
                 return moment("1900-01-01 00:00:00").add(seconds, 'seconds').format("mm:ss");
             },
+            getPlaylistsList: function(page) {
+
+                this.d_loading_playlist = true;
+                var prev = this.d_playlists_page;
+                this.d_playlists_page = page;
+
+                axios.get(window.location.origin + '/api/deezer/playlists/' + (page-1)*10)
+                    .then((response)  =>  {
+                        if (response.status === 200) {
+                            this.d_playlists = response.data;
+                            this.d_playlists_count_page = Math.ceil(this.d_playlists.total/10);
+                        } else {
+                            console.log(response);
+                        }
+                        this.d_loading_playlist = this.d_loading_page = false;
+                    }, (error)  =>  {
+                        this.d_playlist_page = prev;                                                
+                        this.error = error.response.data;
+                        this.d_loading_playlist = this.d_loading_page = false;
+                    });
+
+                return;
+            },
             getPlaylistContent: function (id, page = 1) {
 
-                this.loadingPlaylist = true;
-                var prev = this.playlistPage;
-                this.playlistPage = page;
+                this.d_loading_content_playlist = true;
+                var prev = this.d_playlist_page;
+                this.d_playlist_page = page;
 
                 var element = document.getElementById("playlist");
                 element.scrollIntoView({behavior: "smooth"});
@@ -175,22 +249,22 @@
                 axios.get("/api/deezer/playlist/" + id + "/" + (page-1)*20)
                     .then((response)  =>  {
                         if (response.status === 200) {
-                            this.playlistsContent = response.data;
-                            this.pageCount = Math.ceil(this.playlistsContent.total/20);   
-
-                            this.loadingPlaylist = false;
+                            this.d_playlistsContent = response.data;
+                            this.d_playlist_count_page = Math.ceil(this.d_playlistsContent.total/20);   
+                        } else {
+                            console.log(response);
                         }
+                        this.d_loading_content_playlist = false;
                     }, (error)  =>  {
-                        this.playlistPage = prev;                        
+                        this.d_playlist_page = prev;                        
                         this.error = error.response.data;
                         console.log(error);
-                        
-                        this.loadingPlaylist = false;
+                        this.d_loading_content_playlist = false;
                     });
             },
             clickSee: function (id) {
-                if(this.playlists != null) {
-                    this.playlistsSelected = this.playlists.data.find(item => {
+                if(this.d_playlists != null) {
+                    this.d_playlistsSelected = this.d_playlists.data.find(item => {
                         return item.id == id;
                     })
                 }
@@ -198,43 +272,8 @@
                 this.getPlaylistContent(id, 1);
             },
             clickPagination: function (pageNum) {
-                this.getPlaylistContent(this.playlistsSelected.id, pageNum);
+                this.getPlaylistContent(this.d_playlistsSelected.id, pageNum);
             }
-        },
-        data() {
-            return {
-                playlists: null,
-
-                playlistsSelected: null, // return the object of the seletec playlist
-                playlistsContent: null, // return the playlist content
-                pageCount: 1, // return the number of page
-                playlistPage: 1, // return the selected page
-
-                error: null,
-                loadingPage: false,
-                loadingPlaylist: false
-            }
-        },
-
-        created() {
-            this.loadingPage = true;
-            axios.get(window.location.origin + '/api/deezer/playlists')
-                .then((response)  =>  {
-                    this.loadingPage = false;
-
-                    if (response.status === 200) {
-                        this.playlists = response.data;
-                    } else {
-                        console.log(response);
-                    }
-                }, (error)  =>  {
-                    this.loadingPage = false;
-                    this.error = error.response.data;
-                });
-        },
-
-        mounted() {
-            // console.log('Component mounted.');
         }
     }
 </script>

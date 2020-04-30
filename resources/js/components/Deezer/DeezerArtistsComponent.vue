@@ -1,5 +1,5 @@
 <template>
-    <div v-if="loadingPage" class="card card-primary">
+    <div v-if="d_loading_page" class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Loading...</h3>
         </div>
@@ -23,17 +23,17 @@
             You can get connected <a href="/auth/deezer/login">here</a>.
         </p>
     </blockquote>
-    <div v-else-if="artists != null">
-        <div v-if="artists.error != null" class="alert alert-danger" role="alert">
+    <div v-else-if="d_artists != null">
+        <div v-if="d_artists.error != null" class="alert alert-danger" role="alert">
             <p>
                 <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
                 </svg>
-                <b>Oups!</b> {{ artists.error.message }}
+                <b>Oups!</b> {{ d_artists.error.message }}
             </p>
-            <p v-if="artists.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
+            <p v-if="d_artists.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
         </div>
-        <div v-else-if="artists.data != null">
+        <div v-else-if="d_artists.data != null">
             <div class="row">
                 <div class="col-12">
                     <p>                
@@ -46,12 +46,12 @@
             </div>
             <div class="row">            
                 <div class="col-4">
-                    <p><i>{{ artists.total }} artists</i></p>
+                    <p><i>{{ d_artists.total }} artists</i></p>
 
-                    <paginate v-if="(!loadingArtist || artists != null) && pageCountArtists > 0"
-                          :force-page="pageArtists"
-                          :page-count="pageCountArtists"
-                          :click-handler="clickPaginationArtists"
+                    <paginate v-if="(!d_loading_artist || d_artists != null) && d_page_count_artists > 0"
+                          :force-page="d_page_d_artists"
+                          :page-count="d_page_count_artists"
+                          :click-handler="getArtistsList"
                           :prev-text="'Prev'"
                           :next-text="'Next'"
                           :container-class="'pagination d-flex justify-content-center mt-4'"
@@ -64,7 +64,7 @@
                           :active-class="'active'">
                         </paginate>
 
-                    <div v-if="loadingArtist" class="card card-primary">
+                    <div v-if="d_loading_artist" class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Loading...</h3>
                         </div>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="card card-outline card-primary"
                         v-else
-                        v-for="artist in artists.data"
+                        v-for="artist in d_artists.data"
                         v-bind:key="artist.id">
 
 
@@ -97,22 +97,22 @@
                     <h3 class="text-right" id="artist">Artist details</h3>
                     <hr>
 
-                    <div v-if="artistSelected != null" class="card card-primary">
+                    <div v-if="d_artist_selected != null" class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">{{ artistSelected.name }}</h3>
+                            <h3 class="card-title">{{ d_artist_selected.name }}</h3>
                         </div>
 
                         <div class="card-body">
-                            <div v-if="loadingArtistDetails">
+                            <div v-if="d_loading_content_artist">
                                 Loading...
                             </div>
                             <div v-else>
-                                <p><a :href="artistSelected.link" target="_blank">Artist profile</a></p>
+                                <p><a :href="d_artist_selected.link" target="_blank">Artist profile</a></p>
 
-                                <p><i>Top {{ artistTop.data.length }} tracks</i></p>
-                                <ul v-if="artistTop.data.length > 0" id="artist-content" class="list-group">
+                                <p><i>Top {{ d_artist_top.data.length }} tracks</i></p>
+                                <ul v-if="d_artist_top.data.length > 0" id="artist-content" class="list-group">
                                     <li class="list-group-item" 
-                                        v-for="(track, index) in artistTop.data"
+                                        v-for="(track, index) in d_artist_top.data"
                                         v-bind:key="index">
                                         <div class="row">
                                             <div class="col-2">
@@ -127,7 +127,7 @@
                             </div>
                         </div>
 
-                        <div v-if="loadingArtistDetails" class="overlay">
+                        <div v-if="d_loading_content_artist" class="overlay">
                             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                         </div>
                     </div>
@@ -157,6 +157,26 @@
 
 <script>
     export default {
+        data() {
+            return {
+                d_artists: null,
+                d_page_count_artists: 1,
+                d_page_d_artists: 1,
+
+                d_artist_selected: null, // return the object of the selected artist
+                d_artist_top: null, // return the artist top details
+
+                error: null,
+                d_loading_page: false,
+                d_loading_artist: false,
+                d_loading_content_artist: false
+            }
+        },
+        created() {
+            this.d_loading_page = true;    
+            this.getArtistsList(1);
+            
+        },
         methods: {
             followedAt: function (seconds) {
                 return moment.unix(seconds).format("ddd D MMM Y HH:mm");
@@ -166,44 +186,40 @@
             },
 
             // return the list of the artist
-            clickPaginationArtists: function (pageNum) {
+            getArtistsList: function (page) {
+                this.d_loading_artist = true;
+                var prev = this.d_page_d_artists;
+                this.d_page_d_artists = page;
 
-                console.log(this.pageArtists, pageNum);
-
-                this.loadingArtist = true;
-                var prev = this.pageArtists;
-                this.pageArtists = pageNum;
-
-                axios.get("/api/deezer/artists/" + pageNum * 25)
+                axios.get("/api/deezer/artists/" + (page-1)*15)
                     .then((response)  =>  {
                         if (response.status === 200) {
-                            this.artists = response.data;
-
-                            this.loadingArtist = false;
+                            this.d_artists = response.data;
+                            this.d_page_count_artists = Math.ceil(this.d_artists.total/10);
+                            this.d_loading_artist= this.d_loading_page = false;
                         }
                     }, (error)  =>  {
-                        this.pageArtists = prev;
+                        this.d_page_d_artists = prev;
                         this.error = error.response.data;
                         console.log(error);
-
-                        this.loadingArtist = false;
+                        this.d_loading_artist= this.d_loading_page = false;
                     });
             },
 
             // when click on "See"
             clickSee: function (id) {
-                if(this.artists != null) {
-                    this.artistSelected = this.artists.data.find(item => {
+                if(this.d_artists != null) {
+                    this.d_artist_selected = this.d_artists.data.find(item => {
                         return item.id == id;
                     })
                 }
 
-                this.getArtistsDetails(id);
+                this.getArtistsContent(id);
             },
             // return the artist details
-            getArtistsDetails: function (id) {
+            getArtistsContent: function (id) {
 
-                this.loadingArtistDetails = true;
+                this.d_loading_content_artist = true;
 
                 var element = document.getElementById("artist");
                 element.scrollIntoView({behavior: "smooth"});
@@ -211,54 +227,15 @@
                 axios.get("/api/deezer/artist/" + id)
                     .then((response)  =>  {
                         if (response.status === 200) {
-                            this.artistTop = response.data;   
-                            this.loadingArtistDetails = false;
+                            this.d_artist_top = response.data;   
+                            this.d_loading_content_artist = false;
                         }
                     }, (error)  =>  {
                         this.error = error.response.data;
                         console.log(error);
-                        this.loadingArtistDetails = false;
+                        this.d_loading_content_artist = false;
                     });
             },
-        },
-        data() {
-            return {
-                artists: null,
-                pageCountArtists: 1,
-                pageArtists: 1,
-
-                artistSelected: null, // return the object of the selected artist
-                artistTop: null, // return the artist top details
-
-                error: null,
-                loadingPage: false,
-                loadingArtist: false,
-                loadingArtistDetails: false
-            }
-        },
-
-        created() {
-            this.loadingPage = true;            
-            axios.get(window.location.origin + '/api/deezer/artists')
-                .then((response)  =>  {
-                    this.loadingPage = false;
-
-                    console.log(response.data);
-                    this.pageCountArtists = Math.ceil(response.data.total/25);   
-
-                    if (response.status === 200) {
-                        this.artists = response.data;
-                    } else {
-                        console.log(response);
-                    }
-                }, (error)  =>  {
-                    this.loadingPage = false;
-                    this.error = error.response.data;
-                });
-        },
-
-        mounted() {
-            // console.log('Component mounted.');
         }
     }
 </script>
