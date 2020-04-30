@@ -48,4 +48,12 @@ Route::prefix('spotify')->group(function () {
 		->name('spotify.playlist')
 		->where('id', '[A-Za-z0-9]+')
 		->where('start', '[0-9]+');
+
+	Route::get('/artists/{start?}', 'Board\BoardSpotifyController@artists')
+		->name('spotify.artists')
+		->where('start', '[0-9]+');
+
+	Route::get('/artist/{id}', 'Board\BoardSpotifyController@artist')
+		->name('spotify.artist')
+		->where('id', '[A-Za-z0-9]+');
 });

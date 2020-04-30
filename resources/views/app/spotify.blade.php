@@ -32,9 +32,9 @@
 			<li class="nav-item">
 				<router-link class="nav-link" :to="{ name: 'home' }" active-class="active" exact><i class="far fa-circle nav-icon"></i>Home</router-link>
 			</li>
-			<!--li class="nav-item">
+			<li class="nav-item">
 				<router-link class="nav-link" :to="{ name: 'artists' }" active-class="active" exact><i class="far fa-circle nav-icon"></i>Artists</router-link>
-			</li-->
+			</li>
 			<li class="nav-item">
 				<router-link class="nav-link" :to="{ name: 'playlists' }" active-class="active" exact><i class="far fa-circle nav-icon"></i>Playlists</router-link>
 			</li>
@@ -57,9 +57,9 @@
 			<li class="breadcrumb-item">
 				<router-link :to="{ name: 'home' }" active-class="disabled" exact>Home</router-link>
 			</li>
-			<!--li class="breadcrumb-item">
+			<li class="breadcrumb-item">
 				<router-link :to="{ name: 'artists' }" active-class="disabled" exact>Artists</router-link>
-			</li-->
+			</li>
 			<li class="breadcrumb-item">
 				<router-link :to="{ name: 'playlists' }" active-class="disabled" exact>Playlists</router-link>
 			</li>

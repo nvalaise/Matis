@@ -60,7 +60,7 @@ class BoardSpotifyController extends Controller
 	public function artists($start = null) {
 		
 		$index = empty($start) ? 0 : $start;
-		$url = "https://api.spotify.com/v1/me/top/artists?offset=" . $index;
+		$url = "https://api.spotify.com/v1/me/following?type=artist&limit=20&offset=" . $index;
 
 		return Http::withHeaders($this->headers())
 			->get($url)
@@ -70,7 +70,7 @@ class BoardSpotifyController extends Controller
 	public function artist($id) {
 
 		$index = empty($start) ? 0 : $start;
-		$url = "https://api.spotify.com/v1/me/top/artists/" . $id . "/top";
+		$url = "https://api.spotify.com/v1/artists/" . $id . "/top-tracks?country=from_token";
 
 		return Http::withHeaders($this->headers())
 			->get($url)

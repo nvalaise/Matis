@@ -47,9 +47,9 @@
             </div>
             <div class="row">            
                 <div class="col-4">
-                    <p class="font-italic"><i>{{ s_playlists.total }} playlists</i> <span v-if="s_playlists_count_page > 0" class="small"> (grouped by 10)</span></p>
+                    <p class="font-italic"><i>{{ s_playlists.total }} playlists</i> <span v-if="s_playlists_count_page > 1" class="small"> (grouped by 10)</span></p>
 
-                    <paginate v-if="(!s_loading_playlist || s_playlists != null) && s_playlists_count_page > 0"
+                    <paginate v-if="(!s_loading_playlist || s_playlists != null) && s_playlists_count_page > 1"
                           :force-page="s_playlists_page"
                           :page-count="s_playlists_count_page"
                           :click-handler="getPlaylistsList"
@@ -118,7 +118,7 @@
                                 Loading...
                             </div>
                             <div v-else>
-                                <p><a :href="s_playlistsSelected.external_urls.spotify" target="_blank">{{ s_playlistsSelected.external_urls.spotify }}</a></p>
+                                <p><a :href="s_playlistsSelected.external_urls.spotify" target="_blank">Playlist link</a></p>
                                 <p><i>{{ s_playlistsContent.total }} tracks</i></p>
                                 <ul v-if="s_playlistsContent.items.length > 0" id="playlist-content" class="list-group">
                                     <li class="list-group-item" 

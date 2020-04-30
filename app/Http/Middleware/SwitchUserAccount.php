@@ -49,13 +49,16 @@ class SwitchUserAccount
             $user = $authUser->account($driver);
 
             if (isset($user)) {
-                Auth::logout();
-                Auth::loginUsingId($user->id);
                 try {
                     $socialiteUser = Socialite::driver($driver)->userFromToken($user->access_token);
+                    Auth::logout();
+                    Auth::loginUsingId($user->id);
                 } catch (\GuzzleHttp\Exception\ClientException $e) {
                     return response()->json(['code' => 403, 'message' => 'Can\'t connect your account with '.ucfirst($driver).'. Try to authenticate again.'], 403);
+                } catch (\Exception $e) {
+                    return response()->json(['code' => 403, 'message' => 'Can\'t connect your account with '.ucfirst($driver).'. Try to authenticate again.'], 403);
                 }
+
             }
         }
 

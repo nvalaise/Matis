@@ -47,9 +47,9 @@
             </div>
             <div class="row">            
                 <div class="col-4">
-                    <p class="font-italic"><i>{{ d_playlists.total }} playlists</i> <span v-if="d_playlists_count_page > 0" class="small"> (grouped by 10)</span></p>
+                    <p class="font-italic"><i>{{ d_playlists.total }} playlists</i> <span v-if="d_playlists_count_page > 1" class="small"> (grouped by 10)</span></p>
 
-                    <paginate v-if="(!d_loading_playlist || d_playlists != null) && d_playlists_count_page > 0"
+                    <paginate v-if="(!d_loading_playlist || d_playlists != null) && d_playlists_count_page > 1"
                           :force-page="d_playlists_page"
                           :page-count="d_playlists_count_page"
                           :click-handler="getPlaylistsList"
@@ -118,7 +118,7 @@
                                 Loading...
                             </div>
                             <div v-else>
-                                <p><a :href="d_playlistsSelected.link" target="_blank">{{ d_playlistsSelected.link }}</a></p>
+                                <p v-if="d_playlistsContent.data.length > 0"><a :href="d_playlistsSelected.link" target="_blank">Playlist link</a></p>
                                 <p><i>{{ d_playlistsContent.total }} tracks</i></p>
                                 <ul v-if="d_playlistsContent.data.length > 0" id="playlist-content" class="list-group">
                                     <li class="list-group-item" 
@@ -270,9 +270,8 @@
                     this.d_playlistsSelected = this.d_playlists.data.find(item => {
                         return item.id == id;
                     })
+                    this.getPlaylistContent(id, 1);
                 }
-
-                this.getPlaylistContent(id, 1);
             },
             clickPagination: function (pageNum) {
                 this.getPlaylistContent(this.d_playlistsSelected.id, pageNum);

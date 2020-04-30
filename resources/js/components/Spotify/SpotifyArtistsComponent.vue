@@ -1,5 +1,5 @@
 <template>
-    <div v-if="d_loading_page" class="card card-primary">
+    <div v-if="s_loading_page" class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Loading...</h3>
         </div>
@@ -20,21 +20,21 @@
             <span v-else>{{ error }}</span>
         </p>
         <p v-if="error.code == 403">
-            You can get connected <a href="/auth/deezer/login">here</a>.
+            You can get connected <a href="/auth/spotify/login">here</a>.
         </p>
     </blockquote>
-    <div v-else-if="d_artists != null">
-        <blockquote v-if="d_artists.error != null" class="quote-danger">
+    <div v-else-if="s_artists != null">
+        <blockquote v-if="s_artists.error != null" class="quote-danger">
             <h5>Oups!</h5>
             <p>
                 <svg id="i-msg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <path d="M2 4 L30 4 30 22 16 22 8 29 8 22 2 22 Z" />
                 </svg>
-                {{ d_artists.error.message }}
+                {{ s_artists.error.message }}
             </p>
-            <p v-if="d_artists.error.code === 300"> Your session has expired. Refresh your token <a href="/auth/deezer/login">here</a>.</p>
+            <p v-if="s_artists.error.status === 401"> Your session has expired. Refresh your token <a href="/auth/spotify/login">here</a>.</p>
         </blockquote>
-        <div v-else-if="d_artists.data != null">
+        <div v-else-if="s_artists.items != null">
             <div class="row">
                 <div class="col-12">
                     <p>                
@@ -47,11 +47,11 @@
             </div>
             <div class="row">            
                 <div class="col-4">
-                    <p class="font-italic"><i>{{ d_artists.total }} artists</i><span v-if="d_page_count_artists > 1" class="small"> (grouped by 15)</span></p>
+                    <p class="font-italic"><i>{{ s_artists.total }} artists</i><span v-if="s_page_count_artists > 1" class="small"> (grouped by 15)</span></p>
 
-                    <paginate v-if="(!d_loading_artist || d_artists != null) && d_page_count_artists > 1"
-                          :force-page="d_page_d_artists"
-                          :page-count="d_page_count_artists"
+                    <paginate v-if="(!s_loading_artist || s_artists != null) && s_page_count_artists > 1"
+                          :force-page="s_page_s_artists"
+                          :page-count="s_page_count_artists"
                           :click-handler="getArtistsList"
                           :prev-text="'Prev'"
                           :next-text="'Next'"
@@ -65,7 +65,7 @@
                           :active-class="'active'">
                         </paginate>
 
-                    <div v-if="d_loading_artist" class="card card-primary">
+                    <div v-if="s_loading_artist" class="card card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Loading...</h3>
                         </div>
@@ -78,11 +78,11 @@
                     </div>
                     <div class="card card-outline card-primary"
                         v-else
-                        v-for="artist in d_artists.data"
+                        v-for="artist in s_artists.items"
                         v-bind:key="artist.id">
 
 
-                        <img v-bind:src="artist.picture_big" class="card-img-top" alt="picture artist">
+                        <img v-bind:src="artist.images[0].url" class="card-img-top" alt="picture artist">
 
                         <div class="card-body">
                             <h5 class="card-title">{{ artist.name }}</h5>
@@ -98,29 +98,31 @@
                     <h3 class="text-right" id="artist">Artist details</h3>
                     <hr>
 
-                    <div v-if="d_artist_selected != null" class="card card-primary">
+                    <div v-if="s_artist_selected != null" class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">{{ d_artist_selected.name }}</h3>
+                            <h3 class="card-title">{{ s_artist_selected.name }}</h3>
                         </div>
 
                         <div class="card-body">
-                            <div v-if="d_loading_content_artist">
+                            <div v-if="s_loading_content_artist">
                                 Loading...
                             </div>
                             <div v-else>
-                                <p><a :href="d_artist_selected.link" target="_blank">Artist's profile</a></p>
+                                <p><a :href="s_artist_selected.external_urls.spotify" target="_blank">Artist's profile</a></p>
 
-                                <p><i>Top {{ d_artist_top.data.length }} tracks</i></p>
-                                <ul v-if="d_artist_top.data.length > 0" id="artist-content" class="list-group">
+                                <p><i>Top {{ s_artist_top.length }} tracks</i></p>
+                                <ul v-if="s_artist_top.length > 0" id="artist-content" class="list-group">
                                     <li class="list-group-item" 
-                                        v-for="(track, index) in d_artist_top.data"
+                                        v-for="(track, index) in s_artist_top"
                                         v-bind:key="index">
                                         <div class="row">
                                             <div class="col-2">
-                                                <img v-bind:src="track.album.cover_small" alt="picture playlist" class="img-fluid img-circle">
+                                                <img v-bind:src="track.album.images[0].url" alt="picture playlist" class="img-fluid img-circle">
                                             </div>
                                             <div class="col-10">
-                                                <b>#{{ index+1 }}</b> <a :href="track.link" target="_blank">{{ track.title }}</a> | {{ timeTrack(track.duration) }}
+                                                <p><b>#{{ index+1 }}</b> <span v-for="artist in track.artists">| <a :href="artist.external_urls.spotify" target="_blank"> {{ artist.name }} </a></span>
+                                                <br>{{ timeTrack(track.duration_ms) }} | <a :href="track.external_urls.spotify" target="_blank">{{ track.name }}</a></p>
+
                                             </div>
                                         </div>
                                     </li>
@@ -128,7 +130,7 @@
                             </div>
                         </div>
 
-                        <div v-if="d_loading_content_artist" class="overlay">
+                        <div v-if="s_loading_content_artist" class="overlay">
                             <i class="fas fa-2x fa-sync-alt fa-spin"></i>
                         </div>
                     </div>
@@ -160,21 +162,21 @@
     export default {
         data() {
             return {
-                d_artists: null,
-                d_page_count_artists: 1,
-                d_page_d_artists: 1,
+                s_artists: null,
+                s_page_count_artists: 1,
+                s_page_s_artists: 1,
 
-                d_artist_selected: null, // return the object of the selected artist
-                d_artist_top: null, // return the artist top details
+                s_artist_selected: null, // return the object of the selected artist
+                s_artist_top: null, // return the artist top details
 
                 error: null,
-                d_loading_page: false,
-                d_loading_artist: false,
-                d_loading_content_artist: false
+                s_loading_page: false,
+                s_loading_artist: false,
+                s_loading_content_artist: false
             }
         },
         created() {
-            this.d_loading_page = true;    
+            this.s_loading_page = true;    
             this.getArtistsList(1);
             
         },
@@ -188,52 +190,60 @@
 
             // return the list of the artist
             getArtistsList: function (page) {
-                this.d_loading_artist = true;
-                var prev = this.d_page_d_artists;
-                this.d_page_d_artists = page;
+                this.s_loading_artist = true;
+                var prev = this.s_page_s_artists;
+                this.s_page_s_artists = page;
 
-                axios.get("/api/deezer/artists/" + (page-1)*15)
+                axios.get("/api/spotify/artists/" + (page-1)*15)
                     .then((response)  =>  {
+
                         if (response.status === 200) {
-                            this.d_artists = response.data;
-                            this.d_page_count_artists = Math.ceil(this.d_artists.total/15);
-                            this.d_loading_artist= this.d_loading_page = false;
+                            this.s_artists = response.data.error ? response.data : response.data.artists;
+                            this.s_page_count_artists = Math.ceil(this.s_artists.total/15);
+                            this.s_loading_artist= this.s_loading_page = false;
+
+                            console.log(response);
+
                         }
                     }, (error)  =>  {
-                        this.d_page_d_artists = prev;
+                        this.s_page_s_artists = prev;
                         this.error = error.response.data;
                         console.log(error);
-                        this.d_loading_artist= this.d_loading_page = false;
+                        this.s_loading_artist= this.s_loading_page = false;
                     });
             },
 
             // when click on "See"
             clickSee: function (id) {
-                if(this.d_artists != null) {
-                    this.d_artist_selected = this.d_artists.data.find(item => {
+                if(this.s_artists != null) {
+                    this.s_artist_selected = this.s_artists.items.find(item => {
                         return item.id == id;
                     })
+
                     this.getArtistsContent(id);
                 }
             },
             // return the artist details
             getArtistsContent: function (id) {
 
-                this.d_loading_content_artist = true;
+                this.s_loading_content_artist = true;
 
                 var element = document.getElementById("artist");
                 element.scrollIntoView({behavior: "smooth"});
 
-                axios.get("/api/deezer/artist/" + id)
+                axios.get("/api/spotify/artist/" + id)
                     .then((response)  =>  {
+
                         if (response.status === 200) {
-                            this.d_artist_top = response.data;   
-                            this.d_loading_content_artist = false;
+                            this.s_artist_top = response.data.error ? response.data : response.data.tracks;
+                        } else {
+                            console.log(response);
                         }
+                        this.s_loading_content_artist = false;
                     }, (error)  =>  {
                         this.error = error.response.data;
                         console.log(error);
-                        this.d_loading_content_artist = false;
+                        this.s_loading_content_artist = false;
                     });
             },
         }
