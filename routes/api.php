@@ -56,5 +56,10 @@ Route::prefix('spotify')->group(function () {
 
 	Route::get('/artist/{id}', 'Board\BoardSpotifyController@artist')
 		->name('spotify.artist')
-		->where('id', '[A-Za-z0-9]+');
+		->where('id', '[A-Za-z0-9]+');		
+});
+
+Route::prefix('discogs')->group(function () {
+	Route::get('/account', 'Board\BoardDiscogsController@account')->name('discogs.account');
+
 });

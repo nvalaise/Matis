@@ -53,16 +53,8 @@ class DiscogsProvider extends AbstractProvider {
 
         return (new User())->setRaw($user->extra)->map([
             'id'       => $user->uid,
-            'name'     => $user->name,
+            'name'     => $user->nickname,
             'email'    => $profile['email'],
         ])->setToken($token->getIdentifier(), $token->getSecret());
-    }
-
-    protected function headers() {
-        $token = $this->getToken();
-        return [
-            'Authorization' => 'Bearer ' . $token,        
-            'Accept'        => 'application/json',
-        ];
     }
 }

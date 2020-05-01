@@ -18,7 +18,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'provider_id', 'provider', 
-        'email', 'password', 
+        'email', 'username', 'password', 
         'access_token',
     ];
 
@@ -64,8 +64,6 @@ class User extends Authenticatable
         return ! empty((array) $accounts[$driver.'_id']);
     }
 
-
-
     /**
      * Get the phone record associated with the user.
      */
@@ -80,6 +78,17 @@ class User extends Authenticatable
     public function spotify()
     {
         return $this->hasOne('App\Models\UserAccount', 'spotify_id', 'id');
+    }
+
+    /**
+     * Get the user pseudonyme.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getUsernameAttribute($value)
+    {
+        return $value;
     }
 
     /**

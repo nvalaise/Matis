@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->bigInteger('provider_id')->unsigned();
             $table->string('provider', 50);
             $table->string('email', 100);
+            $table->string('username', 255)->nullable();
             $table->string('password');
             $table->string('access_token', 500);
             $table->rememberToken();

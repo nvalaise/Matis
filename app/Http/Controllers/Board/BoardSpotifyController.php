@@ -24,6 +24,7 @@ class BoardSpotifyController extends Controller
 			'Accept'        => 'application/json',
 		];
     }
+    
 	public function account() {
 
 		$url = "https://api.spotify.com/v1/me";

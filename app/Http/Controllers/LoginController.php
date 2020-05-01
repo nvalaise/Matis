@@ -84,6 +84,7 @@ class LoginController extends Controller
 					'provider' => $driver,
 					'provider_id' => $providerUser->id,
 					'email' => $providerUser->email,
+					'username' => isset($providerUser->name) ? $providerUser->name : null,
 					'password' => Hash::make("mdp" . $pseudo), // user can use reset password to create a password					
 					'access_token' => $providerUser->token,
 				]);
@@ -120,6 +121,7 @@ class LoginController extends Controller
 					'provider' => $driver,
 					'provider_id' => $providerUser->id,
 					'email' => $providerUser->email,
+					'username' => isset($providerUser->name) ? $providerUser->name : null,
 					'password' => Hash::make("mdp" . $pseudo), // user can use reset password to create a password					
 					'access_token' => $providerUser->token,
 				]);
