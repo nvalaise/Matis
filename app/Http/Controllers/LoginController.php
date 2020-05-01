@@ -31,7 +31,8 @@ class LoginController extends Controller
 
 		try {
 			Session::put('__redirect_url', URL::previous());
-			return Socialite::with($driver)->stateless(false)->redirect();
+			return Socialite::with($driver)->redirect();
+			//return Socialite::with($driver)->stateless(false)->redirect();
 		} catch (Exception $e) {
 			return $this->sendFailedResponse($e->getMessage());
 		}
@@ -40,7 +41,8 @@ class LoginController extends Controller
 	public function handleProviderCallback($driver)
 	{
 		try {			
-			$user = Socialite::driver($driver)->stateless(false)->user();
+			$user = Socialite::driver($driver)->user();
+			//$user = Socialite::driver($driver)->stateless(false)->user();
 		} catch (Exception $e) {
 			return $this->sendFailedResponse($e->getMessage());
 		}
@@ -50,7 +52,7 @@ class LoginController extends Controller
 
 	protected function loginOrCreateAccount($providerUser, $driver)
 	{
-		// 4-eye check to validate the driver
+		// 4-eye to validate the driver
 		if( ! $this->isProviderAllowed($driver) ) {
 			return $this->sendFailedResponse("{$driver} is not currently supported");
 		}
@@ -66,6 +68,14 @@ class LoginController extends Controller
 		///// 1. first connection with this provider and not authenticated
 		/////
 		if ( is_null($userFromProvider) && is_null($authUser)) {
+			// if the mail already exist from another provider, stop the actions so don't create the accounts reference
+			$userFromEmail = User::where('email', $providerUser->email)->first();
+			if(! is_null($userFromEmail)) {
+				Session::flash('flash_type', 'alert-danger');
+				Session::flash('flash_message', '<p><b>Error!</b> Your email have been alredy used with <b>'.ucfirst($userFromEmail->provider).'</b> for example.<br> Please get connected with this application, then you will be able to add your <b>'.ucfirst($driver).'</b> account.</p>');
+				return redirect()->route('auth.index');
+			}
+
 			// create the user and create the accounts reference
 			$pseudo = RandomPseudo::generate();
 			DB::beginTransaction();

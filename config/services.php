@@ -42,4 +42,9 @@ return [
         'redirect' => env('APP_URL') . '/auth/spotify/callback'
     ],
 
+    'discogs' => [
+        'identifier' => env('DISCOGS_KEY'),
+        'secret' => env('DISCOGS_SECRET'),
+        'callback_uri' => env('APP_URL') . '/auth/discogs/callback'
+    ],
 ];

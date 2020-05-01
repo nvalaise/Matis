@@ -6,6 +6,9 @@ use Illuminate\Support\ServiceProvider;
 use App\Extensions\DeezerProvider;
 use App\Extensions\SpotifyProvider;
 
+use App\Extensions\DiscogsProvider;
+use App\Extensions\DiscogsServer;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -27,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->bootDeezerSocialite();
         $this->bootSpotifySocialite();
+        $this->bootDiscogsSocialite();
     }
 
     private function bootDeezerSocialite()
@@ -52,4 +56,19 @@ class AppServiceProvider extends ServiceProvider
             }
         );
     }
+
+    private function bootDiscogsSocialite()
+    {
+        $socialite = $this->app->make('Laravel\Socialite\Contracts\Factory');
+        $socialite->extend(
+            'discogs',
+            function ($app) use ($socialite) {
+                $config = $app['config']['services.discogs'];
+                return new DiscogsProvider(
+                    $this->app['request'], new DiscogsServer($config, null)
+                );
+            }
+        );
+    }
 }
+

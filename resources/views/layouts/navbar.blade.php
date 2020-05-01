@@ -18,6 +18,7 @@
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="/deezer">Deezer</a>
         <a class="dropdown-item" href="/spotify">Spotify</a>
+        <a class="dropdown-item" href="/discogs">Discogs</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="#">Next...</a>
       </div>
@@ -115,6 +116,19 @@
           <p>
             Spotify
             @if(Auth::check() && Auth::user()->has('spotify'))
+            <span class="right badge bg-green">Active</span>
+            @endif
+          </p>
+        </a>
+      </li>
+      @show
+      @section('sidebar-discogs')
+      <li class="nav-item">
+        <a href="/discogs" class="nav-link">
+          <i class="nav-icon fas fa-code"></i>
+          <p>
+            Discogs
+            @if(Auth::check() && Auth::user()->has('discogs'))
             <span class="right badge bg-green">Active</span>
             @endif
           </p>

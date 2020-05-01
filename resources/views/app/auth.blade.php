@@ -6,8 +6,9 @@
 <div>
 
 	@if ( Session::has('flash_message') )
+
 	<div class="row">
-		<div class="col-12 alert {{ Session::get('flash_type') }}" role="alert">
+  	<div class="col-12 alert {{ Session::get('flash_type') }}" role="alert">
 			<p>{!! Session::get('flash_message') !!}</p>
 		</div>
 	</div>
@@ -71,7 +72,12 @@
           </div>
           <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3">
           	<div class="row d-flex justify-content-between">
-            	<a href="#" class="btn btn-primary">Connect</a>
+              @if(Auth::check() && Auth::user()->has('discogs'))
+                <a href="{{ route('auth.login', 'discogs') }}" class="btn btn-primary">Refresh</a>
+                <a class="btn btn-success" href="/discogs" role="button">Dashboard</a>
+              @else
+                <a href="{{ route('auth.login', 'discogs') }}" class="btn btn-success">Connect</a>
+              @endif
             </div>
             <hr>
              <p>
